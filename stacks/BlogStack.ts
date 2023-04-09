@@ -11,8 +11,8 @@ export function BlogStack({ stack }: StackContext) {
 
   const api = new Api(stack, "api", {
     routes: {
-      "GET /blogs": 'packages/functions/src/getBlogs.handler',
-      "POST /blogs": 'packages/functions/src/putBlog.handler'
+      "GET /blogs": 'src/functions/getBlogs.handler',
+      "POST /blogs": 'src/functions/putBlog.handler'
     },
     cdk: {
       httpApi: {
