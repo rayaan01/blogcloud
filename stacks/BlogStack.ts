@@ -1,3 +1,4 @@
+import { RemovalPolicy } from "aws-cdk-lib";
 import { StackContext, Api, Table } from "sst/constructs";
 
 export function BlogStack({ stack }: StackContext) {
@@ -10,11 +11,12 @@ export function BlogStack({ stack }: StackContext) {
 
   const api = new Api(stack, "api", {
     routes: {
-      "GET /blogs": 'packages/functions/src/getBlogs.handler'
+      "GET /blogs": 'packages/functions/src/getBlogs.handler',
+      "POST /blogs": 'packages/functions/src/putBlog.handler'
     },
     cdk: {
       httpApi: {
-        apiName: `${stack.stage}-blogs-api`
+        apiName: `${stack.stage}-blogs-api`,
       },
     }
   });
@@ -30,7 +32,8 @@ export function BlogStack({ stack }: StackContext) {
     },
     cdk: {
       table: {
-        tableName: `${stack.stage}-blogs-table`
+        tableName: `${stack.stage}-blogs-table`,
+        removalPolicy: RemovalPolicy.DESTROY,
       }
     }
   })
