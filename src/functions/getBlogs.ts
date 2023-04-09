@@ -1,4 +1,4 @@
-import { APIGatewayProxyResultV2 } from "aws-lambda";
+import { APIGatewayProxyResultV2 } from 'aws-lambda'
 
 export const handler = async (): Promise<APIGatewayProxyResultV2> => {
     return {
@@ -7,7 +7,7 @@ export const handler = async (): Promise<APIGatewayProxyResultV2> => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            message: "Hello from getBlogs.ts",
+            message: 'Hello from getBlogs.ts',
         }),
     }
 }

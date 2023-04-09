@@ -12,15 +12,23 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "sst": "2.5.1",
+    "@tsconfig/node16": "^1.0.3",
+    "@types/aws-lambda": "^8.10.114",
+    "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^5.57.1",
+    "@typescript-eslint/parser": "^5.57.1",
     "aws-cdk-lib": "2.72.1",
     "constructs": "10.1.156",
-    "typescript": "^5.0.4",
-    "@tsconfig/node16": "^1.0.3",
-    "@types/node": "^18.15.11",
-    "@types/aws-lambda": "^8.10.114"
+    "eslint": "^8.38.0",
+    "sst": "2.5.1",
+    "typescript": "^5.0.4"
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.309.0",
+    "@aws-sdk/util-dynamodb": "^3.309.0",
+    "jsonwebtoken": "^9.0.0"
+  }
 }

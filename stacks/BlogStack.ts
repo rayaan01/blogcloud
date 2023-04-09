@@ -1,7 +1,9 @@
-import { RemovalPolicy } from "aws-cdk-lib";
-import { StackContext, Api, Table } from "sst/constructs";
+import { RemovalPolicy } from 'aws-cdk-lib'
+import { StackContext, Api, Table } from 'sst/constructs'
+import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam'
+import { appSecrets } from '../src/utils/appSecrets'
 
-export function BlogStack({ stack }: StackContext) {
+export function BlogStack({ stack }: StackContext): void {
 
   stack.setDefaultFunctionProps({
     runtime: 'nodejs16.x',
@@ -9,19 +11,52 @@ export function BlogStack({ stack }: StackContext) {
     timeout: 10,
   })
 
-  const api = new Api(stack, "api", {
+  stack.addDefaultFunctionEnv({
+    BLOGS_TABLE_NAME: `${stack.stage}-blogs-table`,
+    USERS_TABLE_NAME: `${stack.stage}-users-table`,
+    AWS_LOCAL_REGION: stack.region,
+    AWS_ACCOUNT_ID: stack.account
+  })
+
+  const api = new Api(stack, 'api', {
     routes: {
-      "GET /blogs": 'src/functions/getBlogs.handler',
-      "POST /blogs": 'src/functions/putBlog.handler'
+      'POST /login': 'src/functions/login.handler',
+      'GET /blogs': 'src/functions/getBlogs.handler',
+      'POST /blogs': 'src/functions/putBlog.handler'
     },
     cdk: {
       httpApi: {
         apiName: `${stack.stage}-blogs-api`,
       },
-    }
-  });
+    },
+  })
 
-  const table = new Table(stack, "table", {
+  api.attachPermissionsToRoute('POST /login', [
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'dynamodb:GetItem',
+        'dynamodb:PutItem',
+      ],
+      resources: [
+        `arn:aws:dynamodb:${appSecrets.region}/${appSecrets.accountId}:table/${appSecrets.usersTable}`,
+      ],
+    })
+  ])
+
+  api.attachPermissionsToRoute('GET /blogs', [
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'dynamodb:GetItem',
+      ],
+      resources: [
+        `arn:aws:dynamodb:${appSecrets.region}/${appSecrets.accountId}:table/${appSecrets.blogsTable}`,
+      ],
+    })
+  ])
+
+  const blogsTable = new Table(stack, 'blogs-table', {
     fields: {
       pk: 'string',
       sk: 'string',
@@ -38,8 +73,25 @@ export function BlogStack({ stack }: StackContext) {
     }
   })
 
+
+  const usersTable = new Table(stack, 'users-table', {
+    fields: {
+      pk: 'string',
+    },
+    primaryIndex: {
+      partitionKey: 'pk',
+    },
+    cdk: {
+      table: {
+        tableName: `${stack.stage}-users-table`,
+        removalPolicy: RemovalPolicy.DESTROY,
+      }
+    }
+  })
+
   stack.addOutputs({
     ApiEndpoint: api.url,
-    TableName: table.tableName,
-  });
+    BlogsTableName: blogsTable.tableName,
+    UsersTableName: usersTable.tableName,
+  })
 }
