@@ -9,13 +9,15 @@ const client = new DynamoDBClient({
 
 export const dbGet = async ({
     pk,
-    sk
+    sk,
+    table
 }: PkSkSchema): Promise<UserSchema | null> => {
+
     const command = new GetItemCommand({
-        TableName: appSecrets.usersTable,
+        TableName: table,
         Key: marshall({
             pk,
-            sk
+            ...(sk && { sk })
         })
     })
 

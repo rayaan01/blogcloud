@@ -1,6 +1,7 @@
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda'
 // import { sign } from 'jsonwebtoken'
 import { dbGet } from '../lib/dbGet'
+import { appSecrets } from '../utils/appSecrets'
 
 export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2 | undefined> => {
     const { body } = event
@@ -28,7 +29,7 @@ export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGateway
 
     const user = await dbGet({
         pk: username,
-        sk: password
+        table: appSecrets.usersTable
     })
 
     if (!user) {

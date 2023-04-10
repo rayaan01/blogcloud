@@ -12,10 +12,10 @@ export function BlogStack({ stack }: StackContext): void {
   })
 
   stack.addDefaultFunctionEnv({
-    BLOGS_TABLE_NAME: `${stack.stage}-blogs-table`,
-    USERS_TABLE_NAME: `${stack.stage}-users-table`,
-    AWS_LOCAL_REGION: stack.region,
-    AWS_ACCOUNT_ID: stack.account
+    BLOGS_TABLE_NAME: appSecrets.blogsTable,
+    USERS_TABLE_NAME: appSecrets.usersTable,
+    AWS_LOCAL_REGION: appSecrets.region,
+    AWS_ACCOUNT_ID: appSecrets.account
   })
 
   const api = new Api(stack, 'api', {
@@ -39,7 +39,7 @@ export function BlogStack({ stack }: StackContext): void {
         'dynamodb:PutItem',
       ],
       resources: [
-        `arn:aws:dynamodb:${appSecrets.region}/${appSecrets.accountId}:table/${appSecrets.usersTable}`,
+        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.usersTable}`,
       ],
     })
   ])
@@ -51,7 +51,7 @@ export function BlogStack({ stack }: StackContext): void {
         'dynamodb:GetItem',
       ],
       resources: [
-        `arn:aws:dynamodb:${appSecrets.region}/${appSecrets.accountId}:table/${appSecrets.blogsTable}`,
+        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.blogsTable}`,
       ],
     })
   ])

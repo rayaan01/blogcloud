@@ -1,6 +1,7 @@
 export interface PkSkSchema {
     pk: string,
-    sk: string
+    sk?: string
+    table: string
 }
 
 export interface UserSchema {
