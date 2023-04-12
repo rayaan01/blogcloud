@@ -1,16 +1,17 @@
-import { SSTConfig } from "sst";
-import { BlogStack } from "./stacks/BlogStack";
+import { SSTConfig } from 'sst'
+import { BlogStack } from './stacks/BlogStack'
+import { ConfigOptions } from 'sst/project'
 
 export default {
-  config(_input) {
+  config(): Promise<ConfigOptions> | ConfigOptions {
     return {
-      name: "blogcloud",
-      region: "us-east-1",
-    };
+      name: 'blogcloud',
+      region: 'us-east-1',
+    }
   },
-  stacks(app) {
+  stacks(app): void {
     app.stack(BlogStack, {
       id: 'blog-stack',
     })
   }
-} satisfies SSTConfig;
+} satisfies SSTConfig

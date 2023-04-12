@@ -22,7 +22,6 @@ export function BlogStack({ stack }: StackContext): void {
     routes: {
       'POST /login': 'src/functions/login.handler',
       'GET /blogs': 'src/functions/getBlogs.handler',
-      'POST /blogs': 'src/functions/putBlog.handler'
     },
     cdk: {
       httpApi: {
