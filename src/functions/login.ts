@@ -1,35 +1,22 @@
-import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda'
+import { APIGatewayProxyEventV2WithLambdaAuthorizer, APIGatewayProxyResultV2, Handler } from 'aws-lambda'
 // import jwt from 'jsonwebtoken'
-import { dbGet } from '../lib/dbGet'
+import { dbGet } from '../lib/dynamodb/dbGet'
 import { appSecrets } from '../utils/appSecrets'
 import middy from '@middy/core'
 import { UserSchema } from '../types'
 import { genSalt, hash } from 'bcryptjs'
-import { dbPut } from '../lib/dbPut'
+import { dbPut } from '../lib/dynamodb/dbPut'
+import jsonBodyParser from '@middy/http-json-body-parser'
+import { validateArgumentsMiddleware } from '../lib/middlewares/validateArgumentsMiddleware'
+import { loginArgumentsSchema } from '../lib/schema/LoginArgumentsSchema'
+import { loginArgumentsSchemaType } from '../lib/schema/LoginArgumentsSchema'
 
-export const loginHandler = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2 | undefined> => {
-    const { body } = event
-    if (!body) {
-        return {
-            body: 'Please provide a username and a password'
-        }
-    }
+interface Event extends Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<string>, 'body'> {
+    body: loginArgumentsSchemaType
+}
 
-    const { username, password } = JSON.parse(body)
-
-    if (!username) {
-        return {
-            body: 'Please provide a username',
-            statusCode: 400
-        }
-    }
-
-    if (!password) {
-        return {
-            body: 'Please provide a password',
-            statusCode: 400
-        }
-    }
+export const loginHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
+    const { username, password } = event.body
 
     const user = await dbGet<UserSchema>({
         pk: username,
@@ -52,8 +39,15 @@ export const loginHandler = async (event: APIGatewayProxyEventV2): Promise<APIGa
             table: appSecrets.usersTable,
             item: payload
         })
+    }
 
+    return {
+        statusCode: 200
     }
 }
 
 export const handler = middy(loginHandler)
+    .use(jsonBodyParser())
+    .use(validateArgumentsMiddleware({
+        schema: loginArgumentsSchema
+    }))

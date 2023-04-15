@@ -1,7 +1,7 @@
 import { DynamoDBClient, GetItemCommand } from '@aws-sdk/client-dynamodb'
-import { DBGetSchema } from '../types'
+import { DBGetSchema } from '../../types'
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb'
-import { appSecrets } from '../utils/appSecrets'
+import { appSecrets } from '../../utils/appSecrets'
 
 const client = new DynamoDBClient({
     region: appSecrets.region
