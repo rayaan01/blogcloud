@@ -1,7 +1,8 @@
 import { Infer, object, string } from 'superstruct'
 
 export const loginArgumentsSchema = object({
-    username: string(),
+    name: string(),
+    email: string(),
     password: string()
 })
 

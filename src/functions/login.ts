@@ -16,23 +16,25 @@ interface Event extends Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<string>,
 }
 
 export const loginHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
-    const { username, password } = event.body
+    const { name, email, password } = event.body
 
     const user = await dbGet<UserSchema>({
-        pk: username,
+        pk: email,
         table: appSecrets.usersTable
     })
 
     if (!user) {
         const salt = await genSalt(10)
         const hashedPassword = await hash(password, salt)
+        const date = new Date()
 
         const payload = {
-            pk: username,
-            email: username,
+            pk: `USER#${email}`,
+            email,
+            name,
             password: hashedPassword,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
+            createdAt: date.toISOString(),
+            updatedAt: date.toISOString(),
         }
 
         await dbPut({
