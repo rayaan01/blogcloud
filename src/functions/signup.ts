@@ -26,9 +26,10 @@ const signupHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => 
 
     const uid = v4()
     const name = `${firstName} ${lastName}`
+    const pk = `USER#${email}`
 
     const payload = {
-        pk: `USER#${email}`,
+        pk,
         email,
         firstName,
         lastName,
