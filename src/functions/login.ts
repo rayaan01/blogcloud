@@ -5,6 +5,7 @@ import { appSecrets } from '../utils/appSecrets'
 import middy from '@middy/core'
 import { UserSchema } from '../types'
 import { genSalt, hash } from 'bcryptjs'
+import { v4 } from 'uuid'
 import { dbPut } from '../lib/dynamodb/dbPut'
 import jsonBodyParser from '@middy/http-json-body-parser'
 import { validateArgumentsMiddleware } from '../lib/middlewares/validateArgumentsMiddleware'
@@ -15,33 +16,13 @@ interface Event extends Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<string>,
     body: loginArgumentsSchemaType
 }
 
-export const loginHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
-    const { name, email, password } = event.body
+const loginHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
+    const { email, password } = event.body
 
     const user = await dbGet<UserSchema>({
         pk: email,
         table: appSecrets.usersTable
     })
-
-    if (!user) {
-        const salt = await genSalt(10)
-        const hashedPassword = await hash(password, salt)
-        const date = new Date()
-
-        const payload = {
-            pk: `USER#${email}`,
-            email,
-            name,
-            password: hashedPassword,
-            createdAt: date.toISOString(),
-            updatedAt: date.toISOString(),
-        }
-
-        await dbPut({
-            table: appSecrets.usersTable,
-            item: payload
-        })
-    }
 
     return {
         statusCode: 200

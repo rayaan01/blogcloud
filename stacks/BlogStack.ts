@@ -15,13 +15,17 @@ export function BlogStack({ stack }: StackContext): void {
     BLOGS_TABLE_NAME: appSecrets.blogsTable,
     USERS_TABLE_NAME: appSecrets.usersTable,
     AWS_LOCAL_REGION: appSecrets.region,
-    AWS_ACCOUNT_ID: appSecrets.account
+    AWS_ACCOUNT_ID: appSecrets.account,
+    AUTH_ISSUER: appSecrets.issuer,
+    AUTH_AUDIENCE: appSecrets.audience,
+    AUTH_SECRET: appSecrets.authSecret
   })
 
   const api = new Api(stack, 'api', {
     routes: {
       'POST /login': 'src/functions/login.handler',
       'GET /blogs': 'src/functions/getBlogs.handler',
+      'POST /signup': 'src/functions/signup.handler'
     },
     cdk: {
       httpApi: {
@@ -29,6 +33,18 @@ export function BlogStack({ stack }: StackContext): void {
       },
     },
   })
+
+  api.attachPermissionsToRoute('POST /signup', [
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'dynamodb:PutItem',
+      ],
+      resources: [
+        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.usersTable}`,
+      ],
+    })
+  ])
 
   api.attachPermissionsToRoute('POST /login', [
     new PolicyStatement({

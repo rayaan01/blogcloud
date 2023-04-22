@@ -5,7 +5,7 @@ export const validateArgumentsMiddleware = <TStruct1, TStruct2>({ schema }: { sc
 
     const validateArgumentsMiddlewareBase = (request: Request): void => {
         const { body } = request.event
-        if (body) {
+        if (!body) {
             throw new Error('Invalid arguments')
         }
 
