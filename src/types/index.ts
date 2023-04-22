@@ -12,6 +12,11 @@ export interface DBPutSchema {
 export interface UserSchema {
     pk: string,
     email: string,
+    firstName: string,
+    lastName: string,
+    name: string,
+    uid: string,
     password: string,
     created_at: string
+    updated_at: string
 }

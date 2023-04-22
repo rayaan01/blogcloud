@@ -12,6 +12,7 @@ import { loginArgumentsSchema } from '../lib/schema/LoginArgumentsSchema'
 import { loginArgumentsSchemaType } from '../lib/schema/LoginArgumentsSchema'
 import { httpResponses } from '../utils/httpResponses'
 import { serialize } from 'cookie'
+import httpErrorHandler from '@middy/http-error-handler'
 
 interface Event extends Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<string>, 'body'> {
     body: loginArgumentsSchemaType
@@ -66,3 +67,4 @@ export const handler = middy(signupHandler)
     .use(validateArgumentsMiddleware({
         schema: loginArgumentsSchema
     }))
+    .use(httpErrorHandler())

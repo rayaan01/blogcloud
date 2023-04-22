@@ -24,13 +24,13 @@ export const dbPut = async ({
         const response = await client.send(command)
 
         if (response.$metadata.httpStatusCode !== 200) {
-            createError(500, httpResponses[500])
+            throw createError.InternalServerError(httpResponses[500])
         }
     } catch (err) {
         if (err instanceof Error && err.message === 'The conditional request failed') {
-            createError(400, httpResponses[400])
+            throw createError.BadRequest(httpResponses[400])
         }
-        createError(500, httpResponses[500])
+        throw createError.InternalServerError(httpResponses[500])
     }
 
 }
