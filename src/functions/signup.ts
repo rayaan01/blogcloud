@@ -13,52 +13,57 @@ import { loginArgumentsSchemaType } from '../lib/schema/LoginArgumentsSchema'
 import { httpResponses } from '../utils/httpResponses'
 import { serialize } from 'cookie'
 import httpErrorHandler from '@middy/http-error-handler'
+import createHttpError from 'http-errors'
 
 interface Event extends Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<string>, 'body'> {
     body: loginArgumentsSchemaType
 }
 
 const signupHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
-    const { firstName, lastName, email, password } = event.body
+    try {
+        const { firstName, lastName, email, password } = event.body
 
-    const salt = await genSalt(10)
-    const hashedPassword = await hash(password, salt)
-    const date = new Date()
+        const salt = await genSalt(10)
+        const hashedPassword = await hash(password, salt)
+        const date = new Date()
 
-    const uid = v4()
-    const name = `${firstName} ${lastName}`
-    const pk = `USER#${email}`
+        const uid = v4()
+        const name = `${firstName} ${lastName}`
+        const pk = `USER#${email}`
 
-    const payload = {
-        pk,
-        email,
-        firstName,
-        lastName,
-        name,
-        uid,
-        password: hashedPassword,
-        createdAt: date.toISOString(),
-        updatedAt: date.toISOString(),
-    }
+        const payload = {
+            pk,
+            email,
+            firstName,
+            lastName,
+            name,
+            uid,
+            password: hashedPassword,
+            createdAt: date.toISOString(),
+            updatedAt: date.toISOString(),
+        }
 
-    await dbPut({
-        table: appSecrets.usersTable,
-        item: payload
-    })
+        await dbPut({
+            table: appSecrets.usersTable,
+            item: payload
+        })
 
-    const authToken = jwt.sign({
-        name,
-        email,
-    }, appSecrets.authSecret, {
-        subject: uid,
-        issuer: appSecrets.issuer,
-        audience: appSecrets.audience
-    })
+        const authToken = jwt.sign({
+            name,
+            email,
+        }, appSecrets.authSecret, {
+            subject: uid,
+            issuer: appSecrets.issuer,
+            audience: appSecrets.audience
+        })
 
-    return {
-        statusCode: 200,
-        body: httpResponses[200],
-        cookies: [serialize('token', authToken)]
+        return {
+            statusCode: 200,
+            body: httpResponses[200],
+            cookies: [serialize('token', authToken)]
+        }
+    } catch (err) {
+        throw createHttpError.InternalServerError(httpResponses[500])
     }
 }
 

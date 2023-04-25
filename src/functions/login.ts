@@ -13,43 +13,48 @@ import { loginArgumentsSchemaType } from '../lib/schema/LoginArgumentsSchema'
 import { httpResponses } from '../utils/httpResponses'
 import { serialize } from 'cookie'
 import httpErrorHandler from '@middy/http-error-handler'
+import createHttpError from 'http-errors'
 
 interface Event extends Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<string>, 'body'> {
     body: loginArgumentsSchemaType
 }
 
 const loginHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
-    const { email, password } = event.body
+    try {
+        const { email, password } = event.body
 
-    const pk = `USER#${email}`
+        const pk = `USER#${email}`
 
-    const user = await dbGet<UserSchema>({
-        pk,
-        table: appSecrets.usersTable
-    })
+        const user = await dbGet<UserSchema>({
+            pk,
+            table: appSecrets.usersTable
+        })
 
-    if (user) {
-        const passwordVerified = await compare(password, user.password)
-        if (!passwordVerified) {
-            throw createError.Unauthorized(httpResponses[401])
+        if (user) {
+            const passwordVerified = await compare(password, user.password)
+            if (!passwordVerified) {
+                throw createError.Unauthorized(httpResponses[401])
+            }
+        } else {
+            throw createError.Unauthorized(httpResponses[400])
         }
-    } else {
-        throw createError.Unauthorized(httpResponses[400])
-    }
 
-    const authToken = jwt.sign({
-        name: user.password,
-        email: user.email
-    }, appSecrets.authSecret, {
-        subject: user.uid,
-        issuer: appSecrets.issuer,
-        audience: appSecrets.audience
-    })
+        const authToken = jwt.sign({
+            name: user.password,
+            email: user.email
+        }, appSecrets.authSecret, {
+            subject: user.uid,
+            issuer: appSecrets.issuer,
+            audience: appSecrets.audience
+        })
 
-    return {
-        statusCode: 200,
-        body: httpResponses[200],
-        cookies: [serialize('token', authToken)]
+        return {
+            statusCode: 200,
+            body: httpResponses[200],
+            cookies: [serialize('token', authToken)]
+        }
+    } catch (err) {
+        throw createHttpError.InternalServerError(httpResponses[500])
     }
 }
 

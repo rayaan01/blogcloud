@@ -13,7 +13,6 @@ export const dbPut = async ({
     item,
     table
 }: DBPutSchema): Promise<void> => {
-
     try {
         const command = new PutItemCommand({
             TableName: table,
@@ -30,8 +29,8 @@ export const dbPut = async ({
         if (err instanceof Error && err.message === 'The conditional request failed') {
             throw createError.BadRequest(httpResponses[400])
         }
+
         throw createError.InternalServerError(httpResponses[500])
     }
-
 }
 
