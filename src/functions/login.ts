@@ -32,10 +32,10 @@ const loginHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
         if (user) {
             const passwordVerified = await compare(password, user.password)
             if (!passwordVerified) {
-                throw createError.Unauthorized(httpResponses[401])
+                throw createError(401, httpResponses[401])
             }
         } else {
-            throw createError.Unauthorized(httpResponses[400])
+            throw createError(401, httpResponses[401])
         }
 
         const authToken = jwt.sign({

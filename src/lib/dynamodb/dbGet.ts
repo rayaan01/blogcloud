@@ -31,7 +31,7 @@ export const dbGet = async<T>({
         }
 
     } catch (err) {
-        throw createError.InternalServerError(httpResponses[500])
+        throw createError(500, httpResponses[500])
     }
 }
 
