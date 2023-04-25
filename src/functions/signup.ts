@@ -14,6 +14,7 @@ import { httpResponses } from '../utils/httpResponses'
 import { serialize } from 'cookie'
 import httpErrorHandler from '@middy/http-error-handler'
 import createHttpError from 'http-errors'
+import { checkValidError } from '../utils/checkValidError'
 
 interface Event extends Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<string>, 'body'> {
     body: loginArgumentsSchemaType
@@ -63,7 +64,11 @@ const signupHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => 
             cookies: [serialize('token', authToken)]
         }
     } catch (err) {
-        throw createHttpError.InternalServerError(httpResponses[500])
+        if (checkValidError(err)) {
+            throw err
+        } else {
+            throw createHttpError(500, httpResponses[500], { expose: true })
+        }
     }
 }
 

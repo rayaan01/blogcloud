@@ -20,17 +20,13 @@ export const dbPut = async ({
             ConditionExpression: 'attribute_not_exists(pk) and attribute_not_exists(sk)'
         })
 
-        const response = await client.send(command)
-
-        if (response.$metadata.httpStatusCode !== 200) {
-            throw createError.InternalServerError(httpResponses[500])
-        }
+        await client.send(command)
     } catch (err) {
         if (err instanceof Error && err.message === 'The conditional request failed') {
-            throw createError.BadRequest(httpResponses[400])
+            throw createError(422, httpResponses[422])
         }
 
-        throw createError.InternalServerError(httpResponses[500])
+        throw createError(500, httpResponses[500], { expose: true, statusCode: 500 })
     }
 }
 
