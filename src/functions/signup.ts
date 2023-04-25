@@ -8,8 +8,7 @@ import { v4 } from 'uuid'
 import { dbPut } from '../lib/dynamodb/dbPut'
 import jsonBodyParser from '@middy/http-json-body-parser'
 import { validateArgumentsMiddleware } from '../lib/middlewares/validateArgumentsMiddleware'
-import { loginArgumentsSchema } from '../lib/schema/LoginArgumentsSchema'
-import { loginArgumentsSchemaType } from '../lib/schema/LoginArgumentsSchema'
+import { signUpArgumentsSchema, signUpArgumentsSchemaType } from '../lib/schema/SignUpArgumentsSchema'
 import { httpResponses } from '../utils/httpResponses'
 import { serialize } from 'cookie'
 import httpErrorHandler from '@middy/http-error-handler'
@@ -17,7 +16,7 @@ import createHttpError from 'http-errors'
 import { checkValidError } from '../utils/checkValidError'
 
 interface Event extends Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<string>, 'body'> {
-    body: loginArgumentsSchemaType
+    body: signUpArgumentsSchemaType
 }
 
 const signupHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
@@ -75,6 +74,6 @@ const signupHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => 
 export const handler = middy(signupHandler)
     .use(jsonBodyParser())
     .use(validateArgumentsMiddleware({
-        schema: loginArgumentsSchema
+        schema: signUpArgumentsSchema
     }))
     .use(httpErrorHandler())

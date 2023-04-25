@@ -8,12 +8,12 @@ import { compare } from 'bcryptjs'
 import createError from 'http-errors'
 import jsonBodyParser from '@middy/http-json-body-parser'
 import { validateArgumentsMiddleware } from '../lib/middlewares/validateArgumentsMiddleware'
-import { loginArgumentsSchema } from '../lib/schema/LoginArgumentsSchema'
-import { loginArgumentsSchemaType } from '../lib/schema/LoginArgumentsSchema'
+import { loginArgumentsSchema, loginArgumentsSchemaType } from '../lib/schema/LoginArgumentsSchema'
 import { httpResponses } from '../utils/httpResponses'
 import { serialize } from 'cookie'
 import httpErrorHandler from '@middy/http-error-handler'
 import createHttpError from 'http-errors'
+import { checkValidError } from '../utils/checkValidError'
 
 interface Event extends Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<string>, 'body'> {
     body: loginArgumentsSchemaType
@@ -22,7 +22,6 @@ interface Event extends Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<string>,
 const loginHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
     try {
         const { email, password } = event.body
-
         const pk = `USER#${email}`
 
         const user = await dbGet<UserSchema>({
@@ -54,7 +53,11 @@ const loginHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
             cookies: [serialize('token', authToken)]
         }
     } catch (err) {
-        throw createHttpError.InternalServerError(httpResponses[500])
+        if (checkValidError(err)) {
+            throw err
+        } else {
+            throw createHttpError(500, httpResponses[500])
+        }
     }
 }
 
