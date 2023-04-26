@@ -23,30 +23,30 @@ export function BlogStack({ stack }: StackContext): void {
 
   const authorizerFunction = new Function(stack, 'AuthorizerFunction', {
     handler: 'src/functions/authorizer/main.handler',
-    functionName: 'JWTAuthorizer',
+    functionName: 'CustomAuthorizer',
     timeout: 10,
-    memorySize: 1024
+    memorySize: 1024,
   })
 
   const api = new Api(stack, 'api', {
     authorizers: {
-      jwtAuthorizer: {
+      customAuthorizer: {
         type: 'lambda',
-        function: authorizerFunction
+        function: authorizerFunction,
       }
     },
     routes: {
       'POST /login': 'src/functions/authenticate/login.handler',
       'POST /signup': 'src/functions/authenticate/signup.handler',
       'POST /blog': {
-        authorizer: 'jwtAuthorizer',
+        authorizer: 'customAuthorizer',
         function: 'src/functions/blogs/putBlog.handler'
       },
     },
     cdk: {
       httpApi: {
         apiName: `${stack.stage}-blogs-api`,
-      },
+      }
     },
   })
 
