@@ -1,5 +1,5 @@
 import { RemovalPolicy } from 'aws-cdk-lib'
-import { StackContext, Api, Table } from 'sst/constructs'
+import { StackContext, Api, Table, Function } from 'sst/constructs'
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam'
 import { appSecrets } from '../src/utils/appSecrets'
 
@@ -21,11 +21,27 @@ export function BlogStack({ stack }: StackContext): void {
     AUTH_SECRET: appSecrets.authSecret
   })
 
+  const authorizerFunction = new Function(stack, 'AuthorizerFunction', {
+    handler: 'src/functions/authorizer/main.handler',
+    functionName: 'JWTAuthorizer',
+    timeout: 10,
+    memorySize: 1024
+  })
+
   const api = new Api(stack, 'api', {
+    authorizers: {
+      jwtAuthorizer: {
+        type: 'lambda',
+        function: authorizerFunction
+      }
+    },
     routes: {
-      'POST /login': 'src/functions/login.handler',
-      'GET /blogs': 'src/functions/getBlogs.handler',
-      'POST /signup': 'src/functions/signup.handler'
+      'POST /login': 'src/functions/authenticate/login.handler',
+      'POST /signup': 'src/functions/authenticate/signup.handler',
+      'POST /blog': {
+        authorizer: 'jwtAuthorizer',
+        function: 'src/functions/blogs/putBlog.handler'
+      },
     },
     cdk: {
       httpApi: {
@@ -55,18 +71,6 @@ export function BlogStack({ stack }: StackContext): void {
       ],
       resources: [
         `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.usersTable}`,
-      ],
-    })
-  ])
-
-  api.attachPermissionsToRoute('GET /blogs', [
-    new PolicyStatement({
-      effect: Effect.ALLOW,
-      actions: [
-        'dynamodb:GetItem',
-      ],
-      resources: [
-        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.blogsTable}`,
       ],
     })
   ])

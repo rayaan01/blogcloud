@@ -1,4 +1,4 @@
-import { Infer, object, string } from 'superstruct'
+import { Infer, number, object, string } from 'superstruct'
 
 export const AuthContextSchema = object({
     name: string(),
@@ -6,8 +6,8 @@ export const AuthContextSchema = object({
     iss: string(),
     aud: string(),
     sub: string(),
-    iat: string(),
-    exp: string()
+    iat: number(),
+    exp: number()
 })
 
 export type AuthContextSchemaType = Infer<typeof AuthContextSchema>
