@@ -1,4 +1,4 @@
-import { APIGatewayProxyEventV2WithLambdaAuthorizer, APIGatewayProxyResultV2, Handler } from 'aws-lambda'
+import { APIGatewayProxyEventV2, APIGatewayProxyResultV2, Handler } from 'aws-lambda'
 import jwt from 'jsonwebtoken'
 import { dbGet } from '../lib/dynamodb/dbGet'
 import { appSecrets } from '../utils/appSecrets'
@@ -15,7 +15,7 @@ import httpErrorHandler from '@middy/http-error-handler'
 import createHttpError from 'http-errors'
 import { checkValidError } from '../utils/checkValidError'
 
-interface Event extends Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<string>, 'body'> {
+interface Event extends Omit<APIGatewayProxyEventV2, 'body'> {
     body: loginArgumentsSchemaType
 }
 
