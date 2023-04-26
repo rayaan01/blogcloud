@@ -53,7 +53,8 @@ const signupHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => 
         }, appSecrets.authSecret, {
             subject: uid,
             issuer: appSecrets.issuer,
-            audience: appSecrets.audience
+            audience: appSecrets.audience,
+            expiresIn: '7d'
         })
 
         return {

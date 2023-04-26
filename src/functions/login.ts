@@ -44,7 +44,8 @@ const loginHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
         }, appSecrets.authSecret, {
             subject: user.uid,
             issuer: appSecrets.issuer,
-            audience: appSecrets.audience
+            audience: appSecrets.audience,
+            expiresIn: '7d'
         })
 
         return {
