@@ -24,8 +24,6 @@ export function BlogStack({ stack }: StackContext): void {
   const authorizerFunction = new Function(stack, 'AuthorizerFunction', {
     handler: 'src/functions/authorizer/main.handler',
     functionName: 'CustomAuthorizer',
-    timeout: 10,
-    memorySize: 1024,
   })
 
   const api = new Api(stack, 'api', {
@@ -40,7 +38,7 @@ export function BlogStack({ stack }: StackContext): void {
       'POST /signup': 'src/functions/authenticate/signup.handler',
       'POST /blog': {
         authorizer: 'customAuthorizer',
-        function: 'src/functions/blogs/putBlog.handler'
+        function: 'src/functions/blogs/putBlog.handler',
       },
     },
     cdk: {
