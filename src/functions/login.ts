@@ -39,7 +39,7 @@ const loginHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
         }
 
         const authToken = jwt.sign({
-            name: user.password,
+            name: user.name,
             email: user.email
         }, appSecrets.authSecret, {
             subject: user.uid,
