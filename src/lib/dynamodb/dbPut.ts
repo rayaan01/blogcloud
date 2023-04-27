@@ -2,7 +2,7 @@ import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb'
 import { DBPutSchema } from '../../types'
 import { marshall } from '@aws-sdk/util-dynamodb'
 import { appSecrets } from '../../utils/appSecrets'
-import createError from 'http-errors'
+import createHttpError from 'http-errors'
 import { httpResponses } from '../../utils/httpResponses'
 
 const client = new DynamoDBClient({
@@ -23,10 +23,10 @@ export const dbPut = async<T>({
         await client.send(command)
     } catch (err) {
         if (err instanceof Error && err.message === 'The conditional request failed') {
-            throw createError(422, httpResponses[422])
+            throw createHttpError(422, httpResponses[422])
         }
 
-        throw createError(500, httpResponses[500], { expose: true, statusCode: 500 })
+        throw createHttpError(500, httpResponses[500], { expose: true, statusCode: 500 })
     }
 }
 

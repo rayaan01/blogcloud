@@ -4,7 +4,7 @@ import { dbGet } from '../../lib/dynamodb/dbGet'
 import { appSecrets } from '../../utils/appSecrets'
 import middy from '@middy/core'
 import { compare } from 'bcryptjs'
-import createError from 'http-errors'
+import createHttpError from 'http-errors'
 import jsonBodyParser from '@middy/http-json-body-parser'
 import { validateArgumentsMiddleware } from '../../lib/middlewares/validateArgumentsMiddleware'
 import { loginArgumentsSchema, loginArgumentsSchemaType } from '../../lib/schema/LoginArgumentsSchema'
@@ -32,10 +32,10 @@ const loginHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
         if (user) {
             const passwordVerified = await compare(password, user.password)
             if (!passwordVerified) {
-                throw createError(401, httpResponses[401])
+                throw createHttpError(401, httpResponses[401])
             }
         } else {
-            throw createError(401, httpResponses[401])
+            throw createHttpError(401, httpResponses[401])
         }
 
         const authToken = jwt.sign({

@@ -2,7 +2,7 @@ import { DynamoDBClient, GetItemCommand } from '@aws-sdk/client-dynamodb'
 import { DBGetSchema } from '../../types'
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb'
 import { appSecrets } from '../../utils/appSecrets'
-import createError from 'http-errors'
+import createHttpError from 'http-errors'
 import { httpResponses } from '../../utils/httpResponses'
 
 const client = new DynamoDBClient({
@@ -31,7 +31,7 @@ export const dbGet = async<T>({
         }
 
     } catch (err) {
-        throw createError(500, httpResponses[500])
+        throw createHttpError(500, httpResponses[500])
     }
 }
 
