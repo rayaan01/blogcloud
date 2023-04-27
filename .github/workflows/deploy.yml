@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     env: 
         STAGE: production
-        AWS_LOCAL_REGION: us-east-1
     steps:
       - name: Checkout Code 🛒
         uses: actions/checkout@v3
