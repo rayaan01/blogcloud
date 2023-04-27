@@ -43,7 +43,7 @@ export function BlogStack({ stack }: StackContext): void {
     },
     cdk: {
       httpApi: {
-        apiName: `${stack.stage}-blogs-api`,
+        apiName: appSecrets.apiGatewayName,
       }
     },
   })
@@ -96,8 +96,8 @@ export function BlogStack({ stack }: StackContext): void {
     },
     cdk: {
       table: {
-        tableName: `${stack.stage}-blogs-table`,
-        removalPolicy: RemovalPolicy.DESTROY,
+        tableName: appSecrets.blogsTable,
+        removalPolicy: appSecrets.stage !== 'production' ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
       }
     }
   })
@@ -112,8 +112,8 @@ export function BlogStack({ stack }: StackContext): void {
     },
     cdk: {
       table: {
-        tableName: `${stack.stage}-users-table`,
-        removalPolicy: RemovalPolicy.DESTROY,
+        tableName: appSecrets.usersTable,
+        removalPolicy: appSecrets.stage !== 'production' ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
       }
     }
   })
