@@ -10,39 +10,48 @@ import { appSecrets } from '../../utils/appSecrets'
 import { httpResponses } from '../../utils/httpResponses'
 import { validateArgumentsMiddleware } from '../../lib/middlewares/validateArgumentsMiddleware'
 import httpErrorHandler from '@middy/http-error-handler'
+import { checkValidError } from '../../utils/checkValidError'
+import createHttpError from 'http-errors'
 
 type Event<T> = Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<T>, 'body'> & {
     body: PutBlogArgumentsSchemaType
 }
 
 const putBlogHandler: Handler<Event<AuthContextSchemaType>, APIGatewayProxyResultV2> = async (event) => {
-    const user = event.requestContext.authorizer.lambda
-    const { title, content } = event.body
+    try {
+        const user = event.requestContext.authorizer.lambda
+        const { title, content } = event.body
 
-    const uid = v4()
+        const uid = v4()
+        const pk = `USER#${user.email}`
+        const sk = `BLOG#${uid}`
+        const date = new Date()
 
-    const pk = `USER#${user.email}`
-    const sk = `BLOG#${uid}`
-    const date = new Date()
+        const payload = {
+            pk,
+            sk,
+            title,
+            content,
+            uid,
+            createdAt: date.toISOString(),
+            updatedAt: date.toISOString(),
+        }
 
-    const payload = {
-        pk,
-        sk,
-        title,
-        content,
-        uid,
-        createdAt: date.toISOString(),
-        updatedAt: date.toISOString(),
-    }
+        await dbPut<BlogDBSchemaType>({
+            item: payload,
+            table: appSecrets.blogsTable
+        })
 
-    await dbPut<BlogDBSchemaType>({
-        item: payload,
-        table: appSecrets.blogsTable
-    })
-
-    return {
-        statusCode: 200,
-        body: httpResponses[200],
+        return {
+            statusCode: 200,
+            body: httpResponses[200],
+        }
+    } catch (err) {
+        if (checkValidError(err)) {
+            throw err
+        } else {
+            throw createHttpError(500, httpResponses[500], { expose: true })
+        }
     }
 }
 
