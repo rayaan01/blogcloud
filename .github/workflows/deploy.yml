@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env: 
         STAGE: production
+        AWS_LOCAL_REGION: us-east-1
     steps:
       - name: Checkout Code 🛒
         uses: actions/checkout@v3
@@ -26,6 +27,12 @@ jobs:
 
       - name: Check for lint ✅
         run: npm run lint
+
+      - name: Get Envs from SSM 🗝️
+        run: |
+          node ci/getEnvs.js
+          source .env
+          rm -f .env
 
       - name: Deploy to AWS 🚀
         run: npm run deploy

@@ -1,4 +1,4 @@
-const appEnv = process.env.APP_ENV ?? ''
+const appEnv = process.env.STAGE ?? ''
 
 export const appSecrets = {
     stage: appEnv,
