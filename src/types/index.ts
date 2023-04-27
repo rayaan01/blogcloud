@@ -4,8 +4,8 @@ export interface DBGetSchema {
     table: string
 }
 
-export interface DBPutSchema {
-    item: Record<string, unknown>
+export interface DBPutSchema<T> {
+    item: T
     table: string
 }
 

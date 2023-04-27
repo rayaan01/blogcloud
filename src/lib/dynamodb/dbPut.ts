@@ -9,10 +9,10 @@ const client = new DynamoDBClient({
     region: appSecrets.region
 })
 
-export const dbPut = async ({
+export const dbPut = async<T>({
     item,
     table
-}: DBPutSchema): Promise<void> => {
+}: DBPutSchema<T>): Promise<void> => {
     try {
         const command = new PutItemCommand({
             TableName: table,
