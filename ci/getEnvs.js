@@ -4,7 +4,7 @@ import { writeFileSync } from 'fs'
 const createEnvFile = (parameters) => {
     let env = ''
     for (const param of parameters) {
-        const name = param.Name.replaceAll('-', '_').toUpperCase()
+        const name = param.Name.split('/')[2].replaceAll('-', '_').toUpperCase()
         env += `export ${name}="${param.Value}"\n`
     }
     return env
@@ -19,7 +19,7 @@ const getEnvs = async () => {
     })
 
     if (!stage) {
-        throw new Error('STAGE not defined')
+        throw new Error('$STAGE not defined')
     }
 
     const ssmParameters = [
