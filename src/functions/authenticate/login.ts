@@ -15,7 +15,7 @@ import httpErrorHandler from '@middy/http-error-handler'
 import createHttpError from 'http-errors'
 import { checkValidError } from '../../utils/checkValidError'
 
-interface Event extends Omit<APIGatewayProxyEventV2, 'body'> {
+type Event = Omit<APIGatewayProxyEventV2, 'body'> & {
     body: loginArgumentsSchemaType
 }
 

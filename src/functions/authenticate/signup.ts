@@ -14,7 +14,7 @@ import { checkValidError } from '../../utils/checkValidError'
 import { validateArgumentsMiddleware } from '../../lib/middlewares/validateArgumentsMiddleware'
 import { dbPut } from '../../lib/dynamodb/dbPut'
 
-interface Event extends Omit<APIGatewayProxyEventV2, 'body'> {
+type Event = Omit<APIGatewayProxyEventV2, 'body'> & {
     body: signUpArgumentsSchemaType
 }
 
