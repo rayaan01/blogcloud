@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken'
 import { dbGet } from '../../lib/dynamodb/dbGet'
 import { appSecrets } from '../../utils/appSecrets'
 import middy from '@middy/core'
-import { UserSchema } from '../../types'
 import { compare } from 'bcryptjs'
 import createError from 'http-errors'
 import jsonBodyParser from '@middy/http-json-body-parser'
@@ -14,6 +13,7 @@ import { serialize } from 'cookie'
 import httpErrorHandler from '@middy/http-error-handler'
 import createHttpError from 'http-errors'
 import { checkValidError } from '../../utils/checkValidError'
+import { UserDBSchemaType } from '../../lib/schema/UserDBSchema'
 
 type Event = Omit<APIGatewayProxyEventV2, 'body'> & {
     body: loginArgumentsSchemaType
@@ -24,7 +24,7 @@ const loginHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
         const { email, password } = event.body
         const pk = `USER#${email}`
 
-        const user = await dbGet<UserSchema>({
+        const user = await dbGet<UserDBSchemaType>({
             pk,
             table: appSecrets.usersTable
         })

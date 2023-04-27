@@ -1,13 +1,15 @@
 import { Handler, APIGatewayProxyEventV2WithLambdaAuthorizer, APIGatewayProxyResultV2 } from 'aws-lambda'
 import middy from '@middy/core'
 import { AuthContextSchemaType } from '../../lib/schema/AuthContextSchema'
-import { PutBlogArgumentsSchemaType } from '../../lib/schema/PutBlogArgumentsSchema'
+import { PutBlogArgumentsSchema, PutBlogArgumentsSchemaType } from '../../lib/schema/PutBlogArgumentsSchema'
 import jsonBodyParser from '@middy/http-json-body-parser'
 import { v4 } from 'uuid'
 import { dbPut } from '../../lib/dynamodb/dbPut'
 import { BlogDBSchemaType } from '../../lib/schema/BlogDBSchema'
 import { appSecrets } from '../../utils/appSecrets'
 import { httpResponses } from '../../utils/httpResponses'
+import { validateArgumentsMiddleware } from '../../lib/middlewares/validateArgumentsMiddleware'
+import httpErrorHandler from '@middy/http-error-handler'
 
 type Event<T> = Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<T>, 'body'> & {
     body: PutBlogArgumentsSchemaType
@@ -46,3 +48,5 @@ const putBlogHandler: Handler<Event<AuthContextSchemaType>, APIGatewayProxyResul
 
 export const handler = middy(putBlogHandler)
     .use(jsonBodyParser())
+    .use(validateArgumentsMiddleware({ schema: PutBlogArgumentsSchema }))
+    .use(httpErrorHandler())

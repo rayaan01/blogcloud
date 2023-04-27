@@ -13,6 +13,7 @@ import { httpResponses } from '../../utils/httpResponses'
 import { checkValidError } from '../../utils/checkValidError'
 import { validateArgumentsMiddleware } from '../../lib/middlewares/validateArgumentsMiddleware'
 import { dbPut } from '../../lib/dynamodb/dbPut'
+import { UserDBSchemaType } from '../../lib/schema/UserDBSchema'
 
 type Event = Omit<APIGatewayProxyEventV2, 'body'> & {
     body: signUpArgumentsSchemaType
@@ -37,12 +38,13 @@ const signupHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => 
             lastName,
             name,
             uid,
+            age: 12,
             password: hashedPassword,
             createdAt: date.toISOString(),
             updatedAt: date.toISOString(),
         }
 
-        await dbPut({
+        await dbPut<UserDBSchemaType>({
             table: appSecrets.usersTable,
             item: payload
         })
