@@ -12,7 +12,7 @@ const createEnvFile = (parameters) => {
 
 const getEnvs = async () => {
     const stage = process.env.STAGE
-    const region = process.env.AWS_LOCAL_REGION
+    const region = process.env.AWS_REGION
 
     const client = new SSMClient({
         region
