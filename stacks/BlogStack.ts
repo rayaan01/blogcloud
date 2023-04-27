@@ -23,7 +23,7 @@ export function BlogStack({ stack }: StackContext): void {
 
   const authorizerFunction = new Function(stack, 'AuthorizerFunction', {
     handler: 'src/functions/authorizer/main.handler',
-    functionName: 'CustomAuthorizer',
+    functionName: `${appSecrets.stage}-Custom-Authorizer`,
   })
 
   const api = new Api(stack, 'api', {
