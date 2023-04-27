@@ -5,7 +5,7 @@ export const appSecrets = {
     blogsTable: `${appEnv}-blogs-table`,
     usersTable: `${appEnv}-users-table`,
     apiGatewayName: `${appEnv}-blogs-api`,
-    region: process.env.AWS_REGION ?? '',
+    region: process.env.AWS_LOCAL_REGION ?? '',
     account: process.env.AWS_ACCOUNT_ID ?? '',
     issuer: process.env.AUTH_ISSUER ?? '',
     audience: process.env.AUTH_AUDIENCE ?? '',
