@@ -18,6 +18,9 @@ jobs:
       - name: Install Dependencies 😴
         run: npm ci
 
+      - name: Check Github number for PR
+        run: echo "PR number is ${{ github.event.number }}"
+
       - name: Configure AWS Credentials 🔐
         uses: aws-actions/configure-aws-credentials@v2
         with:
