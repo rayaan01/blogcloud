@@ -3,23 +3,24 @@ name: Deploy to AWS
 on:
   push:
     branches:
-        main
+      main
+  pull_request:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     env: 
-        STAGE: production
+        STAGE: ${{ github.event_name == 'pull_request' && 'stg' || 'production' }}
         AWS_LOCAL_REGION: us-east-1
     steps:
       - name: Checkout Code 🛒
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3 🛒
+
+      - name: Display Stage
+        run: echo "Deploying to $STAGE" 🔍
 
       - name: Install Dependencies 😴
         run: npm ci
-
-      - name: Check Github number for PR
-        run: echo "PR number is ${{ github.event.number }}"
 
       - name: Configure AWS Credentials 🔐
         uses: aws-actions/configure-aws-credentials@v2
