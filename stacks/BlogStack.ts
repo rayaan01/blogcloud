@@ -34,8 +34,8 @@ export function BlogStack({ stack }: StackContext): void {
       }
     },
     routes: {
-      'POST /login': 'src/functions/authenticate/login.handler',
-      'POST /signup': 'src/functions/authenticate/signup.handler',
+      'POST /login': 'src/functions/users/login.handler',
+      'POST /signup': 'src/functions/users/signup.handler',
       'POST /blog': {
         authorizer: 'customAuthorizer',
         function: 'src/functions/blogs/putBlog.handler',
