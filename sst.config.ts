@@ -11,7 +11,7 @@ export default {
   },
   stacks(app): void {
     app.stack(BlogStack, {
-      id: 'blog-stack',
+      id: 'blog-stack'
     })
   }
 } satisfies SSTConfig
