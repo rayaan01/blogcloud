@@ -12,6 +12,7 @@ export function BlogStack({ stack }: StackContext): void {
   })
 
   stack.addDefaultFunctionEnv({
+    STAGE: appSecrets.stage,
     BLOGS_TABLE_NAME: appSecrets.blogsTable,
     USERS_TABLE_NAME: appSecrets.usersTable,
     AWS_LOCAL_REGION: appSecrets.region,

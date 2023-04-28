@@ -1,10 +1,10 @@
 import middy from '@middy/core'
-import { APIGatewayRequestAuthorizerEvent, APIGatewaySimpleAuthorizerWithContextResult, Handler } from 'aws-lambda'
+import { APIGatewayRequestAuthorizerEvent, APIGatewaySimpleAuthorizerWithContextResult, APIGatewaySimpleAuthorizerResult, Handler } from 'aws-lambda'
 import jwt from 'jsonwebtoken'
 import { appSecrets } from '../../utils/appSecrets'
 import { AuthContextSchemaType } from '../../lib/schema/AuthContextSchema'
 
-type Response = APIGatewaySimpleAuthorizerWithContextResult<AuthContextSchemaType | null>
+type Response = APIGatewaySimpleAuthorizerWithContextResult<AuthContextSchemaType> | APIGatewaySimpleAuthorizerResult
 
 export const authorizationHandler: Handler<APIGatewayRequestAuthorizerEvent, Response> = async (event) => {
     try {
@@ -15,17 +15,14 @@ export const authorizationHandler: Handler<APIGatewayRequestAuthorizerEvent, Res
         }
 
         const user = jwt.verify(token, appSecrets.authSecret) as AuthContextSchemaType
-        console.log('About to return')
         return {
             isAuthorized: true,
             context: user
         }
     }
     catch (err) {
-        console.log('The error is', err)
         return {
             isAuthorized: false,
-            context: null
         }
     }
 }
