@@ -4,20 +4,16 @@ on:
   push:
     branches:
       main
-  pull_request:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     env: 
-        STAGE: ${{ github.event_name == 'pull_request' && 'stg' || 'production' }}
+        STAGE: production
         AWS_LOCAL_REGION: us-east-1
     steps:
       - name: Checkout Code 🛒
         uses: actions/checkout@v3
-
-      - name: Display Stage
-        run: echo "Deploying to $STAGE" 🔍
 
       - name: Install Dependencies 😴
         run: npm ci
