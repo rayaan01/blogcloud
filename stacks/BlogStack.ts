@@ -31,6 +31,8 @@ export function BlogStack({ stack }: StackContext): void {
       customAuthorizer: {
         type: 'lambda',
         function: authorizerFunction,
+        responseTypes: ['simple'],
+        identitySource: ['$request.header.Authorization'],
       }
     },
     routes: {

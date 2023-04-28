@@ -1,33 +1,32 @@
 import middy from '@middy/core'
-import { APIGatewayAuthorizerResult, APIGatewayTokenAuthorizerEvent, Handler } from 'aws-lambda'
+import { APIGatewayRequestAuthorizerEvent, APIGatewaySimpleAuthorizerWithContextResult, Handler } from 'aws-lambda'
 import jwt from 'jsonwebtoken'
 import { appSecrets } from '../../utils/appSecrets'
+import { AuthContextSchemaType } from '../../lib/schema/AuthContextSchema'
 
-export const authorizationHandler: Handler<APIGatewayTokenAuthorizerEvent, APIGatewayAuthorizerResult> = async (event) => {
-    const { authorizationToken, methodArn } = event
-    let effect = 'Deny'
-    let user = {}
+type Response = APIGatewaySimpleAuthorizerWithContextResult<AuthContextSchemaType | null>
 
+export const authorizationHandler: Handler<APIGatewayRequestAuthorizerEvent, Response> = async (event) => {
     try {
-        user = jwt.verify(authorizationToken, appSecrets.authSecret)
-        effect = 'Allow'
-    } catch (err) {
-        effect = 'Deny'
-    }
+        const token = event.headers?.authorization
 
-    return {
-        principalId: 'LambdaAuthorizer',
-        policyDocument: {
-            Version: '2012-10-17',
-            Statement: [
-                {
-                    Action: 'execute-api:Invoke',
-                    Effect: effect,
-                    Resource: methodArn
-                }
-            ]
-        },
-        context: user
+        if (!token) {
+            throw new Error('No token provided')
+        }
+
+        const user = jwt.verify(token, appSecrets.authSecret) as AuthContextSchemaType
+        console.log('About to return')
+        return {
+            isAuthorized: true,
+            context: user
+        }
+    }
+    catch (err) {
+        console.log('The error is', err)
+        return {
+            isAuthorized: false,
+            context: null
+        }
     }
 }
 
