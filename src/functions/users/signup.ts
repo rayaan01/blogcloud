@@ -33,19 +33,19 @@ const signupHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => 
 
         const payload = {
             pk,
+            sk: pk,
             email,
             firstName,
             lastName,
             name,
             uid,
-            age: 12,
             password: hashedPassword,
             createdAt: date.toISOString(),
             updatedAt: date.toISOString(),
         }
 
         await dbPut<UserDBSchemaType>({
-            table: appSecrets.usersTable,
+            table: appSecrets.mainTable,
             item: payload
         })
 

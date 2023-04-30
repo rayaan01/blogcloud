@@ -13,8 +13,7 @@ export function BlogStack({ stack }: StackContext): void {
 
   stack.addDefaultFunctionEnv({
     STAGE: appSecrets.stage,
-    BLOGS_TABLE_NAME: appSecrets.blogsTable,
-    USERS_TABLE_NAME: appSecrets.usersTable,
+    MAIN_TABLE_NAME: appSecrets.mainTable,
     AWS_LOCAL_REGION: appSecrets.region,
     AWS_ACCOUNT_ID: appSecrets.account,
     AUTH_ISSUER: appSecrets.issuer,
@@ -58,7 +57,7 @@ export function BlogStack({ stack }: StackContext): void {
         'dynamodb:PutItem',
       ],
       resources: [
-        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.usersTable}`,
+        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`,
       ],
     })
   ])
@@ -71,7 +70,7 @@ export function BlogStack({ stack }: StackContext): void {
         'dynamodb:PutItem',
       ],
       resources: [
-        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.usersTable}`,
+        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`,
       ],
     })
   ])
@@ -83,12 +82,12 @@ export function BlogStack({ stack }: StackContext): void {
         'dynamodb:PutItem',
       ],
       resources: [
-        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.blogsTable}`,
+        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`,
       ],
     })
   ])
 
-  const blogsTable = new Table(stack, 'blogs-table', {
+  const mainTable = new Table(stack, 'main-table', {
     fields: {
       pk: 'string',
       sk: 'string',
@@ -99,22 +98,7 @@ export function BlogStack({ stack }: StackContext): void {
     },
     cdk: {
       table: {
-        tableName: appSecrets.blogsTable,
-        removalPolicy: appSecrets.stage !== 'production' ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
-      }
-    }
-  })
-
-  const usersTable = new Table(stack, 'users-table', {
-    fields: {
-      pk: 'string',
-    },
-    primaryIndex: {
-      partitionKey: 'pk',
-    },
-    cdk: {
-      table: {
-        tableName: appSecrets.usersTable,
+        tableName: appSecrets.mainTable,
         removalPolicy: appSecrets.stage !== 'production' ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
       }
     }
@@ -122,7 +106,6 @@ export function BlogStack({ stack }: StackContext): void {
 
   stack.addOutputs({
     ApiEndpoint: api.url,
-    BlogsTableName: blogsTable.tableName,
-    UsersTableName: usersTable.tableName,
+    TableName: mainTable.tableName,
   })
 }

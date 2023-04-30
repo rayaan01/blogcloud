@@ -25,7 +25,7 @@ const loginHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
 
         const user = await dbGet<UserDBSchemaType>({
             pk,
-            table: appSecrets.usersTable
+            table: appSecrets.mainTable
         })
 
         if (user) {

@@ -2,6 +2,7 @@ import { Infer, object, string } from 'superstruct'
 
 export const UserDBSchema = object({
     pk: string(),
+    sk: string(),
     email: string(),
     firstName: string(),
     lastName: string(),
