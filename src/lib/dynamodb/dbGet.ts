@@ -20,7 +20,7 @@ export const dbGet = async<T>({
             TableName: table,
             Key: marshall({
                 pk,
-                ...(sk && { sk })
+                sk
             })
         })
 
