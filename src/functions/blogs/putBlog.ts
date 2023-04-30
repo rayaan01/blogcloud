@@ -39,7 +39,7 @@ const putBlogHandler: Handler<Event<AuthContextSchemaType>, APIGatewayProxyResul
 
         await dbPut<BlogDBSchemaType>({
             item: payload,
-            table: appSecrets.blogsTable
+            table: appSecrets.dcd
         })
 
         return {

@@ -28,6 +28,9 @@ jobs:
       - name: Check for lint ✅
         run: npm run lint
 
+      - name: TypeCheck 🧐
+        run: npm run typecheck
+
       - name: Get Envs from SSM 🗝️
         run: |
           node ci/getEnvs.js
