@@ -67,7 +67,6 @@ export function BlogStack({ stack }: StackContext): void {
       effect: Effect.ALLOW,
       actions: [
         'dynamodb:GetItem',
-        'dynamodb:PutItem',
       ],
       resources: [
         `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`,
