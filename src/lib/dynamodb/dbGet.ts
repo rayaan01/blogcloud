@@ -1,9 +1,9 @@
 import { DynamoDBClient, GetItemCommand } from '@aws-sdk/client-dynamodb'
-import { DBGetSchema } from '../../types'
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb'
 import { appSecrets } from '../../utils/appSecrets'
 import createHttpError from 'http-errors'
 import { httpResponses } from '../../utils/httpResponses'
+import { DBGetSchemaType } from '../schema/DBGetSchema'
 
 const client = new DynamoDBClient({
     region: appSecrets.region
@@ -13,7 +13,7 @@ export const dbGet = async<T>({
     pk,
     sk,
     table
-}: DBGetSchema): Promise<T | undefined> => {
+}: DBGetSchemaType): Promise<T | undefined> => {
 
     try {
         const command = new GetItemCommand({
