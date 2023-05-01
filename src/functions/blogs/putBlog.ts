@@ -5,13 +5,13 @@ import { PutBlogArgumentsSchema, PutBlogArgumentsSchemaType } from '../../lib/sc
 import jsonBodyParser from '@middy/http-json-body-parser'
 import { v4 } from 'uuid'
 import { dbPut } from '../../lib/dynamodb/dbPut'
-import { BlogDBSchemaType } from '../../lib/schema/BlogDBSchema'
 import { appSecrets } from '../../utils/appSecrets'
 import { httpResponses } from '../../utils/httpResponses'
 import { validateArgumentsMiddleware } from '../../lib/middlewares/validateArgumentsMiddleware'
 import httpErrorHandler from '@middy/http-error-handler'
 import { checkValidError } from '../../utils/checkValidError'
 import createHttpError from 'http-errors'
+import { BlogDBSchemaType } from '../../lib/schema/BlogDBSchema'
 
 type Event<T> = Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<T>, 'body'> & {
     body: PutBlogArgumentsSchemaType
@@ -27,7 +27,7 @@ const putBlogHandler: Handler<Event<AuthContextSchemaType>, APIGatewayProxyResul
         const sk = `BLOG#${uid}`
         const date = new Date()
 
-        const payload = {
+        const payload: BlogDBSchemaType = {
             pk,
             sk,
             title,
@@ -37,7 +37,7 @@ const putBlogHandler: Handler<Event<AuthContextSchemaType>, APIGatewayProxyResul
             updatedAt: date.toISOString(),
         }
 
-        await dbPut<BlogDBSchemaType>({
+        await dbPut({
             item: payload,
             table: appSecrets.mainTable
         })

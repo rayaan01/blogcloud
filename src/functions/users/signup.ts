@@ -31,7 +31,7 @@ const signupHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => 
         const name = `${firstName} ${lastName}`
         const pk = `USER#${email}`
 
-        const payload = {
+        const payload: UserDBSchemaType = {
             pk,
             sk: pk,
             email,
@@ -44,7 +44,7 @@ const signupHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => 
             updatedAt: date.toISOString(),
         }
 
-        await dbPut<UserDBSchemaType>({
+        await dbPut({
             table: appSecrets.mainTable,
             item: payload
         })
