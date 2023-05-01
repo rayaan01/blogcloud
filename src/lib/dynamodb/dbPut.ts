@@ -17,7 +17,11 @@ export const dbPut = async<T>({
         const command = new PutItemCommand({
             TableName: table,
             Item: marshall(item),
-            ConditionExpression: 'attribute_not_exists(pk) and attribute_not_exists(sk)'
+            ConditionExpression: 'attribute_not_exists(#pk) AND attribute_not_exists(#sk)',
+            ExpressionAttributeNames: {
+                '#pk': 'pk',
+                '#sk': 'sk'
+            }
         })
 
         await client.send(command)
