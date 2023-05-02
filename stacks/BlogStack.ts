@@ -42,6 +42,10 @@ export function BlogStack({ stack }: StackContext): void {
         authorizer: 'customAuthorizer',
         function: 'src/functions/blogs/putBlog.handler',
       },
+      'GET /blogs': {
+        authorizer: 'customAuthorizer',
+        function: 'src/functions/blogs/getBlogs.handler',
+      }
     },
     cdk: {
       httpApi: {
@@ -79,6 +83,18 @@ export function BlogStack({ stack }: StackContext): void {
       effect: Effect.ALLOW,
       actions: [
         'dynamodb:PutItem',
+      ],
+      resources: [
+        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`,
+      ],
+    })
+  ])
+
+  api.attachPermissionsToRoute('GET /blogs', [
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'dynamodb:Scan',
       ],
       resources: [
         `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`,
