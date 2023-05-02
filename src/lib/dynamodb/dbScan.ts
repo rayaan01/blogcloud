@@ -42,7 +42,6 @@ export const dbScan = async <T>({
 
         return undefined
     } catch (err) {
-        console.log('The error is', err)
         throw createHttpError(500, httpResponses[500], { expose: true })
     }
 }
