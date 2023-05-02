@@ -17,7 +17,7 @@ export const dbScan = async <T>({
 }: DBScanSchemaType): Promise<T[] | undefined> => {
     try {
         const params: ScanCommandInput = {
-            TableName: table,
+            TableName: table
         }
 
         if (filterExpression) {

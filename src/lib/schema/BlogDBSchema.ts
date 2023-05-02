@@ -7,7 +7,7 @@ export const BlogDBSchema = object({
     content: string(),
     uid: string(),
     createdAt: string(),
-    updatedAt: string(),
+    updatedAt: string()
 })
 
 export type BlogDBSchemaType = Infer<typeof BlogDBSchema>

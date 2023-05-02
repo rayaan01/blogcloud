@@ -34,7 +34,7 @@ const putBlogHandler: Handler<Event<AuthContextSchemaType>, APIGatewayProxyResul
             content,
             uid,
             createdAt: date.toISOString(),
-            updatedAt: date.toISOString(),
+            updatedAt: date.toISOString()
         }
 
         await dbPut({
@@ -44,7 +44,7 @@ const putBlogHandler: Handler<Event<AuthContextSchemaType>, APIGatewayProxyResul
 
         return {
             statusCode: 200,
-            body: httpResponses[200],
+            body: httpResponses[200]
         }
     } catch (err) {
         if (checkValidError(err)) {

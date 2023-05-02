@@ -22,7 +22,7 @@ export const authorizationHandler: Handler<APIGatewayRequestAuthorizerEvent, Res
     }
     catch (err) {
         return {
-            isAuthorized: false,
+            isAuthorized: false
         }
     }
 }

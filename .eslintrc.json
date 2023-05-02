@@ -34,6 +34,10 @@
         ],
         "no-console": [
             "error"
+        ],
+        "comma-dangle": [
+            "error",
+            "never"
         ]
     },
     "ignorePatterns": [

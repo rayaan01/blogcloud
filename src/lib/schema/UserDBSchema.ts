@@ -10,7 +10,7 @@ export const UserDBSchema = object({
     uid: string(),
     password: string(),
     createdAt: string(),
-    updatedAt: string(),
+    updatedAt: string()
 })
 
 export type UserDBSchemaType = Infer<typeof UserDBSchema>

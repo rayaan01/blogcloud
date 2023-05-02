@@ -41,7 +41,7 @@ const signupHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => 
             uid,
             password: hashedPassword,
             createdAt: date.toISOString(),
-            updatedAt: date.toISOString(),
+            updatedAt: date.toISOString()
         }
 
         await dbPut({
@@ -51,7 +51,7 @@ const signupHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => 
 
         const authToken = jwt.sign({
             name,
-            email,
+            email
         }, appSecrets.authSecret, {
             subject: uid,
             issuer: appSecrets.issuer,

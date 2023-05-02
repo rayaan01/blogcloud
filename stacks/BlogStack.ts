@@ -8,7 +8,7 @@ export function BlogStack({ stack }: StackContext): void {
   stack.setDefaultFunctionProps({
     runtime: 'nodejs16.x',
     memorySize: 1024,
-    timeout: 10,
+    timeout: 10
   })
 
   stack.addDefaultFunctionEnv({
@@ -23,7 +23,7 @@ export function BlogStack({ stack }: StackContext): void {
 
   const authorizerFunction = new Function(stack, 'AuthorizerFunction', {
     handler: 'src/functions/authorizer/main.handler',
-    functionName: `${appSecrets.stage}-Custom-Authorizer`,
+    functionName: `${appSecrets.stage}-Custom-Authorizer`
   })
 
   const api = new Api(stack, 'api', {
@@ -32,7 +32,7 @@ export function BlogStack({ stack }: StackContext): void {
         type: 'lambda',
         function: authorizerFunction,
         responseTypes: ['simple'],
-        identitySource: ['$request.header.Authorization'],
+        identitySource: ['$request.header.Authorization']
       }
     },
     routes: {
@@ -40,29 +40,29 @@ export function BlogStack({ stack }: StackContext): void {
       'POST /signup': 'src/functions/users/signup.handler',
       'POST /blog': {
         authorizer: 'customAuthorizer',
-        function: 'src/functions/blogs/putBlog.handler',
+        function: 'src/functions/blogs/putBlog.handler'
       },
       'GET /blogs': {
         authorizer: 'customAuthorizer',
-        function: 'src/functions/blogs/getBlogs.handler',
+        function: 'src/functions/blogs/getBlogs.handler'
       }
     },
     cdk: {
       httpApi: {
-        apiName: appSecrets.apiGatewayName,
+        apiName: appSecrets.apiGatewayName
       }
-    },
+    }
   })
 
   api.attachPermissionsToRoute('POST /signup', [
     new PolicyStatement({
       effect: Effect.ALLOW,
       actions: [
-        'dynamodb:PutItem',
+        'dynamodb:PutItem'
       ],
       resources: [
-        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`,
-      ],
+        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`
+      ]
     })
   ])
 
@@ -70,11 +70,11 @@ export function BlogStack({ stack }: StackContext): void {
     new PolicyStatement({
       effect: Effect.ALLOW,
       actions: [
-        'dynamodb:GetItem',
+        'dynamodb:GetItem'
       ],
       resources: [
-        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`,
-      ],
+        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`
+      ]
     })
   ])
 
@@ -82,11 +82,11 @@ export function BlogStack({ stack }: StackContext): void {
     new PolicyStatement({
       effect: Effect.ALLOW,
       actions: [
-        'dynamodb:PutItem',
+        'dynamodb:PutItem'
       ],
       resources: [
-        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`,
-      ],
+        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`
+      ]
     })
   ])
 
@@ -94,18 +94,18 @@ export function BlogStack({ stack }: StackContext): void {
     new PolicyStatement({
       effect: Effect.ALLOW,
       actions: [
-        'dynamodb:Scan',
+        'dynamodb:Scan'
       ],
       resources: [
-        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`,
-      ],
+        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`
+      ]
     })
   ])
 
   const mainTable = new Table(stack, 'main-table', {
     fields: {
       pk: 'string',
-      sk: 'string',
+      sk: 'string'
     },
     primaryIndex: {
       partitionKey: 'pk',
@@ -114,13 +114,13 @@ export function BlogStack({ stack }: StackContext): void {
     cdk: {
       table: {
         tableName: appSecrets.mainTable,
-        removalPolicy: appSecrets.stage !== 'production' ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+        removalPolicy: appSecrets.stage !== 'production' ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
       }
     }
   })
 
   stack.addOutputs({
     ApiEndpoint: api.url,
-    TableName: mainTable.tableName,
+    TableName: mainTable.tableName
   })
 }

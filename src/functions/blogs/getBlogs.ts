@@ -25,7 +25,7 @@ const getBlogsHandler: Handler<APIGatewayProxyEventV2WithLambdaAuthorizer<AuthCo
 
         return {
             statusCode: 200,
-            body: JSON.stringify(items ?? []),
+            body: JSON.stringify(items ?? [])
         }
     } catch (err) {
         throw createHttpError(500, httpResponses[500], { expose: true })
