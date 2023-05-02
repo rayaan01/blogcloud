@@ -1,13 +1,7 @@
-import { APIGatewayProxyResultV2 } from 'aws-lambda'
+import { APIGatewayProxyEventV2WithLambdaAuthorizer, APIGatewayProxyResultV2, Handler } from 'aws-lambda'
+import { AuthContextSchemaType } from '../../lib/schema/AuthContextSchema'
 
-export const handler = async (): Promise<APIGatewayProxyResultV2> => {
-    return {
-        statusCode: 200,
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            message: 'Hello from getBlogs.ts',
-        }),
-    }
+
+const getBlogsHandler = async (): Handler<APIGatewayProxyEventV2WithLambdaAuthorizer<AuthContextSchemaType>, APIGatewayProxyResultV2> => {
+
 }
