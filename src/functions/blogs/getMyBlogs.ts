@@ -12,7 +12,7 @@ const getMyBlogsHandler: Handler<APIGatewayProxyEventV2WithLambdaAuthorizer<Auth
         const pk = `USER#${event.requestContext.authorizer.lambda.email}`
 
         const items = await dbQuery({
-            table: appSecrets.mainTable as string,
+            table: appSecrets.mainTable,
             keyConditionExpression: '#pk = :pk AND begins_with(#sk, :sk)',
             expressionAttributeNames: {
                 '#pk': 'pk',

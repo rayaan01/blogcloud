@@ -1,8 +1,9 @@
-const validateEnv = (key: string): string | undefined => {
+const validateEnv = (key: string): string => {
     if (!process.env[key]) {
         throw new Error(`Environment Variable "${key}" is not set`)
     }
-    return process.env[key]
+
+    return process.env[key] as string
 }
 
 const appEnv = validateEnv('STAGE')
