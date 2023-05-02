@@ -10,18 +10,14 @@ const client = new DynamoDBClient({
 })
 
 export const dbGet = async<T>({
-    pk,
-    sk,
+    key,
     table
 }: DBGetSchemaType): Promise<T | undefined> => {
 
     try {
         const command = new GetItemCommand({
             TableName: table,
-            Key: marshall({
-                pk,
-                sk
-            })
+            Key: marshall(key)
         })
 
         const response = await client.send(command)
