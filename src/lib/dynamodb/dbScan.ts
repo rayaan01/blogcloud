@@ -13,34 +13,22 @@ export const dbScan = async <T>({
     table,
     filterExpression,
     expressionAttributeNames,
-    expressionAttributeValues
+    expressionAttributeValues,
+    limit = 10
 }: DBScanSchemaType): Promise<T[] | undefined> => {
     try {
         const params: ScanCommandInput = {
-            TableName: table
-        }
-
-        if (filterExpression) {
-            params.FilterExpression = filterExpression
-        }
-
-        if (expressionAttributeNames) {
-            params.ExpressionAttributeNames = expressionAttributeNames
-        }
-
-        if (expressionAttributeValues) {
-            params.ExpressionAttributeValues = marshall(expressionAttributeValues)
+            TableName: table,
+            Limit: limit,
+            FilterExpression: filterExpression,
+            ExpressionAttributeNames: expressionAttributeNames,
+            ExpressionAttributeValues: marshall(expressionAttributeValues)
         }
 
         const command = new ScanCommand(params)
         const response = await client.send(command)
-
-        if (response.Items) {
-            const items = response.Items.map(item => unmarshall(item) as T)
-            return items
-        }
-
-        return undefined
+        const items = response.Items?.map(item => unmarshall(item) as T)
+        return items
     } catch (err) {
         throw createHttpError(500, httpResponses[500], { expose: true })
     }
