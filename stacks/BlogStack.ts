@@ -44,7 +44,7 @@ export function BlogStack({ stack }: StackContext): void {
       },
       'GET /blogs': {
         authorizer: 'customAuthorizer',
-        function: 'src/functions/blogs/getBlogs.handler'
+        function: 'src/functions/blogs/getAllBlogs.handler'
       }
     },
     cdk: {

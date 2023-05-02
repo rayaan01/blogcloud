@@ -8,7 +8,7 @@ import middy from '@middy/core'
 import createHttpError from 'http-errors'
 import httpErrorHandler from '@middy/http-error-handler'
 
-const getBlogsHandler: Handler<APIGatewayProxyEventV2WithLambdaAuthorizer<AuthContextSchemaType>, APIGatewayProxyResultV2> = async () => {
+const getAllBlogsHandler: Handler<APIGatewayProxyEventV2WithLambdaAuthorizer<AuthContextSchemaType>, APIGatewayProxyResultV2> = async () => {
     try {
         const items = await dbScan<BlogDBSchemaType>({
             table: appSecrets.mainTable,
@@ -32,4 +32,4 @@ const getBlogsHandler: Handler<APIGatewayProxyEventV2WithLambdaAuthorizer<AuthCo
     }
 }
 
-export const handler = middy(getBlogsHandler).use(httpErrorHandler())
+export const handler = middy(getAllBlogsHandler).use(httpErrorHandler())
