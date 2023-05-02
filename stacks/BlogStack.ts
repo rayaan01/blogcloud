@@ -12,13 +12,13 @@ export function BlogStack({ stack }: StackContext): void {
   })
 
   stack.addDefaultFunctionEnv({
-    STAGE: appSecrets.stage,
+    STAGE: appSecrets.stage as string,
     MAIN_TABLE_NAME: appSecrets.mainTable,
-    AWS_LOCAL_REGION: appSecrets.region,
-    AWS_ACCOUNT_ID: appSecrets.account,
-    AUTH_ISSUER: appSecrets.issuer,
-    AUTH_AUDIENCE: appSecrets.audience,
-    AUTH_SECRET: appSecrets.authSecret
+    AWS_LOCAL_REGION: appSecrets.region as string,
+    AWS_ACCOUNT_ID: appSecrets.account as string,
+    AUTH_ISSUER: appSecrets.issuer as string,
+    AUTH_AUDIENCE: appSecrets.audience as string,
+    AUTH_SECRET: appSecrets.authSecret as string
   })
 
   const authorizerFunction = new Function(stack, 'AuthorizerFunction', {

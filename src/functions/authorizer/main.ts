@@ -14,7 +14,7 @@ export const authorizationHandler: Handler<APIGatewayRequestAuthorizerEvent, Res
             throw new Error('No token provided')
         }
 
-        const user = jwt.verify(token, appSecrets.authSecret) as AuthContextSchemaType
+        const user = jwt.verify(token, appSecrets.authSecret as string) as AuthContextSchemaType
         return {
             isAuthorized: true,
             context: user
