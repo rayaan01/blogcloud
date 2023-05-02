@@ -106,6 +106,18 @@ export function BlogStack({ stack }: StackContext): void {
     })
   ])
 
+  api.attachPermissionsToRoute('GET /myBlogs', [
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'dynamodb:Query'
+      ],
+      resources: [
+        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`
+      ]
+    })
+  ])
+
   const mainTable = new Table(stack, 'main-table', {
     fields: {
       pk: 'string',
