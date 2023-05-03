@@ -28,8 +28,11 @@ jobs:
       - name: Check for lint ✅
         run: npm run lint
 
-      - name: TypeCheck 🧐
+      - name: Check for compilation errors 🧐
         run: npm run typecheck
+
+      - name: Check for dependency issues 📦
+        run: npm run depcheck
 
       - name: Get Envs from SSM 🗝️
         run: |

@@ -1,0 +1,4 @@
+ignores: [
+    "aws-lambda",
+    "@tsconfig/node16"
+]
