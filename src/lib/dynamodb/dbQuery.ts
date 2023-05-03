@@ -1,5 +1,5 @@
 import { DynamoDBClient, QueryCommand, QueryCommandInput } from '@aws-sdk/client-dynamodb'
-import { DBQuerySchemaType } from '../schema/DBQuerySchema'
+import { DBQuerySchemaType } from '../schema/db/DBQuerySchema'
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb'
 import { appSecrets } from '../../utils/appSecrets'
 import createHttpError from 'http-errors'

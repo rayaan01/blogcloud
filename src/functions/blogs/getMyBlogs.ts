@@ -1,5 +1,5 @@
 import { APIGatewayProxyEventV2WithLambdaAuthorizer, APIGatewayProxyResultV2, Handler } from 'aws-lambda'
-import { AuthContextSchemaType } from '../../lib/schema/AuthContextSchema'
+import { AuthContextSchemaType } from '../../lib/schema/utils/AuthContextSchema'
 import { appSecrets } from '../../utils/appSecrets'
 import { httpResponses } from '../../utils/httpResponses'
 import middy from '@middy/core'

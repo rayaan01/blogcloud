@@ -1,5 +1,5 @@
 import { APIGatewayProxyEventV2WithLambdaAuthorizer, APIGatewayProxyResultV2, Handler } from 'aws-lambda'
-import { AuthContextSchemaType } from '../../lib/schema/AuthContextSchema'
+import { AuthContextSchemaType } from '../../lib/schema/utils/AuthContextSchema'
 import { appSecrets } from '../../utils/appSecrets'
 import { httpResponses } from '../../utils/httpResponses'
 import middy from '@middy/core'
@@ -7,8 +7,8 @@ import createHttpError from 'http-errors'
 import httpErrorHandler from '@middy/http-error-handler'
 import { validateQueryParamsMiddleware } from '../../lib/middlewares/validateQueryParamsMiddleware'
 import { dbGet } from '../../lib/dynamodb/dbGet'
-import { GetBlogArgumentsSchema, GetBlogArgumentsSchemaType } from '../../lib/schema/GetBlogArgumentsSchema'
-import { BlogDBSchemaType } from '../../lib/schema/BlogDBSchema'
+import { GetBlogArgumentsSchema, GetBlogArgumentsSchemaType } from '../../lib/schema/arguments/GetBlogArgumentsSchema'
+import { BlogDBSchemaType } from '../../lib/schema/entities/BlogDBSchema'
 import { checkValidError } from '../../utils/checkValidError'
 
 type Event = Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<AuthContextSchemaType>, 'queryStringParameters'> & {

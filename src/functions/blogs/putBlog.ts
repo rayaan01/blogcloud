@@ -1,7 +1,7 @@
 import { Handler, APIGatewayProxyEventV2WithLambdaAuthorizer, APIGatewayProxyResultV2 } from 'aws-lambda'
 import middy from '@middy/core'
-import { AuthContextSchemaType } from '../../lib/schema/AuthContextSchema'
-import { PutBlogArgumentsSchema, PutBlogArgumentsSchemaType } from '../../lib/schema/PutBlogArgumentsSchema'
+import { AuthContextSchemaType } from '../../lib/schema/utils/AuthContextSchema'
+import { PutBlogArgumentsSchema, PutBlogArgumentsSchemaType } from '../../lib/schema/arguments/PutBlogArgumentsSchema'
 import jsonBodyParser from '@middy/http-json-body-parser'
 import { v4 } from 'uuid'
 import { dbPut } from '../../lib/dynamodb/dbPut'
@@ -11,7 +11,7 @@ import { validateArgumentsMiddleware } from '../../lib/middlewares/validateArgum
 import httpErrorHandler from '@middy/http-error-handler'
 import { checkValidError } from '../../utils/checkValidError'
 import createHttpError from 'http-errors'
-import { BlogDBSchemaType } from '../../lib/schema/BlogDBSchema'
+import { BlogDBSchemaType } from '../../lib/schema/entities/BlogDBSchema'
 
 type Event<T> = Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<T>, 'body'> & {
     body: PutBlogArgumentsSchemaType

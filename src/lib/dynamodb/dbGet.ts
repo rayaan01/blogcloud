@@ -3,7 +3,7 @@ import { marshall, unmarshall } from '@aws-sdk/util-dynamodb'
 import { appSecrets } from '../../utils/appSecrets'
 import createHttpError from 'http-errors'
 import { httpResponses } from '../../utils/httpResponses'
-import { DBGetSchemaType } from '../schema/DBGetSchema'
+import { DBGetSchemaType } from '../schema/db/DBGetSchema'
 
 const client = new DynamoDBClient({
     region: appSecrets.region

@@ -6,13 +6,13 @@ import middy from '@middy/core'
 import { compare } from 'bcryptjs'
 import jsonBodyParser from '@middy/http-json-body-parser'
 import { validateArgumentsMiddleware } from '../../lib/middlewares/validateArgumentsMiddleware'
-import { loginArgumentsSchema, loginArgumentsSchemaType } from '../../lib/schema/LoginArgumentsSchema'
+import { loginArgumentsSchema, loginArgumentsSchemaType } from '../../lib/schema/arguments/LoginArgumentsSchema'
 import { httpResponses } from '../../utils/httpResponses'
 import { serialize } from 'cookie'
 import httpErrorHandler from '@middy/http-error-handler'
 import createHttpError from 'http-errors'
 import { checkValidError } from '../../utils/checkValidError'
-import { UserDBSchemaType } from '../../lib/schema/UserDBSchema'
+import { UserDBSchemaType } from '../../lib/schema/entities/UserDBSchema'
 
 type Event = Omit<APIGatewayProxyEventV2, 'body'> & {
     body: loginArgumentsSchemaType

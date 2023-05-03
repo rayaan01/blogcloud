@@ -3,7 +3,7 @@ import createHttpError from 'http-errors'
 import { Struct, assert } from 'superstruct'
 import { httpResponses } from '../../utils/httpResponses'
 import { APIGatewayProxyEventV2WithLambdaAuthorizer } from 'aws-lambda'
-import { AuthContextSchemaType } from '../schema/AuthContextSchema'
+import { AuthContextSchemaType } from '../schema/utils/AuthContextSchema'
 
 type Event = APIGatewayProxyEventV2WithLambdaAuthorizer<AuthContextSchemaType>
 

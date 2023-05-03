@@ -1,5 +1,5 @@
 import { assert } from 'superstruct'
-import { ErrorObjectSchema } from '../lib/schema/ErrorObjectSchema'
+import { ErrorObjectSchema } from '../lib/schema/utils/ErrorObjectSchema'
 
 export const checkValidError = (err: unknown): boolean => {
     try {

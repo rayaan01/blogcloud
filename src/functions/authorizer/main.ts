@@ -2,7 +2,7 @@ import middy from '@middy/core'
 import { APIGatewayRequestAuthorizerEvent, APIGatewaySimpleAuthorizerWithContextResult, APIGatewaySimpleAuthorizerResult, Handler } from 'aws-lambda'
 import jwt from 'jsonwebtoken'
 import { appSecrets } from '../../utils/appSecrets'
-import { AuthContextSchemaType } from '../../lib/schema/AuthContextSchema'
+import { AuthContextSchemaType } from '../../lib/schema/utils/AuthContextSchema'
 
 type Response = APIGatewaySimpleAuthorizerWithContextResult<AuthContextSchemaType> | APIGatewaySimpleAuthorizerResult
 

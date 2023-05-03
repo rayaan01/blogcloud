@@ -7,13 +7,13 @@ import jsonBodyParser from '@middy/http-json-body-parser'
 import { serialize } from 'cookie'
 import httpErrorHandler from '@middy/http-error-handler'
 import createHttpError from 'http-errors'
-import { signUpArgumentsSchema, signUpArgumentsSchemaType } from '../../lib/schema/SignUpArgumentsSchema'
+import { signUpArgumentsSchema, signUpArgumentsSchemaType } from '../../lib/schema/arguments/SignUpArgumentsSchema'
 import { appSecrets } from '../../utils/appSecrets'
 import { httpResponses } from '../../utils/httpResponses'
 import { checkValidError } from '../../utils/checkValidError'
 import { validateArgumentsMiddleware } from '../../lib/middlewares/validateArgumentsMiddleware'
 import { dbPut } from '../../lib/dynamodb/dbPut'
-import { UserDBSchemaType } from '../../lib/schema/UserDBSchema'
+import { UserDBSchemaType } from '../../lib/schema/entities/UserDBSchema'
 
 type Event = Omit<APIGatewayProxyEventV2, 'body'> & {
     body: signUpArgumentsSchemaType

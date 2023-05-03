@@ -1,6 +1,6 @@
 import { DynamoDBClient, ScanCommand, ScanCommandInput } from '@aws-sdk/client-dynamodb'
 import { appSecrets } from '../../utils/appSecrets'
-import { DBScanSchemaType } from '../schema/DBScanSchema'
+import { DBScanSchemaType } from '../schema/db/DBScanSchema'
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb'
 import createHttpError from 'http-errors'
 import { httpResponses } from '../../utils/httpResponses'
