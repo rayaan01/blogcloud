@@ -38,6 +38,7 @@
     "@middy/http-error-handler": "^4.3.1",
     "@middy/http-json-body-parser": "^4.3.0",
     "bcryptjs": "^2.4.3",
+    "ci-info": "^3.8.0",
     "cookie": "^0.5.0",
     "depcheck": "^1.4.3",
     "http-errors": "^2.0.0",

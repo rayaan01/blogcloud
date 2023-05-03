@@ -1,12 +1,17 @@
 import { SSMClient, GetParametersCommand } from '@aws-sdk/client-ssm'
 import { execSync } from 'child_process'
 import { writeFileSync } from 'fs'
+import { isCI } from 'ci-info'
 
 const createEnvFile = (parameters) => {
     let env = ''
     for (const param of parameters) {
         const name = param.Name.split('/')[2].replaceAll('-', '_').toUpperCase()
-        env += `export ${name}="${param.Value}"\n`
+        if (icCI) {
+            env += `echo "${name}=${param.Value}" >> $GITHUB_ENV\n`
+        } else {
+            env += `export ${name}="${param.Value}" \n`
+        }
     }
     return env
 }
@@ -35,15 +40,11 @@ const getEnvs = async () => {
     })
 
     const response = await client.send(command)
-    console.log(response.Parameters)
     const env = createEnvFile(response.Parameters)
-    console.log('the env is', env)
     writeFileSync('.env', env)
 }
 
-getEnvs().then(() => {
-    execSync('cat .env')
-}).catch((err) => {
+getEnvs().catch((err) => {
     console.log('Could not get envs from SSM', err)
     process.exit(1)
 })
