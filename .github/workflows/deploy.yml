@@ -8,6 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
     env: 
         STAGE: production
         AWS_LOCAL_REGION: ${{ secrets.AWS_REGION }}
