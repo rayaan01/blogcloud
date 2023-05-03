@@ -1,5 +1,4 @@
 import { SSMClient, GetParametersCommand } from '@aws-sdk/client-ssm'
-import { execSync } from 'child_process'
 import { writeFileSync } from 'fs'
 import { isCI } from 'ci-info'
 
@@ -7,7 +6,7 @@ const createEnvFile = (parameters) => {
     let env = ''
     for (const param of parameters) {
         const name = param.Name.split('/')[2].replaceAll('-', '_').toUpperCase()
-        if (icCI) {
+        if (isCI) {
             env += `echo "${name}=${param.Value}" >> $GITHUB_ENV\n`
         } else {
             env += `export ${name}="${param.Value}" \n`

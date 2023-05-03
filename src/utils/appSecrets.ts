@@ -1,7 +1,4 @@
-/* eslint-disable no-console */
 const validateEnv = (key: string): string => {
-    console.log('Validating', key)
-    console.log('The value is', process.env[key])
     if (!process.env[key]) {
         throw new Error(`Environment Variable "${key}" is not set`)
     }
