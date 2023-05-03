@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const validateEnv = (key: string): string => {
     console.log('Validating', key)
     console.log('The value is', process.env[key])
