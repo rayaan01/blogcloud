@@ -32,7 +32,8 @@ export function BlogStack({ stack }: StackContext): void {
         type: 'lambda',
         function: authorizerFunction,
         responseTypes: ['simple'],
-        identitySource: ['$request.header.Authorization']
+        identitySource: ['$request.header.Authorization'],
+        resultsCacheTtl: '30 minutes'
       }
     },
     routes: {
