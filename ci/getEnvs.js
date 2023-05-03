@@ -1,4 +1,5 @@
 import { SSMClient, GetParametersCommand } from '@aws-sdk/client-ssm'
+import { execSync } from 'child_process'
 import { writeFileSync } from 'fs'
 
 const createEnvFile = (parameters) => {
@@ -38,7 +39,9 @@ const getEnvs = async () => {
     writeFileSync('.env', env)
 }
 
-getEnvs().catch((err) => {
+getEnvs().then(() => {
+    execSync('cat .env')
+}).catch((err) => {
     console.log('Could not get envs from SSM', err)
     process.exit(1)
 })
