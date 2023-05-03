@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env: 
         STAGE: production
-        AWS_LOCAL_REGION: us-east-1
+        AWS_LOCAL_REGION: ${{ secrets.AWS_REGION }}
     steps:
       - name: Checkout Code 🛒
         uses: actions/checkout@v3
@@ -23,7 +23,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ env.AWS_LOCAL_REGION }}
 
       - name: Check for lint ✅
         run: npm run lint
