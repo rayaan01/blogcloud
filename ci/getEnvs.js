@@ -2,12 +2,13 @@ import { SSMClient, GetParametersCommand } from '@aws-sdk/client-ssm'
 import { writeFileSync } from 'fs'
 import { isCI } from 'ci-info'
 
-const createEnvFile = (parameters) => {
+const createEnvExpressions = (parameters) => {
     let env = ''
     for (const param of parameters) {
         const name = param.Name.split('/')[2].replaceAll('-', '_').toUpperCase()
         if (isCI) {
             env += `echo "${name}=${param.Value}" >> $GITHUB_ENV\n`
+            env += `echo "::add-mask::${param.Value}"\n`
         } else {
             env += `export ${name}="${param.Value}" \n`
         }
@@ -39,7 +40,7 @@ const getEnvs = async () => {
     })
 
     const response = await client.send(command)
-    const env = createEnvFile(response.Parameters)
+    const env = createEnvExpressions(response.Parameters)
     writeFileSync('.env', env)
 }
 
