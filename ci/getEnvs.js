@@ -35,6 +35,7 @@ const getEnvs = async () => {
     })
 
     const response = await client.send(command)
+    console.log('the params are', response.Parameters)
     const env = createEnvFile(response.Parameters)
     writeFileSync('.env', env)
 }
