@@ -2,8 +2,10 @@ name: Deploy to AWS
 
 on:
   push:
+    paths: 
+      - 'backend/'
     branches:
-      main
+      - 'main'
 
 jobs:
   deploy:
