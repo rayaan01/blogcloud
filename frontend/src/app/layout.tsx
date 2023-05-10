@@ -2,7 +2,7 @@ export const metadata = {
   title: 'BlogCloud',
 }
 
-export const RootLayout = ({
+const RootLayout = ({
   children,
 }: {
   children: React.ReactNode
@@ -15,3 +15,5 @@ export const RootLayout = ({
     </html>
   )
 }
+
+export default RootLayout
