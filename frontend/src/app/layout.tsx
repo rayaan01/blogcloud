@@ -11,7 +11,7 @@ const RootLayout = ({
     <html lang="en">
       <body>
         {children}
-        </body>
+      </body>
     </html>
   )
 }
