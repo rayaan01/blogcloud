@@ -1,17 +1,23 @@
 'use client'
 
 import Link from "next/link"
+import Image from "next/image"
 import { useState } from "react"
 import { FormEvent } from "react"
 import { postFetch } from "@/utils/customFetch"
-
+import SpinnerComponent from "../../../public/spinner.svg"
+ 
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [success, setSuccess] = useState(false)
+    const [loading, setLoading] = useState(false)
+
+    const spinner = <Image src={SpinnerComponent} alt="Loading Spinner" width={25} height={25} className="inline mr-2"/>
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
+        setLoading(true)
         const response = await postFetch({
             path: '/login',
             body: {
@@ -19,6 +25,7 @@ const Login = () => {
                 password
             }
         })
+        setLoading(false)
         if (response && response.status === 'success') {
             setSuccess(true)
         }
@@ -44,13 +51,17 @@ const Login = () => {
                     <label className="text-3xl" htmlFor="password">Password</label>
                     <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="password" name="password" id="password" onChange={(e) => setPassword(e.target.value)} value={password}/>
                 </div>
-                <button className="bg-green-600 text-white pt-2 pb-2 pl-4 pr-4 mb-4 mt-6 hover:bg-green-800 text-lg">Submit</button>
+                <button className={`bg-green-600 text-white pt-2 pb-2 pl-4 pr-4 mb-4 mt-6 text-lg ${!loading && 'hover:bg-green-800'}`} disabled={loading}>
+                    <span>{loading && spinner}</span>
+                    <span>{loading ? 'Submitting...' : 'Submit'}</span>
+                </button>
                 <p className="mb-24 mt-4 text-lg"> 
-                Don't have an account? <Link className="underline text-cyan-800" href='/signup'>Sign up!</Link>
+                <span>Don't have an account?</span>
+                <Link className="underline text-cyan-800 ml-1" href='/signup'>Sign up!</Link>
                 </p>
             </form>
         </div>
     )
-}   
+}
 
 export default Login
