@@ -3,15 +3,33 @@
 import Link from "next/link"
 import { useState } from "react"
 import { FormEvent } from "react"
+import { postFetch } from "@/utils/customFetch"
 
 const Login = () => {
-    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [success, setSuccess] = useState(false)
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
-        console.log(username)
-        console.log(password)
+        const response = await postFetch({
+            path: '/login',
+            body: {
+                email,
+                password
+            }
+        })
+        if (response && response.status === 'success') {
+            setSuccess(true)
+        }
+    }
+
+    if (success) {
+        return (
+            <div>
+                Loggged in Successfully
+            </div>
+        )
     }
 
     return (
@@ -19,8 +37,8 @@ const Login = () => {
             <form className="flex flex-col justify-center items-center w-6/12 h-96 shadow-md" onSubmit={handleSubmit}>
                 <h1 className="text-5xl mb-8 text-cyan-800">Login</h1>
                 <div className="flex flex-col justify-evenly items-center m-3 text-center w-full h-1/4">
-                    <label className="text-3xl" htmlFor="username">Username</label>
-                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="text" name="username" id="username" onChange={(e) => setUsername(e.target.value)} value={username}/>
+                    <label className="text-3xl" htmlFor="username">Email</label>
+                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="text" name="username" id="username" onChange={(e) => setEmail(e.target.value)} value={email}/>
                 </div>
                 <div className="flex flex-col justify-evenly items-center m-3 text- w-full h-1/4">
                     <label className="text-3xl" htmlFor="password">Password</label>
