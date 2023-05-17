@@ -27,6 +27,13 @@ export function BlogStack({ stack }: StackContext): void {
   })
 
   const api = new Api(stack, 'api', {
+    cors: {
+      allowCredentials: true,
+      allowHeaders: ['authorization', 'content-type'],
+      allowMethods: ['GET', 'POST'],
+      allowOrigins: ['http://localhost:3000'],
+      exposeHeaders: ['token']
+    },
     authorizers: {
       customAuthorizer: {
         type: 'lambda',

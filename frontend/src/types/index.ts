@@ -1,4 +1,6 @@
-export type Response = {
-    status: string
-    message?: string
+export type CustomResponse = Omit<Response, 'json'> & {
+    json: () => Promise<{
+        status: string
+        message?: string
+    }>
 }

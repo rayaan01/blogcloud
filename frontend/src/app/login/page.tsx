@@ -6,6 +6,7 @@ import { useState } from "react"
 import { FormEvent } from "react"
 import { postFetch } from "@/utils/customFetch"
 import SpinnerComponent from "../../../public/spinner.svg"
+import { TOKEN } from "@/utils/constants"
  
 const Login = () => {
     const [email, setEmail] = useState('')
@@ -26,15 +27,22 @@ const Login = () => {
             }
         })
         setLoading(false)
-        if (response && response.status === 'success') {
-            setSuccess(true)
+        if (response) {
+            const token = response.headers.get(TOKEN)
+            const { status } = await response.json()
+            const date = new Date()
+            const maxAge = Math.ceil(new Date(date.setMonth(date.getMonth() + 1)).getTime() / 1000)
+            if (status === 'success') {
+                document.cookie = `token=${token}; SameSite=Strict; Secure; max-age=${maxAge}`
+                setSuccess(true)
+            }
         }
     }
 
     if (success) {
         return (
             <div>
-                Loggged in Successfully
+                Logged in Successfully
             </div>
         )
     }

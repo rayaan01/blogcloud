@@ -1,4 +1,4 @@
-import { Response } from "@/types"
+import { CustomResponse } from "@/types"
 
 declare var process: {
     env: {
@@ -12,7 +12,7 @@ export const postFetch = async ({
 }: {
     path: string,
     body: Record<string, unknown>
-}): Promise<Response | undefined> => {
+}): Promise<CustomResponse | undefined> => {
     try {
         const url = process.env.NEXT_PUBLIC_GATEWAY_URL + path
         const response = await fetch(url, {
@@ -20,9 +20,11 @@ export const postFetch = async ({
             body: JSON.stringify(body),
             headers: {
                 'content-type': 'application/json'
-            }
+            },
+            mode: 'cors',
+            credentials: 'include'
         })
-        return await response.json()
+        return response
     } catch (err) {
         return undefined
     }
@@ -34,7 +36,7 @@ export const getFetch = async ({
 }: {
     path: string,
     queryParams?: Record<string, unknown>
-}): Promise<Response | undefined> => {
+}): Promise<CustomResponse | undefined> => {
     try {
         let url = process.env.NEXT_PUBLIC_GATEWAY_URL + path
         if (queryParams) {
@@ -43,8 +45,8 @@ export const getFetch = async ({
                 url += `${key}=${value}`
             }
         }
-        const response = await fetch(process.env.NEXT_PUBLIC_GATEWAY_URL + path)
-        return await response.json()
+        const response = await fetch(url)
+        return response
     }
     catch (err) {
         return undefined

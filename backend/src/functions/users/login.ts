@@ -50,10 +50,22 @@ const loginHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
             expiresIn: '7d'
         })
 
+        const date = new Date()
+        // Setting expiry to a month from now
+        const maxAge = Math.ceil(new Date(date.setMonth(date.getMonth() + 1)).getTime() / 1000)
+
         return {
             statusCode: 200,
             body: httpResponses[200],
-            cookies: [serialize('token', authToken)]
+            cookies: [serialize('token', authToken, {
+                sameSite: 'none',
+                secure: true,
+                httpOnly: true,
+                maxAge
+            })],
+            headers: {
+                'token': authToken
+            }
         }
     } catch (err) {
         if (checkValidError(err)) {
