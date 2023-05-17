@@ -7,6 +7,7 @@ import { FormEvent } from "react"
 import { postFetch } from "@/utils/customFetch"
 import SpinnerComponent from "../../../public/spinner.svg"
 import { TOKEN } from "@/utils/constants"
+import { createCookie } from "@/utils/createCookie"
  
 const Login = () => {
     const [email, setEmail] = useState('')
@@ -30,10 +31,8 @@ const Login = () => {
         if (response) {
             const token = response.headers.get(TOKEN)
             const { status } = await response.json()
-            const date = new Date()
-            const maxAge = Math.ceil(new Date(date.setMonth(date.getMonth() + 1)).getTime() / 1000)
-            if (status === 'success') {
-                document.cookie = `token=${token}; SameSite=Strict; Secure; max-age=${maxAge}`
+            if (status === 'success' && token) {
+                document.cookie = createCookie({ key: 'token', value: token })
                 setSuccess(true)
             }
         }
