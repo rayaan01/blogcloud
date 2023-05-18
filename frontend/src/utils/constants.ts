@@ -1,5 +1,16 @@
-export const TOKEN = 'token'
-export const AUTHORIZATION = 'authorization'
-export const SUBMIT_TOAST = 'Login Failed. Invalid Credentials'
-export const EMAIL_TOAST = 'Email is invalid'
-export const PASSWORD_TOAST = 'Password must be at least 4 characters long'
+export const AUTH_COOKIE = 'token'
+
+export const enum TOAST_MESSAGES {
+    LOGIN_TOAST = 'Login failed. Invalid credentials',
+    SIGNUP_TOAST = 'Signup failed. Something went wrong',
+    ACCOUNT_EXISTS_TOAST = 'Signup failed. Account already exists',
+    EMAIL_TOAST = 'Email is invalid',
+    FIRST_NAME_TOAST = 'First name can contain only alphabets',
+    LAST_NAME_TOAST = 'Last name can contain only alphabets',
+    PASSWORD_TOAST = `Password must contain at least
+        - 5 characters
+        - 1 uppercase letter
+        - 1 digit
+        - 1 special character
+        `,
+}
