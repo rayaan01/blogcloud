@@ -6,13 +6,13 @@ import { useState } from "react"
 import { FormEvent } from "react"
 import { postFetch } from "@/core/customFetch"
 import SpinnerComponent from "../../../public/spinner.svg"
-import { TOKEN } from "@/utils/constants"
+import { AUTH_COOKIE, TOAST_MESSAGES } from "@/utils/constants"
 import { redirect } from "next/navigation"
 import { serialize } from 'cookie'
 import { getCookieMaxAge } from "@/core/getCookieMaxAge"
 import { ToastContainer } from 'react-toastify';
-import validator from 'email-validator'
-import { failedEmailValidationToast, failedPasswordValidationToast, failedSubmitToast } from "@/core/customToasts"
+import { failedToast } from "../signup/page"
+import validator from 'validator'
 
 const spinner = <Image src={SpinnerComponent} alt="Loading Spinner" width={25} height={25} className="inline mr-2"/>
 
@@ -23,15 +23,22 @@ const validateInput = ({
     email: string
     password: string
 }) => {
-    const isValid = validator.validate(email)
-    if (!isValid) {
-        failedEmailValidationToast()
+    const isEmailValid = validator.isEmail(email)
+    if (!isEmailValid) {
+        failedToast(TOAST_MESSAGES.EMAIL_TOAST)
+    }
+
+    const isPasswordStrong = validator.isStrongPassword(password, {
+        minLength: 5,
+        minNumbers: 1,
+        minUppercase: 1,
+        minSymbols: 1
+    })
+    if (!isPasswordStrong) {
+        failedToast(TOAST_MESSAGES.PASSWORD_TOAST)
         return false
     }
-    if (password.length < 4) {
-        failedPasswordValidationToast()
-        return false
-    }
+
     return true
 }
  
@@ -70,7 +77,7 @@ const Login = () => {
         setLoading(false)
 
         if (response) {
-            const token = response.headers.get(TOKEN)
+            const token = response.headers.get(AUTH_COOKIE)
             const { status } = await response.json()
             if (status === 'success' && token) {
                 document.cookie = serialize('token', token, {
@@ -81,10 +88,10 @@ const Login = () => {
                 })
                 setSuccess(true)
             } else {
-                failedSubmitToast()
+                failedToast(TOAST_MESSAGES.LOGIN_TOAST)
             }
         } else {
-            failedSubmitToast()
+            failedToast(TOAST_MESSAGES.LOGIN_TOAST)
         }
     }
 
