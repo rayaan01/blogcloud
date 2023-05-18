@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
-import { TOKEN } from './utils/constants';
+import { AUTH_COOKIE } from './utils/constants';
 
 export const middleware = (request: NextRequest) => {
     const { pathname } = new URL(request.url)
-    const token = request.cookies.get(TOKEN)
+    const token = request.cookies.get(AUTH_COOKIE)
 
     switch (pathname) {
         case '/home':
