@@ -8,6 +8,7 @@ import { postFetch } from "@/utils/customFetch"
 import SpinnerComponent from "../../../public/spinner.svg"
 import { TOKEN } from "@/utils/constants"
 import { createCookie } from "@/utils/createCookie"
+import { redirect } from "next/navigation"
  
 const Login = () => {
     const [email, setEmail] = useState('')
@@ -39,11 +40,7 @@ const Login = () => {
     }
 
     if (success) {
-        return (
-            <div>
-                Logged in Successfully
-            </div>
-        )
+        redirect('/home')
     }
 
     return (
