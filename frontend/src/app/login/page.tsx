@@ -4,12 +4,12 @@ import Link from "next/link"
 import Image from "next/image"
 import { useState } from "react"
 import { FormEvent } from "react"
-import { postFetch } from "@/utils/customFetch"
+import { postFetch } from "@/core/customFetch"
 import SpinnerComponent from "../../../public/spinner.svg"
 import { TOKEN } from "@/utils/constants"
-import { getCookieMaxAge } from "@/utils/getCookieMaxAge"
 import { redirect } from "next/navigation"
 import { serialize } from 'cookie'
+import { getCookieMaxAge } from "@/core/getCookieMaxAge"
  
 const Login = () => {
     const [email, setEmail] = useState('')
