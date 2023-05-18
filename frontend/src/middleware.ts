@@ -7,21 +7,17 @@ export const middleware = (request: NextRequest) => {
     const token = request.cookies.get(TOKEN)
 
     switch (pathname) {
-        case '/home': {
-            if (!token) {
-                return NextResponse.redirect(new URL('/login', request.url));
-            }
+        case '/home':
+            if (!token) return NextResponse.redirect(new URL('/login', request.url));
             break
-        }
-        case '/login': {
-            if (token) {
-                return NextResponse.redirect(new URL('/home', request.url));
-            }
+
+        case '/signup':
+        case '/login':
+            if (token) return NextResponse.redirect(new URL('/home', request.url));
             break
-        }
     }
 }
 
 export const config = {
-    matcher: ['/home', '/login'],
+    matcher: ['/home', '/login', '/signup'],
 };

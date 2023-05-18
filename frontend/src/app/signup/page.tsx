@@ -4,6 +4,11 @@ import { FormEvent, useState } from "react"
 import Image from 'next/image'
 import SpinnerComponent from '../../../public/spinner.svg'
 import Link from "next/link"
+import { postFetch } from "@/core/customFetch"
+import { TOKEN } from "@/utils/constants"
+import { serialize } from "cookie"
+import { getCookieMaxAge } from "@/core/getCookieMaxAge"
+import { redirect } from "next/navigation"
 
 const Signup = () => {
     const initialState = {
@@ -14,10 +19,39 @@ const Signup = () => {
     }
     const [details, setDetails] = useState(initialState)
     const [loading, setLoading] = useState(false)
+    const [success, setSuccess] = useState(false)
     const spinner = <Image src={SpinnerComponent} alt="Loading Spinner" width={25} height={25} className="inline mr-2"/>
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
+        setLoading(true)
+        const response = await postFetch({
+            path: '/signup',
+            body: {
+                firstName: details.firstName,
+                lastName: details.lastName,
+                email: details.email,
+                password: details.password
+            }
+        })
+        setLoading(false)
+        if (response) {
+            const token = response.headers.get(TOKEN)
+            const { status } = await response.json()
+            if (status === 'success' && token) {
+                document.cookie = serialize('token', token, {
+                    sameSite: 'strict',
+                    secure: true,
+                    path: '/',
+                    maxAge: getCookieMaxAge()
+                })
+                setSuccess(true)
+            }
+        }
+    }
+
+    if (success){
+        redirect('/home')
     }
 
     return (

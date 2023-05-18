@@ -14,6 +14,7 @@ import { checkValidError } from '../../utils/checkValidError'
 import { validateArgumentsMiddleware } from '../../lib/middlewares/validateArgumentsMiddleware'
 import { dbPut } from '../../lib/dynamodb/dbPut'
 import { UserDBSchemaType } from '../../lib/schema/entities/UserDBSchema'
+import { getCookieMaxAge } from '../../utils/getCookieMaxAge'
 
 type Event = Omit<APIGatewayProxyEventV2, 'body'> & {
     body: signUpArgumentsSchemaType
@@ -62,7 +63,15 @@ const signupHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => 
         return {
             statusCode: 200,
             body: httpResponses[200],
-            cookies: [serialize('token', authToken)]
+            cookies: [serialize('token', authToken, {
+                sameSite: 'none',
+                secure: true,
+                httpOnly: true,
+                maxAge: getCookieMaxAge()
+            })],
+            headers: {
+                'token': authToken
+            }
         }
     } catch (err) {
         if (checkValidError(err)) {

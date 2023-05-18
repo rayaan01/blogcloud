@@ -13,6 +13,7 @@ import httpErrorHandler from '@middy/http-error-handler'
 import createHttpError from 'http-errors'
 import { checkValidError } from '../../utils/checkValidError'
 import { UserDBSchemaType } from '../../lib/schema/entities/UserDBSchema'
+import { getCookieMaxAge } from '../../utils/getCookieMaxAge'
 
 type Event = Omit<APIGatewayProxyEventV2, 'body'> & {
     body: loginArgumentsSchemaType
@@ -50,10 +51,6 @@ const loginHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
             expiresIn: '7d'
         })
 
-        const date = new Date()
-        // Setting expiry to a month from now
-        const maxAge = Math.ceil(new Date(date.setMonth(date.getMonth() + 1)).getTime() / 1000)
-
         return {
             statusCode: 200,
             body: httpResponses[200],
@@ -61,7 +58,7 @@ const loginHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
                 sameSite: 'none',
                 secure: true,
                 httpOnly: true,
-                maxAge
+                maxAge: getCookieMaxAge()
             })],
             headers: {
                 'token': authToken
