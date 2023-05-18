@@ -11,6 +11,32 @@ import { redirect } from "next/navigation"
 import { serialize } from 'cookie'
 import { getCookieMaxAge } from "@/core/getCookieMaxAge"
 import { ToastContainer, toast } from 'react-toastify';
+import validator from 'email-validator'
+
+const failedSubmitToast = (message = "Login Failed. Invalid Credentials") => toast.error(message);
+const failedEmailValidationToast = (message = "Email is invalid") => toast.error(message);
+const failedPasswordValidationToast = (message = "Password is invalid") => toast.error(message);
+
+const spinner = <Image src={SpinnerComponent} alt="Loading Spinner" width={25} height={25} className="inline mr-2"/>
+
+const validateInput = ({
+    email,
+    password
+}: {
+    email: string
+    password: string
+}) => {
+    const isValid = validator.validate(email)
+    if (!isValid) {
+        failedEmailValidationToast()
+        return false
+    }
+    if (password.length < 4) {
+        failedPasswordValidationToast('Password must be at least 4 characters long')
+        return false
+    }
+    return true
+}
  
 const Login = () => {
     const initialState = {
@@ -20,22 +46,32 @@ const Login = () => {
     const [details, setDetails] = useState(initialState)
     const [success, setSuccess] = useState(false)
     const [loading, setLoading] = useState(false)
-
-    const spinner = <Image src={SpinnerComponent} alt="Loading Spinner" width={25} height={25} className="inline mr-2"/>
     
-    const failureToast = () => toast.error("Failed to submit");
-
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
         setLoading(true)
+
+        const { email, password } = details
+        const isValid = validateInput({
+            email,
+            password
+        })
+
+        if (!isValid) {
+            setLoading(false)
+            return
+        }
+
         const response = await postFetch({
             path: '/login',
             body: {
-                email: details.email,
-                password: details.password
+                email,
+                password
             }
         })
+
         setLoading(false)
+
         if (response) {
             const token = response.headers.get(TOKEN)
             const { status } = await response.json()
@@ -48,10 +84,10 @@ const Login = () => {
                 })
                 setSuccess(true)
             } else {
-                failureToast()
+                failedSubmitToast()
             }
         } else {
-            failureToast()
+            failedSubmitToast()
         }
     }
 
