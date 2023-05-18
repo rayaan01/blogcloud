@@ -12,8 +12,11 @@ import { serialize } from 'cookie'
 import { getCookieMaxAge } from "@/core/getCookieMaxAge"
  
 const Login = () => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const initialState = {
+        email: '',
+        password: ''
+    }
+    const [details, setDetails] = useState(initialState)
     const [success, setSuccess] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -25,8 +28,8 @@ const Login = () => {
         const response = await postFetch({
             path: '/login',
             body: {
-                email,
-                password
+                email: details.email,
+                password: details.password
             }
         })
         setLoading(false)
@@ -55,11 +58,11 @@ const Login = () => {
                 <h1 className="text-5xl mb-8 text-cyan-800">Login</h1>
                 <div className="flex flex-col justify-evenly items-center m-3 text-center w-full h-1/4">
                     <label className="text-3xl" htmlFor="email">Email</label>
-                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="text" name="email" id="email" onChange={(e) => setEmail(e.target.value)} value={email}/>
+                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="text" name="email" id="email" onChange={(e) => setDetails({...details, email: e.target.value})} value={details.email}/>
                 </div>
                 <div className="flex flex-col justify-evenly items-center m-3 text- w-full h-1/4">
                     <label className="text-3xl" htmlFor="password">Password</label>
-                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="password" name="password" id="password" onChange={(e) => setPassword(e.target.value)} value={password}/>
+                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="password" name="password" id="password" onChange={(e) => setDetails({...details, password: e.target.value})} value={details.password}/>
                 </div>
                 <button className={`bg-green-600 text-white pt-2 pb-2 pl-4 pr-4 mb-4 mt-6 text-lg ${!loading && 'hover:bg-green-800'}`} disabled={loading}>
                     <span>{loading && spinner}</span>
