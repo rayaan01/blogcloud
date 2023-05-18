@@ -9,6 +9,7 @@ import { TOKEN } from "@/utils/constants"
 import { serialize } from "cookie"
 import { getCookieMaxAge } from "@/core/getCookieMaxAge"
 import { redirect } from "next/navigation"
+import { ToastContainer, toast } from 'react-toastify';
 
 const Signup = () => {
     const initialState = {
@@ -20,7 +21,10 @@ const Signup = () => {
     const [details, setDetails] = useState(initialState)
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
+
     const spinner = <Image src={SpinnerComponent} alt="Loading Spinner" width={25} height={25} className="inline mr-2"/>
+
+    const failureToast = () => toast.error("Failed to submit");
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
@@ -46,7 +50,11 @@ const Signup = () => {
                     maxAge: getCookieMaxAge()
                 })
                 setSuccess(true)
+            } else {
+                failureToast()
             }
+        } else {
+            failureToast()
         }
     }
 
@@ -78,6 +86,15 @@ const Signup = () => {
                     <span>{loading && spinner}</span>
                     <span>{loading ? 'Submitting...' : 'Submit'}</span>
                 </button>
+                <ToastContainer
+                    position="top-right"
+                    autoClose={2000}
+                    newestOnTop={true}
+                    closeOnClick={true}
+                    hideProgressBar={true}
+                    pauseOnFocusLoss
+                    theme="colored"
+                />
                 <p className="mb-24 mt-4 text-lg"> 
                 <span>Already have an account?</span>
                 <Link className="underline text-cyan-800 ml-1" href='/signup'>Login!</Link>
