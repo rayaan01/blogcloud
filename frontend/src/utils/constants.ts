@@ -1,2 +1,5 @@
 export const TOKEN = 'token'
 export const AUTHORIZATION = 'authorization'
+export const SUBMIT_TOAST = 'Login Failed. Invalid Credentials'
+export const EMAIL_TOAST = 'Email is invalid'
+export const PASSWORD_TOAST = 'Password must be at least 4 characters long'

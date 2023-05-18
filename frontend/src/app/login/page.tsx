@@ -10,12 +10,9 @@ import { TOKEN } from "@/utils/constants"
 import { redirect } from "next/navigation"
 import { serialize } from 'cookie'
 import { getCookieMaxAge } from "@/core/getCookieMaxAge"
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import validator from 'email-validator'
-
-const failedSubmitToast = (message = "Login Failed. Invalid Credentials") => toast.error(message);
-const failedEmailValidationToast = (message = "Email is invalid") => toast.error(message);
-const failedPasswordValidationToast = (message = "Password is invalid") => toast.error(message);
+import { failedEmailValidationToast, failedPasswordValidationToast, failedSubmitToast } from "@/core/customToasts"
 
 const spinner = <Image src={SpinnerComponent} alt="Loading Spinner" width={25} height={25} className="inline mr-2"/>
 
@@ -32,7 +29,7 @@ const validateInput = ({
         return false
     }
     if (password.length < 4) {
-        failedPasswordValidationToast('Password must be at least 4 characters long')
+        failedPasswordValidationToast()
         return false
     }
     return true
