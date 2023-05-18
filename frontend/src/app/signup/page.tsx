@@ -5,11 +5,55 @@ import Image from 'next/image'
 import SpinnerComponent from '../../../public/spinner.svg'
 import Link from "next/link"
 import { postFetch } from "@/core/customFetch"
-import { TOKEN } from "@/utils/constants"
+import { AUTH_COOKIE } from "@/utils/constants"
 import { serialize } from "cookie"
 import { getCookieMaxAge } from "@/core/getCookieMaxAge"
 import { redirect } from "next/navigation"
 import { ToastContainer, toast } from 'react-toastify';
+import validator from 'validator'
+import { TOAST_MESSAGES } from "@/utils/constants";
+
+export const failedToast = (message: TOAST_MESSAGES) => toast.error(message);
+
+const validateInput = ({
+    email,
+    password,
+    firstName,
+    lastName
+}: {
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+}) => {
+    const isFirstNameValid = validator.isAlpha(firstName)
+    if (!isFirstNameValid) {
+        failedToast(TOAST_MESSAGES.FIRST_NAME_TOAST)
+    }
+
+    const isLastNameValid = validator.isAlpha(lastName)
+    if (!isLastNameValid) {
+        failedToast(TOAST_MESSAGES.LAST_NAME_TOAST)
+    }
+
+    const isEmailValid = validator.isEmail(email)
+    if (!isEmailValid) {
+        failedToast(TOAST_MESSAGES.EMAIL_TOAST)
+    }
+
+    const isPasswordStrong = validator.isStrongPassword(password, {
+        minLength: 5,
+        minNumbers: 1,
+        minUppercase: 1,
+        minSymbols: 1
+    })
+    if (!isPasswordStrong) {
+        failedToast(TOAST_MESSAGES.PASSWORD_TOAST)
+        return false
+    }
+
+    return true
+}
 
 const Signup = () => {
     const initialState = {
@@ -24,11 +68,15 @@ const Signup = () => {
 
     const spinner = <Image src={SpinnerComponent} alt="Loading Spinner" width={25} height={25} className="inline mr-2"/>
 
-    const failureToast = () => toast.error("Failed to submit");
-
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
         setLoading(true)
+
+        if (!validateInput(details)) {
+            setLoading(false)
+            return
+        }
+
         const response = await postFetch({
             path: '/signup',
             body: {
@@ -38,9 +86,11 @@ const Signup = () => {
                 password: details.password
             }
         })
+
         setLoading(false)
+
         if (response) {
-            const token = response.headers.get(TOKEN)
+            const token = response.headers.get(AUTH_COOKIE)
             const { status } = await response.json()
             if (status === 'success' && token) {
                 document.cookie = serialize('token', token, {
@@ -51,10 +101,13 @@ const Signup = () => {
                 })
                 setSuccess(true)
             } else {
-                failureToast()
+                if (response.status === 422) 
+                    failedToast(TOAST_MESSAGES.ACCOUNT_EXISTS_TOAST)
+                else 
+                    failedToast(TOAST_MESSAGES.SIGNUP_TOAST)
             }
         } else {
-            failureToast()
+            failedToast(TOAST_MESSAGES.SIGNUP_TOAST)
         }
     }
 
