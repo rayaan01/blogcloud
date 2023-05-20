@@ -10,7 +10,7 @@ import { AUTH_COOKIE } from '@/utils/constants'
 import { serialize } from 'cookie'
 import { getCookieMaxAge } from '@/core/getCookieMaxAge'
 import { redirect } from 'next/navigation'
-import type { Id} from 'react-toastify'
+import type { Id } from 'react-toastify'
 import { ToastContainer, toast } from 'react-toastify'
 import validator from 'validator'
 import { TOAST_MESSAGES } from '@/utils/constants'
@@ -119,19 +119,19 @@ const Signup: FC = () => {
                 <h1 className="text-5xl mb-8 text-cyan-800">Signup</h1>
                 <div className="flex flex-col justify-evenly items-center m-3 text-center w-full h-1/6">
                     <label className="text-3xl" htmlFor="fName">First Name</label>
-                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="text" name="fName" id="fName" onChange={(e): void => setDetails({...details, firstName: e.target.value})} value={details.firstName}/>
+                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="text" name="fName" id="fName" onChange={(e): void => setDetails({ ...details, firstName: e.target.value })} value={details.firstName}/>
                 </div>
                 <div className="flex flex-col justify-evenly items-center m-3 text-center w-full h-1/6">
                     <label className="text-3xl" htmlFor="lName">Last Name</label>
-                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="text" name="lName" id="lName" onChange={(e): void => setDetails({...details, lastName: e.target.value})} value={details.lastName}/>
+                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="text" name="lName" id="lName" onChange={(e): void => setDetails({ ...details, lastName: e.target.value })} value={details.lastName}/>
                 </div>
                 <div className="flex flex-col justify-evenly items-center m-3 text-center w-full h-1/6">
                     <label className="text-3xl" htmlFor="email">Email</label>
-                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="text" name="email" id="email" onChange={(e): void => setDetails({...details, email: e.target.value})} value={details.email}/>
+                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="text" name="email" id="email" onChange={(e): void => setDetails({ ...details, email: e.target.value })} value={details.email}/>
                 </div>
                 <div className="flex flex-col justify-evenly items-center m-3 text- w-full h-1/6">
                     <label className="text-3xl" htmlFor="password">Password</label>
-                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="password" name="password" id="password" onChange={(e): void => setDetails({...details, password: e.target.value})} value={details.password}/>
+                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="password" name="password" id="password" onChange={(e): void => setDetails({ ...details, password: e.target.value })} value={details.password}/>
                 </div>
                 <button className={`bg-green-600 text-white pt-2 pb-2 pl-4 pr-4 mb-4 mt-6 text-lg ${!loading && 'hover:bg-green-800'}`} disabled={loading}>
                     <span>{loading && spinner}</span>

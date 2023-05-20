@@ -27,6 +27,10 @@
     ],
     "@typescript-eslint/explicit-function-return-type": "error",
     "no-console": "error",
-    "@typescript-eslint/consistent-type-imports": "error"
+    "@typescript-eslint/consistent-type-imports": "error",
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ]
   }
 }
