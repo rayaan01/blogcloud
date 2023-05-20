@@ -1,6 +1,32 @@
 {
   "extends": [
-    "next/core-web-vitals",
-    "next/babel"
-  ]
+    "next",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "never"
+    ],
+    "comma-dangle": [
+      "error",
+      "never"
+    ],
+    "@typescript-eslint/explicit-function-return-type": "error",
+    "no-console": "error",
+    "@typescript-eslint/consistent-type-imports": "error"
+  }
 }

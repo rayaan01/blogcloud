@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 
-const Main = () => {
+const Main = (): void => {
   redirect('/home')
 }
 

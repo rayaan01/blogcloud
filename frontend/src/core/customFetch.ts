@@ -1,6 +1,6 @@
-import { CustomResponse } from "@/types"
+import type { CustomResponse } from '@/types'
 
-declare var process: {
+declare let process: {
     env: {
         NEXT_PUBLIC_GATEWAY_URL: string
     }

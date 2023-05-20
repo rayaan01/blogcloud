@@ -1,4 +1,6 @@
-const Home = () => {
+import type { FC } from 'react'
+
+const Home: FC = () => {
     return (
         <h1>
             BlogCloud

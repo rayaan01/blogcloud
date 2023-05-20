@@ -1,14 +1,13 @@
 import './globals.css'
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css'
+import type { FC } from 'react'
 
 export const metadata = {
-  title: 'BlogCloud',
+  title: 'BlogCloud'
 }
 
-const RootLayout = ({
-  children,
-}: {
-  children: React.ReactNode
+const RootLayout: FC<{ children: React.ReactNode }> = ({
+  children
 }) => {
   return (
     <html lang="en">

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix"
   },
   "dependencies": {
     "@types/node": "20.1.0",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@types/cookie": "^0.5.1",
-    "@types/validator": "^13.7.17"
+    "@types/validator": "^13.7.17",
+    "@typescript-eslint/eslint-plugin": "^5.57.1"
   }
 }
