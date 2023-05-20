@@ -79,12 +79,7 @@ const Signup = () => {
 
         const response = await postFetch({
             path: '/signup',
-            body: {
-                firstName: details.firstName,
-                lastName: details.lastName,
-                email: details.email,
-                password: details.password
-            }
+            body: details
         })
 
         setLoading(false)

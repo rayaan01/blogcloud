@@ -55,23 +55,14 @@ const Login = () => {
         e.preventDefault()
         setLoading(true)
 
-        const { email, password } = details
-        const isValid = validateInput({
-            email,
-            password
-        })
-
-        if (!isValid) {
+        if (!validateInput(details)) {
             setLoading(false)
             return
         }
 
         const response = await postFetch({
             path: '/login',
-            body: {
-                email,
-                password
-            }
+            body: details
         })
 
         setLoading(false)
