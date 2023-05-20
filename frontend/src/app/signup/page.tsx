@@ -111,7 +111,7 @@ const Signup = () => {
         }
     }
 
-    if (success){
+    if (success) {
         redirect('/home')
     }
 
@@ -141,7 +141,7 @@ const Signup = () => {
                 </button>
                 <ToastContainer
                     position="top-right"
-                    autoClose={2000}
+                    autoClose={2500}
                     newestOnTop={true}
                     closeOnClick={true}
                     hideProgressBar={true}
@@ -150,7 +150,7 @@ const Signup = () => {
                 />
                 <p className="mb-24 mt-4 text-lg"> 
                 <span>Already have an account?</span>
-                <Link className="underline text-cyan-800 ml-1" href='/signup'>Login!</Link>
+                <Link className="underline text-cyan-800 ml-1" href='/login'>Login!</Link>
                 </p>
             </form>
         </div>
