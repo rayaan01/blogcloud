@@ -14,6 +14,7 @@ import createHttpError from 'http-errors'
 import { checkValidError } from '../../utils/checkValidError'
 import { UserDBSchemaType } from '../../lib/schema/entities/UserDBSchema'
 import { getCookieMaxAge } from '../../utils/getCookieMaxAge'
+import { attachCorsHeadersMiddleware } from '../../lib/middlewares/corsHeadersMiddleware'
 
 type Event = Omit<APIGatewayProxyEventV2, 'body'> & {
     body: loginArgumentsSchemaType
@@ -78,4 +79,5 @@ export const handler = middy(loginHandler)
     .use(validateArgumentsMiddleware({
         schema: loginArgumentsSchema
     }))
+    .use(attachCorsHeadersMiddleware())
     .use(httpErrorHandler())
