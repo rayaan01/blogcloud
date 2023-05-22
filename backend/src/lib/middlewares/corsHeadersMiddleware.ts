@@ -5,7 +5,7 @@ export const attachCorsHeadersMiddleware = (): MiddlewareObj<APIGatewayProxyEven
 
     const attachCorsHeadersMiddlewareBase = (request: Request<APIGatewayProxyEventV2, APIGatewayProxyStructuredResultV2>): void => {
         const headers = {
-            'Access-Control-Allow-Origin': request.event.headers.origin ?? 'https://fake-host.com',
+            'Access-Control-Allow-Origin': request.event.headers.origin ?? 'https://blogcloud.vercel.app',
             'Access-Control-Allow-Credentials': true,
             'Access-Control-Expose-Headers': 'token'
         }

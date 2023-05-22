@@ -27,7 +27,13 @@ export function BlogStack({ stack }: StackContext): void {
   })
 
   const api = new Api(stack, 'api', {
-    cors: false,
+    cors: {
+      allowOrigins: ['https://blogcloud.vercel.app', 'http://localhost:3000'],
+      allowCredentials: true,
+      allowHeaders: ['content-type'],
+      allowMethods: ['GET', 'POST'],
+      maxAge: '30 minutes'
+    },
     authorizers: {
       customAuthorizer: {
         type: 'lambda',
@@ -38,7 +44,6 @@ export function BlogStack({ stack }: StackContext): void {
       }
     },
     routes: {
-      'OPTIONS /{route}': 'src/functions/cors/main.handler',
       'POST /login': 'src/functions/users/login.handler',
       'POST /signup': 'src/functions/users/signup.handler',
       'POST /blog': {

@@ -15,7 +15,6 @@ import { validateArgumentsMiddleware } from '../../lib/middlewares/validateArgum
 import { dbPut } from '../../lib/dynamodb/dbPut'
 import { UserDBSchemaType } from '../../lib/schema/entities/UserDBSchema'
 import { getCookieMaxAge } from '../../utils/getCookieMaxAge'
-import { attachCorsHeadersMiddleware } from '../../lib/middlewares/corsHeadersMiddleware'
 
 type Event = Omit<APIGatewayProxyEventV2, 'body'> & {
     body: signUpArgumentsSchemaType
@@ -88,5 +87,4 @@ export const handler = middy(signupHandler)
     .use(validateArgumentsMiddleware({
         schema: signUpArgumentsSchema
     }))
-    .use(attachCorsHeadersMiddleware())
     .use(httpErrorHandler())
