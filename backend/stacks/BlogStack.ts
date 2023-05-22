@@ -32,6 +32,7 @@ export function BlogStack({ stack }: StackContext): void {
       allowCredentials: true,
       allowHeaders: ['content-type'],
       allowMethods: ['GET', 'POST'],
+      exposeHeaders: ['token'],
       maxAge: '30 minutes'
     },
     authorizers: {
