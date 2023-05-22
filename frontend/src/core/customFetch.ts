@@ -22,7 +22,8 @@ export const postFetch = async ({
                 'content-type': 'application/json'
             },
             mode: 'cors',
-            credentials: 'include'
+            credentials: 'include',
+            cache: 'no-cache'
         })
         return response
     } catch (err) {
