@@ -19,7 +19,8 @@ const corsHandler: Handler<APIGatewayProxyEventV2, APIGatewayProxyResultV2> = as
                 'Access-Control-Allow-Origin': origin,
                 'Access-Control-Allow-Credentials': true,
                 'Access-Control-Allow-Headers': 'content-type',
-                'Access-Control-Allow-Methods': 'GET, POST'
+                'Access-Control-Allow-Methods': 'GET, POST',
+                'Access-Control-Max-Age': 600
             }
         }
     }
