@@ -1,12 +1,17 @@
+import Image from 'next/image'
 import type { FC } from 'react'
+import DownArrow from '../../../../public/down-arrow.svg'
+import Link from 'next/link'
 
-const Profile: FC<{ user: string }> = ({ user }) => {
+const Profile: FC = () => {
     return (
-        <div className='text-black text-3xl mr-8 hover:cursor-pointer flex justify-evenly'>
-            {user}
-            <svg className="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-            </svg>
+        <div className='text-black mr-8 hover:cursor-pointer flex justify-evenly relative group text-2xl'>
+            <button>Settings</button>
+            <Image src={DownArrow} alt='DownArrow' height={20} width={20} className='m-1'/>
+            <div className='flex flex-col justify-around items-center absolute top-10 bg-gray-100 text-center w-40 opacity-0 group-hover:opacity-100'>
+               <Link href='#' className='w-full pb-2 pt-2 hover:bg-white'>Profile</Link>
+               <Link href='#' className='w-full pb-2 pt-2 hover:bg-white'>Logout</Link>
+            </div>
         </div>
     )
 }
