@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { FC } from 'react'
-import Profile from './components/Profile'
+import Settings from './components/Settings'
 
 const Home: FC = () => {
     return (
@@ -8,7 +8,7 @@ const Home: FC = () => {
             <div className='flex justify-between items-center h-[7%] bg-gradient-to-r from-gray-100 to-gray-300'>
                 <Link href='/home' className='text-black text-3xl ml-8'>BlogCloud</Link>
                 <span className='text-3xl text-blue-900'>Welcome, Rayaan</span>
-                <Profile/>
+                <Settings/>
             </div>
         </div>
     )
