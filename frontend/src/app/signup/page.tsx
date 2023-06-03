@@ -72,40 +72,44 @@ const Signup: FC = () => {
 
 
     const handleSubmit = async (e: FormEvent): Promise<void> => {
-        e.preventDefault()
-        setLoading(true)
-
-        if (!validateInput(details)) {
-            setLoading(false)
-            return
-        }
-
-        const response = await postFetch({
-            path: '/signup',
-            body: details
-        })
-
-        setLoading(false)
-
-        if (response) {
-            const token = response.headers.get(AUTH_COOKIE)
-            const { status } = await response.json()
-            if (status === 'success' && token) {
-                document.cookie = serialize('token', token, {
-                    sameSite: 'strict',
-                    secure: true,
-                    path: '/',
-                    maxAge: getCookieMaxAge()
-                })
-                setSuccess(true)
-            } else {
-                if (response.status === 422) 
-                    failedToast(TOAST_MESSAGES.ACCOUNT_EXISTS_TOAST)
-                else 
-                    failedToast(TOAST_MESSAGES.SIGNUP_TOAST)
+        try {
+            e.preventDefault()
+            setLoading(true)
+    
+            if (!validateInput(details)) {
+                setLoading(false)
+                return
             }
-        } else {
-            failedToast(TOAST_MESSAGES.SIGNUP_TOAST)
+    
+            const response = await postFetch({
+                path: '/signup',
+                body: details
+            })
+    
+            setLoading(false)
+    
+            if (response) {
+                const token = response.headers.get(AUTH_COOKIE)
+                const { status } = await response.json()
+                if (status === 'success' && token) {
+                    document.cookie = serialize('token', token, {
+                        sameSite: 'strict',
+                        secure: true,
+                        path: '/',
+                        maxAge: getCookieMaxAge()
+                    })
+                    setSuccess(true)
+                } else {
+                    if (response.status === 422) 
+                        failedToast(TOAST_MESSAGES.ACCOUNT_EXISTS_TOAST)
+                    else 
+                        failedToast(TOAST_MESSAGES.SIGNUP_TOAST)
+                }
+            } else {
+                failedToast(TOAST_MESSAGES.SIGNUP_TOAST)
+            }
+        } catch (err) {
+            failedToast(TOAST_MESSAGES.SOMETHING_WENT_WRONG)
         }
     }
 

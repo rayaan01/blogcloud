@@ -14,7 +14,7 @@ export const postFetch = async ({
     body: Record<string, unknown>
 }): Promise<CustomResponse | undefined> => {
     try {
-        const url = process.env.NEXT_PUBLIC_GATEWAY_URL + path
+        const url = new URL(path, process.env.NEXT_PUBLIC_GATEWAY_URL)
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify(body),

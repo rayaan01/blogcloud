@@ -54,37 +54,41 @@ const Login: FC = () => {
     const [loading, setLoading] = useState(false)
     
     const handleSubmit = async (e: FormEvent): Promise<void> => {
-        e.preventDefault()
-        setLoading(true)
-
-        if (!validateInput(details)) {
+        try {
+            e.preventDefault()
+            setLoading(true)
+    
+            if (!validateInput(details)) {
+                setLoading(false)
+                return
+            }
+    
+            const response = await postFetch({
+                path: '/login',
+                body: details
+            })
+    
             setLoading(false)
-            return
-        }
-
-        const response = await postFetch({
-            path: '/login',
-            body: details
-        })
-
-        setLoading(false)
-
-        if (response) {
-            const token = response.headers.get(AUTH_COOKIE)
-            const { status } = await response.json()
-            if (status === 'success' && token) {
-                document.cookie = serialize('token', token, {
-                    sameSite: 'strict',
-                    secure: true,
-                    path: '/',
-                    maxAge: getCookieMaxAge()
-                })
-                setSuccess(true)
+    
+            if (response) {
+                const token = response.headers.get(AUTH_COOKIE)
+                const { status } = await response.json()
+                if (status === 'success' && token) {
+                    document.cookie = serialize('token', token, {
+                        sameSite: 'strict',
+                        secure: true,
+                        path: '/',
+                        maxAge: getCookieMaxAge()
+                    })
+                    setSuccess(true)
+                } else {
+                    failedToast(TOAST_MESSAGES.LOGIN_TOAST)
+                }
             } else {
                 failedToast(TOAST_MESSAGES.LOGIN_TOAST)
             }
-        } else {
-            failedToast(TOAST_MESSAGES.LOGIN_TOAST)
+        } catch (err) {
+            failedToast(TOAST_MESSAGES.SOMETHING_WENT_WRONG)
         }
     }
 
