@@ -5,14 +5,18 @@ import { useState } from 'react'
 import { ToastContainer } from 'react-toastify'
 import SpinnerComponent from '../../../public/spinner.svg'
 import Image from 'next/image'
+import { parse } from 'cookie'
+import type { Cookies, UserContext } from '@/types'
 
 const spinner = <Image src={SpinnerComponent} alt="Loading Spinner" width={25} height={25} className="inline mr-2"/>
 
 const Profile: FC = () => {
+    const { token } = parse(document.cookie) as Cookies
+    const user = JSON.parse(window.atob(token.split('.')[1])) as UserContext
     const initialConfig = {
-        firstName: 'Rayaan',
-        lastName: 'Hussain',
-        email: 'md.rayaan.h@gmail.com'
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email
     }
 
     const [details, setDetails] = useState(initialConfig)
