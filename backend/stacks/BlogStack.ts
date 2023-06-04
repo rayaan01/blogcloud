@@ -51,6 +51,10 @@ export function BlogStack({ stack }: StackContext): void {
         authorizer: 'customAuthorizer',
         function: 'src/functions/blogs/putBlog.handler'
       },
+      'POST /user': {
+        authorizer: 'customAuthorizer',
+        function: 'src/functions/users/update.handler'
+      },
       'GET /blogs': {
         authorizer: 'customAuthorizer',
         function: 'src/functions/blogs/getAllBlogs.handler'
