@@ -13,6 +13,8 @@ import { TOAST_MESSAGES } from '@/utils/constants'
 import { customFetch } from '@/core/customFetch'
 import { serialize } from 'cookie'
 import { getCookieMaxAge } from '@/core/getCookieMaxAge'
+import { redirect } from 'next/navigation'
+import Link from 'next/link'
 
 const failedToast = (message: TOAST_MESSAGES): Id => toast.error(message)
 const successToast = (message: TOAST_MESSAGES): Id => toast.success(message)
@@ -107,10 +109,13 @@ const Profile: FC = () => {
                     <label className="text-3xl" htmlFor="Email">Email</label>
                     <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1 bg-gray-200 hover:cursor-not-allowed" type="text" name="email" id="email" disabled={true} onChange={(e): void => setDetails({ ...details, email: e.target.value })} value={details.email}/>
                 </div>
-                <button className={`bg-green-600 text-white pt-2 pb-2 pl-4 pr-4 mb-8 mt-6 text-lg ${!loading && 'hover:bg-green-800'}`} disabled={loading}>
-                    <span>{loading && spinner}</span>
-                    <span>{loading ? 'Updating...' : 'Update'}</span>
-                </button>
+                <div className='flex justify-evenly items-center w-full'>
+                    <Link href='/home' className='bg-red-500 text-white pt-2 pb-2 pl-4 pr-4 mb-8 mt-6 text-lg hover:bg-red-800'>Back</Link>
+                    <button className={`bg-green-600 text-white pt-2 pb-2 pl-4 pr-4 mb-8 mt-6 text-lg ${!loading && 'hover:bg-green-800'}`} disabled={loading}>
+                        <span>{loading && spinner}</span>
+                        <span>{loading ? 'Updating...' : 'Update'}</span>
+                    </button>
+                </div>
                 <ToastContainer
                     position="top-right"
                     autoClose={2500}
