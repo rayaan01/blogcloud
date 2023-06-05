@@ -3,12 +3,14 @@ import { APIGatewayRequestAuthorizerEvent, APIGatewaySimpleAuthorizerWithContext
 import jwt from 'jsonwebtoken'
 import { appSecrets } from '../../utils/appSecrets'
 import { AuthContextSchemaType } from '../../lib/schema/utils/AuthContextSchema'
+import { parse } from 'cookie'
 
 type Response = APIGatewaySimpleAuthorizerWithContextResult<AuthContextSchemaType> | APIGatewaySimpleAuthorizerResult
 
 export const authorizationHandler: Handler<APIGatewayRequestAuthorizerEvent, Response> = async (event) => {
     try {
-        const token = event.headers?.authorization
+        const cookie = event.headers?.cookie ?? ''
+        const { token } = parse(cookie)
 
         if (!token) {
             throw new Error('No token provided')

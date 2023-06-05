@@ -19,6 +19,7 @@ export const updateProfileHandler: Handler<Event, APIGatewayProxyResultV2> = asy
     try {
         const user = event.requestContext.authorizer.lambda
         const { firstName, lastName } = event.body
+        const name = `${firstName} ${lastName}`
 
         await dbUpdate({
             table: appSecrets.mainTable,
@@ -26,14 +27,16 @@ export const updateProfileHandler: Handler<Event, APIGatewayProxyResultV2> = asy
                 pk: `USER#${user.email}`,
                 sk: `USER#${user.email}`
             },
-            updateExpression: 'SET #firstName = :firstName, #lastName = :lastname',
+            updateExpression: 'SET #firstName = :firstName, #lastName = :lastName, #name = :name',
             expressionAttributeNames: {
                 '#firstName': 'firstName',
-                '#lastName': 'lastName'
+                '#lastName': 'lastName',
+                '#name': 'name'
             },
             expressionAttributeValues: {
-                firstName,
-                lastName
+                ':firstName': firstName,
+                ':lastName': lastName,
+                ':name': name
             }
         })
 

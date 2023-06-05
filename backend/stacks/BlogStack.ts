@@ -40,7 +40,7 @@ export function BlogStack({ stack }: StackContext): void {
         type: 'lambda',
         function: authorizerFunction,
         responseTypes: ['simple'],
-        identitySource: ['$request.header.Authorization'],
+        identitySource: ['$request.header.Cookie'],
         resultsCacheTtl: '30 minutes'
       }
     },

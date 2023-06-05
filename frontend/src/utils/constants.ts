@@ -13,5 +13,7 @@ export const enum TOAST_MESSAGES {
         - 1 digit
         - 1 special character
         `,
-    SOMETHING_WENT_WRONG = 'Something went wrong. Please try again'
+    SOMETHING_WENT_WRONG = 'Something went wrong. Please try again',
+    UPDATE_TOAST = 'Could not update details',
+    UPDATE_TOAST_SUCCESS = 'Updated details successfully'
 }

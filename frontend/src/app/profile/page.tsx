@@ -1,18 +1,45 @@
 'use client'
 
-import type { FC } from 'react'
+import type { FC, FormEvent } from 'react'
 import { useState } from 'react'
-import { ToastContainer } from 'react-toastify'
+import type { Id } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 import SpinnerComponent from '../../../public/spinner.svg'
 import Image from 'next/image'
 import { parse } from 'cookie'
 import type { Cookies, UserContext } from '@/types'
+import validate from 'validator'
+import { TOAST_MESSAGES } from '@/utils/constants'
+import { customFetch } from '@/core/customFetch'
+
+const failedToast = (message: TOAST_MESSAGES): Id => toast.error(message)
+const successToast = (message: TOAST_MESSAGES): Id => toast.success(message)
 
 const spinner = <Image src={SpinnerComponent} alt="Loading Spinner" width={25} height={25} className="inline mr-2"/>
 
+const validateBody = ({ firstName, lastName }: {
+    firstName: string,
+    lastName: string
+}): boolean => {
+    const isFirstNameValid = validate.isAlpha(firstName)
+    if (!isFirstNameValid) {
+        failedToast(TOAST_MESSAGES.FIRST_NAME_TOAST)
+        return false
+    }
+
+    const islastNameValid = validate.isAlpha(lastName)
+    if (!islastNameValid) {
+        failedToast(TOAST_MESSAGES.LAST_NAME_TOAST)
+        return false
+    }
+
+    return true
+}
+
 const Profile: FC = () => {
     const { token } = parse(document.cookie) as Cookies
-    const user = JSON.parse(window.atob(token.split('.')[1])) as UserContext
+    const tokenPayload = window.atob(token.split('.')[1])
+    const user = JSON.parse(tokenPayload) as UserContext
     const initialConfig = {
         firstName: user.firstName,
         lastName: user.lastName,
@@ -22,8 +49,37 @@ const Profile: FC = () => {
     const [details, setDetails] = useState(initialConfig)
     const [loading, setLoading] = useState(false)
 
-    const handleSubmit = (): void => {
-        setLoading(true)
+    const handleSubmit = async (e: FormEvent): Promise<void> => {
+        e.preventDefault()
+        try {
+            setLoading(true)
+            if (!validateBody(details)) {
+                setLoading(false)
+                return
+            }
+    
+            const response = await customFetch.post({
+                path: '/profile',
+                body: {
+                    firstName: details.firstName,
+                    lastName: details.lastName
+                }
+            })
+
+            if (response && response.ok) {
+                const { status } = await response.json()
+                if (status === 'success') {
+                    setLoading(false)
+                    successToast(TOAST_MESSAGES.UPDATE_TOAST_SUCCESS)
+                } else {
+                    failedToast(TOAST_MESSAGES.UPDATE_TOAST)
+                }
+            } else {
+                failedToast(TOAST_MESSAGES.UPDATE_TOAST)
+            }
+        } catch (err) {
+            failedToast(TOAST_MESSAGES.SOMETHING_WENT_WRONG)
+        }
     }
 
     return (
