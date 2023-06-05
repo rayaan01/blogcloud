@@ -10,6 +10,9 @@ import middy from '@middy/core'
 import jsonBodyParser from '@middy/http-json-body-parser'
 import httpErrorHandler from '@middy/http-error-handler'
 import { validateArgumentsMiddleware } from '../../lib/middlewares/validateArgumentsMiddleware'
+import jwt from 'jsonwebtoken'
+import { serialize } from 'cookie'
+import { getCookieMaxAge } from '../../utils/getCookieMaxAge'
 
 type Event = Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<AuthContextSchemaType>, 'body'> & {
     body: UpdateUserSchemaType
@@ -40,9 +43,29 @@ export const updateProfileHandler: Handler<Event, APIGatewayProxyResultV2> = asy
             }
         })
 
+        const authToken = jwt.sign({
+            firstName,
+            lastName,
+            email: user.email
+        }, appSecrets.authSecret, {
+            subject: user.sub,
+            issuer: appSecrets.issuer,
+            audience: appSecrets.audience,
+            expiresIn: '7d'
+        })
+
         return {
             statusCode: 200,
-            body: httpResponses[200]
+            body: httpResponses[200],
+            cookies: [serialize('token', authToken, {
+                sameSite: 'none',
+                secure: true,
+                httpOnly: true,
+                maxAge: getCookieMaxAge()
+            })],
+            headers: {
+                'token': authToken
+            }
         }
     } catch (err) {
         if (checkValidError(err)) {

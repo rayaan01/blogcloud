@@ -11,6 +11,8 @@ import type { Cookies, UserContext } from '@/types'
 import validate from 'validator'
 import { TOAST_MESSAGES } from '@/utils/constants'
 import { customFetch } from '@/core/customFetch'
+import { serialize } from 'cookie'
+import { getCookieMaxAge } from '@/core/getCookieMaxAge'
 
 const failedToast = (message: TOAST_MESSAGES): Id => toast.error(message)
 const successToast = (message: TOAST_MESSAGES): Id => toast.success(message)
@@ -68,8 +70,15 @@ const Profile: FC = () => {
 
             if (response && response.ok) {
                 const { status } = await response.json()
-                if (status === 'success') {
+                const token = response.headers.get('token')
+                if (status === 'success' && token) {
                     setLoading(false)
+                    document.cookie = serialize('token', token, {
+                        sameSite: 'strict',
+                        secure: true,
+                        path: '/',
+                        maxAge: getCookieMaxAge()
+                    })
                     successToast(TOAST_MESSAGES.UPDATE_TOAST_SUCCESS)
                 } else {
                     failedToast(TOAST_MESSAGES.UPDATE_TOAST)
