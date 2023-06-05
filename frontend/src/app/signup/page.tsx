@@ -5,7 +5,7 @@ import type { FC, FormEvent } from 'react'
 import Image from 'next/image'
 import SpinnerComponent from '../../../public/spinner.svg'
 import Link from 'next/link'
-import { postFetch } from '@/core/customFetch'
+import { customFetch } from '@/core/customFetch'
 import { AUTH_COOKIE } from '@/utils/constants'
 import { serialize } from 'cookie'
 import { getCookieMaxAge } from '@/core/getCookieMaxAge'
@@ -81,7 +81,7 @@ const Signup: FC = () => {
                 return
             }
     
-            const response = await postFetch({
+            const response = await customFetch.post({
                 path: '/signup',
                 body: details
             })

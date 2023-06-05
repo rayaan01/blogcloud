@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import type { FC , FormEvent } from 'react'
 import { useState } from 'react'
-import { postFetch } from '@/core/customFetch'
+import { customFetch } from '@/core/customFetch'
 import SpinnerComponent from '../../../public/spinner.svg'
 import { AUTH_COOKIE, TOAST_MESSAGES } from '@/utils/constants'
 import { redirect } from 'next/navigation'
@@ -63,7 +63,7 @@ const Login: FC = () => {
                 return
             }
     
-            const response = await postFetch({
+            const response = await customFetch.post({
                 path: '/login',
                 body: details
             })

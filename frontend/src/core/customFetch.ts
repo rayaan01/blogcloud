@@ -6,7 +6,7 @@ declare let process: {
     }
 }
 
-export const postFetch = async ({
+const postFetch = async ({
     path,
     body
 }: {
@@ -30,7 +30,7 @@ export const postFetch = async ({
     }
 }
 
-export const getFetch = async ({
+const getFetch = async ({
     path,
     queryParams
 }: {
@@ -51,4 +51,9 @@ export const getFetch = async ({
     catch (err) {
         return undefined
     }
+}
+
+export const customFetch = {
+    get: getFetch,
+    post: postFetch
 }
