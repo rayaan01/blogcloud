@@ -51,9 +51,9 @@ export function BlogStack({ stack }: StackContext): void {
         authorizer: 'customAuthorizer',
         function: 'src/functions/blogs/putBlog.handler'
       },
-      'POST /user': {
+      'POST /profile': {
         authorizer: 'customAuthorizer',
-        function: 'src/functions/users/update.handler'
+        function: 'src/functions/users/profile.handler'
       },
       'GET /blogs': {
         authorizer: 'customAuthorizer',
@@ -140,6 +140,18 @@ export function BlogStack({ stack }: StackContext): void {
       effect: Effect.ALLOW,
       actions: [
         'dynamodb:GetItem'
+      ],
+      resources: [
+        `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`
+      ]
+    })
+  ])
+
+  api.attachPermissionsToRoute('POST /profile', [
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        'dynamodb:UpdateItem'
       ],
       resources: [
         `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`

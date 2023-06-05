@@ -15,7 +15,7 @@ type Event = Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<AuthContextSchemaTy
     body: UpdateUserSchemaType
 }
 
-export const updateHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
+export const updateProfileHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
     try {
         const user = event.requestContext.authorizer.lambda
         const { firstName, lastName } = event.body
@@ -49,7 +49,7 @@ export const updateHandler: Handler<Event, APIGatewayProxyResultV2> = async (eve
     }
 }
 
-export const handler = middy(updateHandler)
+export const handler = middy(updateProfileHandler)
     .use(jsonBodyParser())
     .use(validateArgumentsMiddleware({
         schema: UpdateUserSchema
