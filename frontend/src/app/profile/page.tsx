@@ -1,6 +1,7 @@
 'use client'
 
 import type { FC, FormEvent } from 'react'
+import { useEffect } from 'react'
 import { useState } from 'react'
 import type { Id } from 'react-toastify'
 import { ToastContainer, toast } from 'react-toastify'
@@ -40,17 +41,21 @@ const validateBody = ({ firstName, lastName }: {
 }
 
 const Profile: FC = () => {
-    const { token } = parse(document.cookie) as Cookies
-    const tokenPayload = window.atob(token.split('.')[1])
-    const user = JSON.parse(tokenPayload) as UserContext
-    const initialConfig = {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email
-    }
 
-    const [details, setDetails] = useState(initialConfig)
+    const [details, setDetails] = useState({ firstName: '', lastName: '', email: '' })
     const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        const { token } = parse(document.cookie) as Cookies
+        const tokenPayload = window.atob(token.split('.')[1])
+        const user = JSON.parse(tokenPayload) as UserContext
+        const currentDetails = {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email
+        }
+        setDetails(currentDetails)
+    }, [])
 
     const handleSubmit = async (e: FormEvent): Promise<void> => {
         e.preventDefault()

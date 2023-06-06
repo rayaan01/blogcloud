@@ -1,14 +1,19 @@
-'use client'
-
 import Link from 'next/link'
 import type { FC } from 'react'
 import Settings from './components/Settings'
 import type { Cookies, UserContext } from '@/types'
 import { parse } from 'cookie'
+import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 const Home: FC = () => {
-    const { token } = parse(document.cookie) as Cookies
-    const tokenPayload = window.atob(token.split('.')[1])
+    const cookie = headers().get('cookie')
+    if (!cookie) {
+        redirect('/login')
+    }
+
+    const { token } = parse(cookie) as Cookies
+    const tokenPayload = atob(token.split('.')[1])
     const user = JSON.parse(tokenPayload) as UserContext
 
     return (
