@@ -13,7 +13,6 @@ import { TOAST_MESSAGES } from '@/utils/constants'
 import { customFetch } from '@/core/customFetch'
 import { serialize } from 'cookie'
 import { getCookieMaxAge } from '@/core/getCookieMaxAge'
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
 
 const failedToast = (message: TOAST_MESSAGES): Id => toast.error(message)
