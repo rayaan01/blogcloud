@@ -19,3 +19,13 @@ export type UserContext = {
     iat: number
     exp: number
 }
+
+export type Blog = {
+    pk: string
+    sk: string
+    title: string
+    content: string
+    uid: string
+    createdAt: string
+    updatedAt: string
+}
