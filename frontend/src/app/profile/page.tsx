@@ -41,7 +41,6 @@ const validateBody = ({ firstName, lastName }: {
 }
 
 const Profile: FC = () => {
-
     const [details, setDetails] = useState({ firstName: '', lastName: '', email: '' })
     const [loading, setLoading] = useState(false)
 
