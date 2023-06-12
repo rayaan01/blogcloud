@@ -7,7 +7,7 @@ export function BlogStack({ stack }: StackContext): void {
 
   stack.setDefaultFunctionProps({
     runtime: 'nodejs16.x',
-    memorySize: 1024,
+    memorySize: 1024, 
     timeout: 10
   })
 
@@ -59,7 +59,7 @@ export function BlogStack({ stack }: StackContext): void {
         authorizer: 'customAuthorizer',
         function: 'src/functions/blogs/getAllBlogs.handler'
       },
-      'GET /myBlogs': {
+      'GET /my/blogs': {
         authorizer: 'customAuthorizer',
         function: 'src/functions/blogs/getMyBlogs.handler'
       },
@@ -123,7 +123,7 @@ export function BlogStack({ stack }: StackContext): void {
     })
   ])
 
-  api.attachPermissionsToRoute('GET /myBlogs', [
+  api.attachPermissionsToRoute('GET /my/blogs', [
     new PolicyStatement({
       effect: Effect.ALLOW,
       actions: [

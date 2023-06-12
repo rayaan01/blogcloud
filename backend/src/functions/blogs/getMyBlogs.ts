@@ -6,12 +6,13 @@ import middy from '@middy/core'
 import createHttpError from 'http-errors'
 import httpErrorHandler from '@middy/http-error-handler'
 import { dbQuery } from '../../lib/dynamodb/dbQuery'
+import { BlogDBSchemaType } from '../../lib/schema/entities/BlogDBSchema'
 
 const getMyBlogsHandler: Handler<APIGatewayProxyEventV2WithLambdaAuthorizer<AuthContextSchemaType>, APIGatewayProxyResultV2> = async (event) => {
     try {
         const pk = `USER#${event.requestContext.authorizer.lambda.email}`
 
-        const items = await dbQuery({
+        const items = await dbQuery<BlogDBSchemaType>({
             table: appSecrets.mainTable,
             keyConditionExpression: '#pk = :pk AND begins_with(#sk, :sk)',
             expressionAttributeNames: {

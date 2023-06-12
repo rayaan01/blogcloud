@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import type { FC } from 'react'
 import Settings from './components/Settings'
 import type { Blog, Cookies, UserContext } from '@/types'
 import { parse } from 'cookie'
@@ -42,7 +41,6 @@ const Home = async (): Promise<JSX.Element> => {
                     </div>
                 ) : null
             }
-            
         </div>
     )
 }
