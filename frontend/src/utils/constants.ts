@@ -15,7 +15,10 @@ export const enum TOAST_MESSAGES {
         `,
     SOMETHING_WENT_WRONG = 'Something went wrong. Please try again',
     UPDATE_TOAST = 'Could not update details',
-    UPDATE_TOAST_SUCCESS = 'Updated details successfully'
+    UPDATE_TOAST_SUCCESS = 'Updated details successfully',
+    BLOG_TITLE_TOAST = 'Title should be between 3 and 60 characters long',
+    BLOG_CONTENT_TOAST = 'Content should be between 12 and 2000 characters',
+    BLOG_TOAST = 'Could not create post. Something went wrong'
 }
 
 export const userDetails = {
