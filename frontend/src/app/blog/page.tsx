@@ -10,8 +10,9 @@ const Blog: FC = () => {
         redirect('/login')
     }
     const user = getUserFromCookie(cookie)
+    
     return (
-        <div>
+        <div className='h-screen bg-gray-300'>
             <NavBar user={user}/>
             <div>Hello</div>
         </div>
