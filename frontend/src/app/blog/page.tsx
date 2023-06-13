@@ -42,7 +42,7 @@ const Blog: FC = () => {
                     </div>
                     <div className="flex flex-col justify-start items-center w-full h-[52%]">
                         <label className="text-3xl" htmlFor="content">Content</label>
-                        <textarea className="outline-none pl-4 pr-4 pt-2 pb-2 w-1/2 h-5/6 text-xl mt-1 resize-none" name="content" id="content"/>
+                        <textarea className="outline-none pl-4 pr-4 pt-2 pb-2 w-1/2 h-5/6 text-xl mt-1 resize-none" name="content" id="content" placeholder="eg. A Blockchain is a distributed database or ledger shared among a computer network's nodes"/>
                     </div>
                     <div className='flex justify-center items-center w-full'>
                         <Link href='/home' className='pt-2 pb-2 pl-4 pr-4 mb-8 mt-2 mr-12 text-lg bg-red-500 text-white hover:bg-red-800 text-center'>Back</Link>
