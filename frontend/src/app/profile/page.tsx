@@ -5,8 +5,6 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import type { Id } from 'react-toastify'
 import { ToastContainer, toast } from 'react-toastify'
-import SpinnerComponent from '../../../public/spinner.svg'
-import Image from 'next/image'
 import { parse } from 'cookie'
 import type { Cookies, UserContext } from '@/types'
 import validate from 'validator'
@@ -16,11 +14,10 @@ import { serialize } from 'cookie'
 import { getCookieMaxAge } from '@/core/getCookieMaxAge'
 import Link from 'next/link'
 import NavBar from '@/components/NavBar'
+import { spinner } from '@/components/Spinner'
 
 const failedToast = (message: TOAST_MESSAGES): Id => toast.error(message)
 const successToast = (message: TOAST_MESSAGES): Id => toast.success(message)
-
-const spinner = <Image src={SpinnerComponent} alt="Loading Spinner" width={25} height={25} className="inline mr-2"/>
 
 const validateBody = ({ firstName, lastName }: {
     firstName: string,

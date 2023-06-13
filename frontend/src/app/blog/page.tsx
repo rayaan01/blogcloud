@@ -7,15 +7,12 @@ import { redirect } from 'next/navigation'
 import type { FC, FormEvent } from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import SpinnerComponent from '../../../public/spinner.svg'
-import Image from 'next/image'
 import type { UserContext } from '@/types'
 import { TOAST_MESSAGES, userDetails } from '@/utils/constants'
 import validate from 'validator'
 import { failedToast } from '@/core/failedToast'
 import { customFetch } from '@/core/customFetch'
-
-const spinner = <Image src={SpinnerComponent} alt="Loading Spinner" width={25} height={25} className="inline mr-2"/>
+import { spinner } from '@/components/Spinner'
 
 const validateInput = ({ title, content }: {
     title: string,

@@ -2,8 +2,6 @@
 
 import { useState } from 'react'
 import type { FC, FormEvent } from 'react'
-import Image from 'next/image'
-import SpinnerComponent from '../../../public/spinner.svg'
 import Link from 'next/link'
 import { customFetch } from '@/core/customFetch'
 import { AUTH_COOKIE } from '@/utils/constants'
@@ -14,8 +12,7 @@ import type { Id } from 'react-toastify'
 import { ToastContainer, toast } from 'react-toastify'
 import validator from 'validator'
 import { TOAST_MESSAGES } from '@/utils/constants'
-
-const spinner = <Image src={SpinnerComponent} alt="Loading Spinner" width={25} height={25} className="inline mr-2"/>
+import { spinner } from '@/components/Spinner'
 
 const failedToast = (message: TOAST_MESSAGES): Id => toast.error(message)
 

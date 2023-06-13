@@ -1,11 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import type { FC , FormEvent } from 'react'
 import { useState } from 'react'
 import { customFetch } from '@/core/customFetch'
-import SpinnerComponent from '../../../public/spinner.svg'
 import { AUTH_COOKIE, TOAST_MESSAGES } from '@/utils/constants'
 import { redirect } from 'next/navigation'
 import { serialize } from 'cookie'
@@ -13,8 +11,7 @@ import { getCookieMaxAge } from '@/core/getCookieMaxAge'
 import type { Id } from 'react-toastify'
 import { ToastContainer, toast } from 'react-toastify'
 import validator from 'validator'
-
-const spinner = <Image src={SpinnerComponent} alt="Loading Spinner" width={25} height={25} className="inline mr-2"/>
+import { spinner } from '@/components/Spinner'
 
 const failedToast = (message: TOAST_MESSAGES): Id => toast.error(message)
 
