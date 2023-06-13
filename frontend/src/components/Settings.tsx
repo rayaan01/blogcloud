@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import DownArrowImage from '../../../../public/down-arrow.svg'
-import AccountImage from '../../../../public/account.svg'
-import LogoutImage from '../../../../public/logout.svg'
+import DownArrowImage from '../../public/down-arrow.svg'
+import AccountImage from '../../public/account.svg'
+import LogoutImage from '../../public/logout.svg'
 
 const Settings: FC = () => {
     return (
