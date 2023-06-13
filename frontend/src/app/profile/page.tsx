@@ -15,6 +15,7 @@ import { customFetch } from '@/core/customFetch'
 import { serialize } from 'cookie'
 import { getCookieMaxAge } from '@/core/getCookieMaxAge'
 import Link from 'next/link'
+import NavBar from '@/components/NavBar'
 
 const failedToast = (message: TOAST_MESSAGES): Id => toast.error(message)
 const successToast = (message: TOAST_MESSAGES): Id => toast.success(message)
@@ -41,26 +42,34 @@ const validateBody = ({ firstName, lastName }: {
 }
 
 const Profile: FC = () => {
-    const [details, setDetails] = useState({ firstName: '', lastName: '', email: '' })
+    const initialDetails = {
+        firstName: '', 
+        lastName: '', 
+        email: '',
+        iss: '',
+        aud: '',
+        sub: '',
+        iat: 0,
+        exp: 0
+    }
+    const [user, setUser] = useState<UserContext>(initialDetails)
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const { token } = parse(document.cookie) as Cookies
         const tokenPayload = window.atob(token.split('.')[1])
         const user = JSON.parse(tokenPayload) as UserContext
-        const currentDetails = {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email
-        }
-        setDetails(currentDetails)
+        setUser(user)
     }, [])
 
     const handleSubmit = async (e: FormEvent): Promise<void> => {
         e.preventDefault()
         try {
             setLoading(true)
-            if (!validateBody(details)) {
+            if (!validateBody({
+                firstName: user.firstName,
+                lastName: user.lastName
+            })) {
                 setLoading(false)
                 return
             }
@@ -68,8 +77,8 @@ const Profile: FC = () => {
             const response = await customFetch.post({
                 path: '/profile',
                 body: {
-                    firstName: details.firstName,
-                    lastName: details.lastName
+                    firstName: user.firstName,
+                    lastName: user.lastName
                 }
             })
 
@@ -97,20 +106,22 @@ const Profile: FC = () => {
     }
 
     return (
-        <div className="flex justify-center items-center h-screen bg-gray-300">
+        <div className='h-screen bg-gray-300'>
+            <NavBar user={user} />
+            <div className="flex justify-center items-center h-screen bg-gray-300">
             <form className="flex flex-col justify-center items-center w-6/12 h-4/6 shadow-md" onSubmit={handleSubmit}>
                 <h1 className="text-5xl mb-8 text-cyan-800">Manage your account</h1>
                 <div className="flex flex-col justify-evenly items-center m-3 text-center w-full h-1/4">
                     <label className="text-3xl" htmlFor="FirstName">First Name</label>
-                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="text" name="firstName" id="firstName" onChange={(e): void => setDetails({ ...details, firstName: e.target.value })} value={details.firstName}/>
+                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="text" name="firstName" id="firstName" onChange={(e): void => setUser({ ...user, firstName: e.target.value })} value={user.firstName}/>
                 </div>
                 <div className="flex flex-col justify-evenly items-center m-3 text- w-full h-1/4">
                     <label className="text-3xl" htmlFor="LastName">Last Name</label>
-                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="text" name="lastName" id="lastName" onChange={(e): void => setDetails({ ...details, lastName: e.target.value })} value={details.lastName}/>
+                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="text" name="lastName" id="lastName" onChange={(e): void => setUser({ ...user, lastName: e.target.value })} value={user.lastName}/>
                 </div>
                 <div className="flex flex-col justify-evenly items-center m-3 text- w-full h-1/4">
                     <label className="text-3xl" htmlFor="Email">Email</label>
-                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1 bg-gray-200 hover:cursor-not-allowed" type="text" name="email" id="email" disabled={true} onChange={(e): void => setDetails({ ...details, email: e.target.value })} value={details.email}/>
+                    <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1 bg-gray-200 hover:cursor-not-allowed" type="text" name="email" id="email" disabled={true} onChange={(e): void => setUser({ ...user, email: e.target.value })} value={user.email}/>
                 </div>
                 <div className='flex justify-evenly items-center w-full'>
                     <Link href='/home' className='bg-red-500 text-white pt-2 pb-2 pl-4 pr-4 mb-8 mt-6 text-lg hover:bg-red-800'>Back</Link>
@@ -130,6 +141,7 @@ const Profile: FC = () => {
                 />
             </form>
         </div>
+        </div> 
     )
 }
 
