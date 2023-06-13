@@ -5,19 +5,26 @@ import { getUserFromCookie } from '@/core/getUserFromCookie'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import type { FC } from 'react'
+import { useEffect } from 'react'
 import { useState } from 'react'
 import SpinnerComponent from '../../../public/spinner.svg'
 import Image from 'next/image'
+import type { UserContext } from '@/types'
+import { userDetails } from '@/utils/constants'
 
 const spinner = <Image src={SpinnerComponent} alt="Loading Spinner" width={25} height={25} className="inline mr-2"/>
 
 const Blog: FC = () => {
     const [loading, setLoading] = useState(false)
+    const [user, setUser] = useState<UserContext>(userDetails)
 
-    const cookie = document.cookie
-    if (!cookie) redirect('/login')
-    const user = getUserFromCookie(cookie)
-    
+    useEffect(() => {
+        const cookie = window.document.cookie
+        if (!cookie) redirect('/login')
+        const user = getUserFromCookie(cookie)
+        setUser(user)
+    }, [])
+
     return (
         <div className='h-screen bg-gray-300'>
             <NavBar user={user}/>

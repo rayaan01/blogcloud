@@ -11,6 +11,7 @@ export const middleware = async (request: NextRequest): Promise<NextResponse | u
     switch (pathname) {
         case '/home':
         case '/profile':
+        case '/blog':
             if (!authorized) return NextResponse.redirect(new URL('/login', request.url))
             break
 
@@ -22,5 +23,5 @@ export const middleware = async (request: NextRequest): Promise<NextResponse | u
 }
 
 export const config = {
-    matcher: ['/home', '/login', '/signup', '/profile']
+    matcher: ['/home', '/login', '/signup', '/profile', '/blog']
 }

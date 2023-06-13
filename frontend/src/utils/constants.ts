@@ -17,3 +17,14 @@ export const enum TOAST_MESSAGES {
     UPDATE_TOAST = 'Could not update details',
     UPDATE_TOAST_SUCCESS = 'Updated details successfully'
 }
+
+export const userDetails = {
+    firstName: '', 
+    lastName: '', 
+    email: '',
+    iss: '',
+    aud: '',
+    sub: '',
+    iat: 0,
+    exp: 0
+}
