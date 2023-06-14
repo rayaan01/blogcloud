@@ -1,11 +1,17 @@
 import type { Blog } from '@/types'
 import type { FC } from 'react'
+import dayjs from 'dayjs'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
 
 const BlogCard: FC<{ blog: Blog }> = ({ blog }) => {
-    const { title, content } = blog
+    const { title, content, createdAt } = blog
+    dayjs.extend(localizedFormat)
+    const formattedDate = dayjs(createdAt).format('LL')
+
     return (
-        <div className='h-36 w-1/2 mb-14 p-4 bg-white hover:bg-gray-100 hover:cursor-pointer'>
+        <div className='relative h-36 w-1/2 mb-14 p-4 bg-white hover:bg-gray-100 hover:cursor-pointer'>
             <h2 className='text-2xl text-blue-900'>{title}</h2>
+            <span className='absolute left-[35rem] bottom-28 text-blue-400'>{formattedDate}</span>
             <div className='mt-2'>
                 <span>
                     {content.substring(0, 200)}
