@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import NavBar from '@/components/NavBar'
 import { getUserFromCookie } from '@/core/getUserFromCookie'
 import { getUserBlogs } from './server/getUserBlogs'
+import BlogCard from '@/components/BlogCard'
 
 const Home = async (): Promise<JSX.Element> => {
     const cookie = headers().get('cookie')
@@ -23,7 +24,12 @@ const Home = async (): Promise<JSX.Element> => {
                         <span className='text-lg'>You have no posts yet!</span>
                         <Link href='/blog' className='text-lg ml-2 text-blue-500'>Create one</Link>
                     </div>
-                ) : null
+                ) : 
+                (
+                    <div className='flex flex-col items-center w-full h-[93%] pt-14 pb-14 pl-16 pr-16'>
+                        { blogs.map((blog, index) => <BlogCard key={index} blog={blog}/>) }
+                    </div>
+                )
             }
         </div>
     )
