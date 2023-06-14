@@ -43,6 +43,7 @@ const Blog: FC = () => {
     const [user, setUser] = useState<UserContext>(userDetails)
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
+    const [success, setSuccess] = useState(false)
 
     useEffect(() => {
         const cookie = document.cookie
@@ -70,12 +71,16 @@ const Blog: FC = () => {
                 failedToast(TOAST_MESSAGES.BLOG_TOAST)
             } else {
                 setLoading(false)
-                redirect('/home')
+                setSuccess(true)
             }
         } else {
             setLoading(false)
             failedToast(TOAST_MESSAGES.BLOG_TOAST)
         }
+    }
+
+    if (success) {
+        redirect('/home')
     }
 
     return (
