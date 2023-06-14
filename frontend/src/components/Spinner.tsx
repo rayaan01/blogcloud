@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import SpinnerComponent from '../../../public/spinner.svg'
+import SpinnerComponent from '../../public/spinner.svg'
 
 export const spinner = <Image 
     src={SpinnerComponent} 
