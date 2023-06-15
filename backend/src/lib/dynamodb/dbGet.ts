@@ -13,19 +13,15 @@ export const dbGet = async<T>({
     key,
     table
 }: DBGetSchemaType): Promise<T | undefined> => {
-
     try {
         const command = new GetItemCommand({
             TableName: table,
             Key: marshall(key)
         })
-
         const response = await client.send(command)
-
         if (response.Item) {
             return unmarshall(response.Item) as T
         }
-
     } catch (err) {
         throw createHttpError(500, httpResponses[500])
     }

@@ -18,7 +18,8 @@ type Event = Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<AuthContextSchemaTy
 const getBlogHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
     try {
         const pk = `USER#${event.requestContext.authorizer.lambda.email}`
-        const { sk } = event.queryStringParameters
+        const { id } = event.queryStringParameters
+        const sk = `BLOG#${id}`
 
         const item = await dbGet<BlogDBSchemaType>({
             table: appSecrets.mainTable,
@@ -30,14 +31,17 @@ const getBlogHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) =>
 
         return {
             statusCode: 200,
-            body: JSON.stringify(item)
+            body: JSON.stringify({
+                status: 'success',
+                message: 'ok',
+                data: item ?? 'DATA'
+            })
         }
     }
     catch (err) {
         if (checkValidError(err)) {
             throw err
         }
-
         throw createHttpError(500, httpResponses[500], { expose: true })
     }
 }

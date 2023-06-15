@@ -3,7 +3,7 @@ import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import NavBar from '@/components/NavBar'
 import { getUserFromCookie } from '@/core/getUserFromCookie'
-import { getUserBlogs } from './server/getUserBlogs'
+import { getUserBlogs } from '../../server/getUserBlogs'
 import BlogCard from '@/components/BlogCard'
 
 const Home = async (): Promise<JSX.Element> => {
@@ -27,7 +27,7 @@ const Home = async (): Promise<JSX.Element> => {
                 ) : 
                 (
                     <div className='flex flex-col items-center w-full h-[93%] pt-14 pb-14 pl-16 pr-16'>
-                        { blogs.map((blog, index) => <BlogCard key={index} blog={blog}/>) }
+                        { blogs.map((blog) => <BlogCard key={blog.sk.replace('BLOG#', '')} blog={blog}/>) }
                     </div>
                 )
             }
