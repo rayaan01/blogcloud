@@ -12,10 +12,12 @@ const Blog = async ({ params }: {params: { id: string }}): Promise<JSX.Element> 
     const { title, content } = blog
 
     return (
-        <div className='relative h-36 w-1/2 mb-14 p-4 bg-white hover:bg-gray-100 hover:cursor-pointer'>
-            <h2 className='text-2xl text-blue-900'>{title}</h2>
-            <div className='mt-2'>
-                {content}
+        <div className='flex justify-center items-start h-screen w-screen bg-slate-300 mt-20'>
+            <div className='flex flex-col justify-start items-center h-1/2 w-3/4 p-8 bg-white'>
+                <h2 className='text-4xl text-blue-900'>{title}</h2>
+                <div className='mt-4'>
+                    {content}
+                </div>
             </div>
         </div>
     )
