@@ -13,7 +13,7 @@ const BlogCard: FC<{ blog: Blog }> = ({ blog }) => {
     return (
         <Link href={path} className='relative h-36 w-1/2 mb-14 p-4 bg-white hover:bg-gray-100 hover:cursor-pointer'>
             <h2 className='text-2xl text-blue-900'>{title}</h2>
-            <span className='absolute left-[35rem] bottom-28 text-blue-400'>{formattedDate}</span>
+            <span className='absolute right-3 top-2 text-blue-500'>{formattedDate}</span>
             <div className='mt-2'>
                 <span>
                     {content.substring(0, 200)}
