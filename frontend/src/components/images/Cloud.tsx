@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import CloudComponent from '../../public/cloud.svg'
+import CloudComponent from '../../../public/cloud.svg'
 
 export const cloud = <Image 
     src={CloudComponent} 

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import CreateComponent from '../../public/create.svg'
+import CreateComponent from '../../../public/create.svg'
 
 export const create = <Image 
     src={CreateComponent} 
