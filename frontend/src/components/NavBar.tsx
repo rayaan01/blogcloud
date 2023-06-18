@@ -2,7 +2,7 @@ import type { UserContext } from '@/types'
 import Link from 'next/link'
 import type { FC } from 'react'
 import Settings from './Settings'
-import { cloud } from './Cloud'
+import { cloud } from './images/Cloud'
 
 const NavBar: FC<{ user: UserContext }> = ({ user }) => {
     return (

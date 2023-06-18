@@ -12,7 +12,7 @@ import { TOAST_MESSAGES, userDetails } from '@/utils/constants'
 import validate from 'validator'
 import { failedToast } from '@/core/failedToast'
 import { customFetch } from '@/core/customFetch'
-import { spinner } from '@/components/Spinner'
+import { spinner } from '@/components/images/Spinner'
 
 const validateInput = ({ title, content }: {
     title: string,

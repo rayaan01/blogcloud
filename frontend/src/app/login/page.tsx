@@ -11,7 +11,7 @@ import { getCookieMaxAge } from '@/core/getCookieMaxAge'
 import type { Id } from 'react-toastify'
 import { ToastContainer, toast } from 'react-toastify'
 import validator from 'validator'
-import { spinner } from '@/components/Spinner'
+import { spinner } from '@/components/images/Spinner'
 
 const failedToast = (message: TOAST_MESSAGES): Id => toast.error(message)
 

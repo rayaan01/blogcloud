@@ -5,7 +5,7 @@ import NavBar from '@/components/NavBar'
 import { getUserFromCookie } from '@/core/getUserFromCookie'
 import { getUserBlogs } from '../../server/getUserBlogs'
 import BlogCard from '@/components/BlogCard'
-import { create } from '@/components/Create'
+import { create } from '@/components/images/Create'
 
 const Home = async (): Promise<JSX.Element> => {
     const cookie = headers().get('cookie')

@@ -14,7 +14,7 @@ import { serialize } from 'cookie'
 import { getCookieMaxAge } from '@/core/getCookieMaxAge'
 import Link from 'next/link'
 import NavBar from '@/components/NavBar'
-import { spinner } from '@/components/Spinner'
+import { spinner } from '@/components/images/Spinner'
 
 const failedToast = (message: TOAST_MESSAGES): Id => toast.error(message)
 const successToast = (message: TOAST_MESSAGES): Id => toast.success(message)
