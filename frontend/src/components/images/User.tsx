@@ -4,7 +4,7 @@ import UserComponent from '../../../public/user.svg'
 export const User = <Image 
     src={UserComponent} 
     alt="User" 
-    width={50}
-    height={50} 
+    width={75}
+    height={75} 
     className="inline mr-2" 
     />

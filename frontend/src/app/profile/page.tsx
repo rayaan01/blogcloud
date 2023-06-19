@@ -100,11 +100,14 @@ const Profile: FC = () => {
         <div className='h-screen bg-gray-300'>
             <NavBar user={user} />
             <div className="flex justify-center items-center h-screen bg-gray-300">
-            <form className="flex flex-col justify-center items-center w-1/2 h-3/4 shadow-md" onSubmit={handleSubmit}>
-                <h1 className="text-4xl mb-8 text-cyan-800">Manage your account</h1>
+            <form className="flex flex-col justify-center items-center w-1/2 h-3/4 shadow-md mb-24" onSubmit={handleSubmit}>
+                <h1 className="text-5xl mb-8 text-cyan-800">Manage your account</h1>
                 <div className='flex justify-center items-center'>
                     <span>{User}</span>
-                    <span> Update your profile image!</span>
+                    <label className='text-3xl text-blue-950 hover:cursor-pointer hover:shadow-md' htmlFor='ProfileImage'> 
+                        Update your profile image!
+                    </label>
+                    <input className='hidden' type='file' id="ProfileImage"/>
                 </div>
                 <div className="flex flex-col justify-evenly items-center m-3 text-center w-full h-1/4">
                     <label className="text-3xl" htmlFor="FirstName">First Name</label>
