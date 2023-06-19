@@ -5,7 +5,7 @@ import NavBar from '@/components/NavBar'
 import { getUserFromCookie } from '@/core/getUserFromCookie'
 import { getUserBlogs } from '../../server/getUserBlogs'
 import BlogCard from '@/components/BlogCard'
-import { create } from '@/components/images/Create'
+import { Create } from '@/components/images/Create'
 
 const Home = async (): Promise<JSX.Element> => {
     const cookie = headers().get('cookie')
@@ -20,7 +20,7 @@ const Home = async (): Promise<JSX.Element> => {
            <NavBar user={user}/>
            <div className='flex flex-col justify-center items-center absolute w-1/6 h-1/6 bg-gray-300 shadow-md'>
                 <Link href='/blog' className='flex justify-center items-center'>
-                    <span>{create}</span>
+                    <span>{Create}</span>
                     <span className='text-2xl text-blue-900'>Create a post</span>
                 </Link>
            </div>

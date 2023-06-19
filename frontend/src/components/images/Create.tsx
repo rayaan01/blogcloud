@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import CreateComponent from '../../../public/create.svg'
 
-export const create = <Image 
+export const Create = <Image 
     src={CreateComponent} 
     alt="Create" 
     width={25} 

@@ -14,7 +14,8 @@ import { serialize } from 'cookie'
 import { getCookieMaxAge } from '@/core/getCookieMaxAge'
 import Link from 'next/link'
 import NavBar from '@/components/NavBar'
-import { spinner } from '@/components/images/Spinner'
+import { Spinner } from '@/components/images/Spinner'
+import { User } from '@/components/images/User'
 
 const failedToast = (message: TOAST_MESSAGES): Id => toast.error(message)
 const successToast = (message: TOAST_MESSAGES): Id => toast.success(message)
@@ -99,8 +100,12 @@ const Profile: FC = () => {
         <div className='h-screen bg-gray-300'>
             <NavBar user={user} />
             <div className="flex justify-center items-center h-screen bg-gray-300">
-            <form className="flex flex-col justify-center items-center w-6/12 h-4/6 shadow-md" onSubmit={handleSubmit}>
-                <h1 className="text-5xl mb-8 text-cyan-800">Manage your account</h1>
+            <form className="flex flex-col justify-center items-center w-1/2 h-3/4 shadow-md" onSubmit={handleSubmit}>
+                <h1 className="text-4xl mb-8 text-cyan-800">Manage your account</h1>
+                <div className='flex justify-center items-center'>
+                    <span>{User}</span>
+                    <span> Update your profile image!</span>
+                </div>
                 <div className="flex flex-col justify-evenly items-center m-3 text-center w-full h-1/4">
                     <label className="text-3xl" htmlFor="FirstName">First Name</label>
                     <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="text" name="firstName" id="firstName" onChange={(e): void => setUser({ ...user, firstName: e.target.value })} value={user.firstName}/>
@@ -116,7 +121,7 @@ const Profile: FC = () => {
                 <div className='flex justify-evenly items-center w-full'>
                     <Link href='/home' className='bg-red-500 text-white pt-2 pb-2 pl-4 pr-4 mb-8 mt-6 text-lg hover:bg-red-800'>Back</Link>
                     <button className={`bg-green-600 text-white pt-2 pb-2 pl-4 pr-4 mb-8 mt-6 text-lg ${!loading && 'hover:bg-green-800'}`} disabled={loading}>
-                        <span>{loading && spinner}</span>
+                        <span>{loading && Spinner}</span>
                         <span>{loading ? 'Updating...' : 'Update'}</span>
                     </button>
                 </div>

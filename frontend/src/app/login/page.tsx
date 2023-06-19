@@ -10,7 +10,7 @@ import { getCookieMaxAge } from '@/core/getCookieMaxAge'
 import type { Id } from 'react-toastify'
 import { ToastContainer, toast } from 'react-toastify'
 import validator from 'validator'
-import { spinner } from '@/components/images/Spinner'
+import { Spinner } from '@/components/images/Spinner'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 
 const failedToast = (message: TOAST_MESSAGES): Id => toast.error(message)
@@ -108,7 +108,7 @@ const Login: FC = () => {
                     <input className="block border outline-none p-2 w-6/12 text-center text-xl mt-1" type="password" name="password" id="password" onChange={(e): void => setDetails({ ...details, password: e.target.value })} value={details.password}/>
                 </div>
                 <button className={`bg-green-600 text-white pt-2 pb-2 pl-4 pr-4 mb-4 mt-6 text-lg ${!loading && 'hover:bg-green-800'}`} disabled={loading}>
-                    <span>{loading && spinner}</span>
+                    <span>{loading && Spinner}</span>
                     <span>{loading ? 'Submitting...' : 'Submit'}</span>
                 </button>
                 <ToastContainer

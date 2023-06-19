@@ -12,7 +12,7 @@ import { TOAST_MESSAGES, userDetails } from '@/utils/constants'
 import validate from 'validator'
 import { failedToast } from '@/core/failedToast'
 import { customFetch } from '@/core/customFetch'
-import { spinner } from '@/components/images/Spinner'
+import { Spinner } from '@/components/images/Spinner'
 
 const validateInput = ({ title, content }: {
     title: string,
@@ -100,7 +100,7 @@ const Blog: FC = () => {
                     <div className='flex justify-center items-center w-full'>
                         <Link href='/home' className='pt-2 pb-2 pl-4 pr-4 mb-8 mt-2 mr-12 text-lg bg-red-500 text-white hover:bg-red-800 text-center'>Back</Link>
                         <button className={`bg-green-600 text-white pt-2 pb-2 pl-4 pr-4 mb-8 mt-2 ml-12 text-lg ${!loading && 'hover:bg-green-800'}`} disabled={loading}>
-                            <span>{loading && spinner}</span>
+                            <span>{loading && Spinner}</span>
                             <span>{loading ? 'Creating...' : 'Create'}</span>
                         </button>
                     </div>

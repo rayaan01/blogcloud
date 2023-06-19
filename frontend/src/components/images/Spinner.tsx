@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import SpinnerComponent from '../../../public/spinner.svg'
 
-export const spinner = <Image 
+export const Spinner = <Image 
     src={SpinnerComponent} 
     alt="Loading Spinner" 
     width={25} 

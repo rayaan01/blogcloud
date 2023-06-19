@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import CloudComponent from '../../../public/cloud.svg'
 
-export const cloud = <Image 
+export const Cloud = <Image 
     src={CloudComponent} 
     alt="App Logo" 
     width={25} 
