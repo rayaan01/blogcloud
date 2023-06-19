@@ -2,16 +2,16 @@
 
 import Link from 'next/link'
 import type { FC , FormEvent } from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { customFetch } from '@/core/customFetch'
 import { AUTH_COOKIE, TOAST_MESSAGES } from '@/utils/constants'
-import { redirect } from 'next/navigation'
 import { serialize } from 'cookie'
 import { getCookieMaxAge } from '@/core/getCookieMaxAge'
 import type { Id } from 'react-toastify'
 import { ToastContainer, toast } from 'react-toastify'
 import validator from 'validator'
 import { spinner } from '@/components/images/Spinner'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 
 const failedToast = (message: TOAST_MESSAGES): Id => toast.error(message)
 
@@ -47,26 +47,29 @@ const Login: FC = () => {
         password: ''
     }
     const [details, setDetails] = useState(initialState)
-    const [success, setSuccess] = useState(false)
     const [loading, setLoading] = useState(false)
+    const router = useRouter()
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
+
+    useEffect(() => {
+      setLoading(false)
+   }, [pathname, searchParams])
     
     const handleSubmit = async (e: FormEvent): Promise<void> => {
         try {
             e.preventDefault()
             setLoading(true)
-    
+            
             if (!validateInput(details)) {
                 setLoading(false)
                 return
             }
-    
             const response = await customFetch.post({
                 path: '/login',
                 body: details
             })
-    
-            setLoading(false)
-    
+        
             if (response) {
                 const token = response.headers.get(AUTH_COOKIE)
                 const { status } = await response.json()
@@ -77,20 +80,19 @@ const Login: FC = () => {
                         path: '/',
                         maxAge: getCookieMaxAge()
                     })
-                    setSuccess(true)
+                    router.push('/home')
                 } else {
+                    setLoading(false)
                     failedToast(TOAST_MESSAGES.LOGIN_TOAST)
                 }
             } else {
+                setLoading(false)
                 failedToast(TOAST_MESSAGES.LOGIN_TOAST)
             }
         } catch (err) {
+            setLoading(false)
             failedToast(TOAST_MESSAGES.SOMETHING_WENT_WRONG)
         }
-    }
-
-    if (success) {
-        redirect('/home')
     }
 
     return (

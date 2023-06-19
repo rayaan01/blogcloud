@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { FC, FormEvent } from 'react'
 import Link from 'next/link'
 import { customFetch } from '@/core/customFetch'
 import { AUTH_COOKIE } from '@/utils/constants'
 import { serialize } from 'cookie'
 import { getCookieMaxAge } from '@/core/getCookieMaxAge'
-import { redirect } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import type { Id } from 'react-toastify'
 import { ToastContainer, toast } from 'react-toastify'
 import validator from 'validator'
@@ -65,8 +65,13 @@ const Signup: FC = () => {
     }
     const [details, setDetails] = useState(initialState)
     const [loading, setLoading] = useState(false)
-    const [success, setSuccess] = useState(false)
+    const router = useRouter()
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
 
+    useEffect(() => {
+        setLoading(false)
+    }, [pathname, searchParams])
 
     const handleSubmit = async (e: FormEvent): Promise<void> => {
         try {
@@ -77,14 +82,11 @@ const Signup: FC = () => {
                 setLoading(false)
                 return
             }
-    
             const response = await customFetch.post({
                 path: '/signup',
                 body: details
             })
-    
-            setLoading(false)
-    
+
             if (response) {
                 const token = response.headers.get(AUTH_COOKIE)
                 const { status } = await response.json()
@@ -95,23 +97,25 @@ const Signup: FC = () => {
                         path: '/',
                         maxAge: getCookieMaxAge()
                     })
-                    setSuccess(true)
+                    router.push('/home')
                 } else {
-                    if (response.status === 422) 
+                    if (response.status === 422) {
+                        setLoading(false)
                         failedToast(TOAST_MESSAGES.ACCOUNT_EXISTS_TOAST)
-                    else 
+                    }
+                    else {
+                        setLoading(false)
                         failedToast(TOAST_MESSAGES.SIGNUP_TOAST)
+                    }
                 }
             } else {
+                setLoading(false)
                 failedToast(TOAST_MESSAGES.SIGNUP_TOAST)
             }
         } catch (err) {
+            setLoading(false)
             failedToast(TOAST_MESSAGES.SOMETHING_WENT_WRONG)
         }
-    }
-
-    if (success) {
-        redirect('/home')
     }
 
     return (
