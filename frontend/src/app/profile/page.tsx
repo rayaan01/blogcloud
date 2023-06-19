@@ -82,12 +82,15 @@ const Profile: FC = () => {
                     })
                     successToast(TOAST_MESSAGES.UPDATE_TOAST_SUCCESS)
                 } else {
+                    setLoading(false)
                     failedToast(TOAST_MESSAGES.UPDATE_TOAST)
                 }
             } else {
+                setLoading(false)
                 failedToast(TOAST_MESSAGES.UPDATE_TOAST)
             }
         } catch (err) {
+            setLoading(false)
             failedToast(TOAST_MESSAGES.SOMETHING_WENT_WRONG)
         }
     }
