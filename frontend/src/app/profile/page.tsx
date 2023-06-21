@@ -1,6 +1,6 @@
 'use client'
 
-import type { FC, FormEvent } from 'react'
+import type { ChangeEvent, FC, FormEvent } from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import type { Id } from 'react-toastify'
@@ -16,6 +16,7 @@ import Link from 'next/link'
 import NavBar from '@/components/NavBar'
 import { Spinner } from '@/components/images/Spinner'
 import { User } from '@/components/images/User'
+import Image from 'next/image'
 
 const failedToast = (message: TOAST_MESSAGES): Id => toast.error(message)
 const successToast = (message: TOAST_MESSAGES): Id => toast.success(message)
@@ -42,6 +43,8 @@ const validateBody = ({ firstName, lastName }: {
 const Profile: FC = () => {
     const [user, setUser] = useState<UserContext>(userDetails)
     const [loading, setLoading] = useState(false)
+    const [fileUploadText, setFileUploadText] = useState('Update your profile image!')
+    const [image, setImage] = useState<JSX.Element>(User)
 
     useEffect(() => {
         const { token } = parse(document.cookie) as Cookies
@@ -96,6 +99,16 @@ const Profile: FC = () => {
         }
     }
 
+    const handleFileUpload = (e: ChangeEvent<HTMLInputElement>): void => {
+        e.preventDefault()
+        if (e.target.files) {
+            setFileUploadText(e.target.files[0].name)
+            const url = URL.createObjectURL(e.target.files[0])
+            const uploadedImage = <Image src={url} alt="Profile" width={120} height={20} className="inline mr-2 overflow-hidden rounded-[50%]"/>
+            setImage(uploadedImage)
+        }
+    }
+
     return (
         <div className='h-screen bg-gray-300'>
             <NavBar user={user} />
@@ -103,11 +116,11 @@ const Profile: FC = () => {
             <form className="flex flex-col justify-center items-center w-1/2 h-3/4 shadow-md mb-24" onSubmit={handleSubmit}>
                 <h1 className="text-5xl mb-8 text-cyan-800">Manage your account</h1>
                 <div className='flex justify-center items-center'>
-                    <span>{User}</span>
+                    <span>{image}</span>
                     <label className='text-3xl text-blue-950 hover:cursor-pointer hover:shadow-md' htmlFor='ProfileImage'> 
-                        Update your profile image!
+                       {fileUploadText}
                     </label>
-                    <input className='hidden' type='file' id="ProfileImage"/>
+                    <input className='hidden' type='file' id="ProfileImage" onChange={handleFileUpload}/>
                 </div>
                 <div className="flex flex-col justify-evenly items-center m-3 text-center w-full h-1/4">
                     <label className="text-3xl" htmlFor="FirstName">First Name</label>
