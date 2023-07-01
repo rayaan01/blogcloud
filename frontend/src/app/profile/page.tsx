@@ -104,7 +104,7 @@ const Profile: FC = () => {
         if (e.target.files) {
             setFileUploadText(e.target.files[0].name)
             const url = URL.createObjectURL(e.target.files[0])
-            const uploadedImage = <Image src={url} alt="Profile" width={120} height={20} className="inline mr-2 overflow-hidden rounded-[50%]"/>
+            const uploadedImage = <Image src={url} alt="Profile" width={100} height={50} className="mr-2 rounded-[100%]" />
             setImage(uploadedImage)
         }
     }
