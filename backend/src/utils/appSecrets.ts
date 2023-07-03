@@ -17,5 +17,7 @@ export const appSecrets = {
     account: validateEnv('AWS_ACCOUNT_ID'),
     issuer: validateEnv('AUTH_ISSUER'),
     audience: validateEnv('AUTH_AUDIENCE'),
-    authSecret: validateEnv('AUTH_SECRET')
+    authSecret: validateEnv('AUTH_SECRET'),
+    awsAccessKeyId: validateEnv('AWS_ACCESS_KEY_ID'),
+    awsSecretAccessKey: validateEnv('AWS_SECRET_ACCESS_KEY')
 }

@@ -18,7 +18,9 @@ export function BlogStack({ stack }: StackContext): void {
     AWS_ACCOUNT_ID: appSecrets.account,
     AUTH_ISSUER: appSecrets.issuer,
     AUTH_AUDIENCE: appSecrets.audience,
-    AUTH_SECRET: appSecrets.authSecret
+    AUTH_SECRET: appSecrets.authSecret,
+    GLOBAL_AWS_ACCESS_KEY_ID: appSecrets.awsAccessKeyId,
+    GLOBAL_AWS_SECRET_ACCESS_KEY: appSecrets.awsSecretAccessKey 
   })
 
   const authorizerFunction = new Function(stack, 'AuthorizerFunction', {
@@ -155,6 +157,15 @@ export function BlogStack({ stack }: StackContext): void {
       ],
       resources: [
         `arn:aws:dynamodb:${appSecrets.region}:${appSecrets.account}:table/${appSecrets.mainTable}`
+      ]
+    }),
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: [
+        's3:*'
+      ],
+      resources: [
+        `arn:aws:s3:::${appSecrets.pfpBucket}`
       ]
     })
   ])

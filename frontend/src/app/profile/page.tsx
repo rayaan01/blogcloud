@@ -40,11 +40,23 @@ const validateBody = ({ firstName, lastName }: {
     return true
 }
 
+const toBase64 = (file: File | null): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        if (!file) {
+            resolve('')
+        } else {
+            const reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = (): void => resolve(reader.result as string)
+            reader.onerror = reject
+        }
+    })
+}
+
 const Profile: FC = () => {
     const [user, setUser] = useState<UserContext>(userDetails)
     const [loading, setLoading] = useState(false)
-    const [fileUploadText, setFileUploadText] = useState('Update your profile image!')
-    const [image, setImage] = useState<JSX.Element>(User)
+    const [file, setFile] = useState<File | null>(null)
 
     useEffect(() => {
         const { token } = parse(document.cookie) as Cookies
@@ -57,20 +69,20 @@ const Profile: FC = () => {
         e.preventDefault()
         try {
             setLoading(true)
-            if (!validateBody({
+            const payload = {
                 firstName: user.firstName,
-                lastName: user.lastName
-            })) {
+                lastName: user.lastName,
+                profileImage: await toBase64(file)
+            }
+
+            if (!validateBody(payload)) {
                 setLoading(false)
                 return
             }
-    
+
             const response = await customFetch.post({
                 path: '/profile',
-                body: {
-                    firstName: user.firstName,
-                    lastName: user.lastName
-                }
+                body: payload
             })
 
             if (response && response.ok) {
@@ -102,10 +114,7 @@ const Profile: FC = () => {
     const handleFileUpload = (e: ChangeEvent<HTMLInputElement>): void => {
         e.preventDefault()
         if (e.target.files) {
-            setFileUploadText(e.target.files[0].name)
-            const url = URL.createObjectURL(e.target.files[0])
-            const uploadedImage = <Image src={url} alt="Profile" width={100} height={50} className="mr-2 rounded-[100%]" />
-            setImage(uploadedImage)
+            setFile(e.target.files[0])
         }
     }
 
@@ -116,9 +125,9 @@ const Profile: FC = () => {
             <form className="flex flex-col justify-center items-center w-1/2 h-3/4 shadow-md mb-24" onSubmit={handleSubmit}>
                 <h1 className="text-5xl mb-8 text-cyan-800">Manage your account</h1>
                 <div className='flex justify-center items-center'>
-                    <span>{image}</span>
+                    <span>{ file === null ? User : <Image src={URL.createObjectURL(file)} alt="Profile" width={100} height={50} className="mr-2 rounded-[100%]" /> }</span>
                     <label className='text-3xl text-blue-950 hover:cursor-pointer hover:shadow-md' htmlFor='ProfileImage'> 
-                       {fileUploadText}
+                       { file === null ? 'Update your profile image!' : file.name }
                     </label>
                     <input className='hidden' type='file' id="ProfileImage" onChange={handleFileUpload}/>
                 </div>

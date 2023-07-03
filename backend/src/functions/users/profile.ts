@@ -13,6 +13,7 @@ import { validateArgumentsMiddleware } from '../../lib/middlewares/validateArgum
 import jwt from 'jsonwebtoken'
 import { serialize } from 'cookie'
 import { getCookieMaxAge } from '../../utils/getCookieMaxAge'
+import { PutObject } from '../../lib/s3/PutObject'
 
 type Event = Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<AuthContextSchemaType>, 'body'> & {
     body: UpdateUserSchemaType
@@ -21,8 +22,22 @@ type Event = Omit<APIGatewayProxyEventV2WithLambdaAuthorizer<AuthContextSchemaTy
 export const updateProfileHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) => {
     try {
         const user = event.requestContext.authorizer.lambda
-        const { firstName, lastName } = event.body
+        const { firstName, lastName, profileImage } = event.body
         const name = `${firstName} ${lastName}`
+
+        if (profileImage.length) {
+            const buffer = Buffer.from(profileImage.replace(/^data:image\/\w+;base64,/, ''), 'base64')
+            const response = await PutObject({
+                bucketName: appSecrets.pfpBucket,
+                key: `USER#${user.email}.jpg`,
+                body: buffer,
+                contentEncoding: 'base64',
+                contentType: 'image/jpeg'
+            })
+            if (!response) {
+                throw createHttpError(500, httpResponses[500], { expose: true })
+            }
+        }
 
         await dbUpdate({
             table: appSecrets.mainTable,

@@ -27,7 +27,6 @@ export const dbUpdate = async ({
 
         await client.send(command)
     } catch (err) {
-        console.log('The err is', err)
         throw createHttpError(500, httpResponses[500], { expose: true })
     }
 }

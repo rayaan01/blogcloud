@@ -30,6 +30,27 @@ const postFetch = async ({
     }
 }
 
+const postFormDataFetch = async ({
+    path,
+    body
+}: {
+    path: string,
+    body: FormData
+}): Promise<CustomResponse | undefined> => {
+    try {
+        const url = new URL(path, process.env.NEXT_PUBLIC_GATEWAY_URL)
+        const response = await fetch(url, {
+            method: 'POST',
+            body,
+            mode: 'cors',
+            credentials: 'include'
+        })
+        return response
+    } catch (err) {
+        return undefined
+    }
+}
+
 const getFetch = async ({
     path,
     queryParams
@@ -55,5 +76,6 @@ const getFetch = async ({
 
 export const customFetch = {
     get: getFetch,
-    post: postFetch
+    post: postFetch,
+    postFormData: postFormDataFetch
 }
