@@ -11,6 +11,7 @@ const appEnv = validateEnv('STAGE')
 export const appSecrets = {
     stage: appEnv,
     mainTable: `${appEnv}-main-table`,
+    pfpBucket: `${appEnv}-blogcloud-pfp-bucket`,
     apiGatewayName: `${appEnv}-blogs-api`,
     region: validateEnv('AWS_LOCAL_REGION'),
     account: validateEnv('AWS_ACCOUNT_ID'),

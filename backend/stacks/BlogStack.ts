@@ -1,10 +1,10 @@
 import { RemovalPolicy } from 'aws-cdk-lib'
-import { StackContext, Api, Table, Function } from 'sst/constructs'
+import { StackContext, Api, Table, Function, Bucket } from 'sst/constructs'
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam'
 import { appSecrets } from '../src/utils/appSecrets'
+import { BlockPublicAccess } from 'aws-cdk-lib/aws-s3'
 
 export function BlogStack({ stack }: StackContext): void {
-
   stack.setDefaultFunctionProps({
     runtime: 'nodejs16.x',
     memorySize: 1024, 
@@ -176,8 +176,25 @@ export function BlogStack({ stack }: StackContext): void {
     }
   })
 
+  const pfpBucket = new Bucket(stack, 'pfp-bucket', {
+    name: appSecrets.pfpBucket,
+    cdk: {
+      bucket: {
+        removalPolicy: appSecrets.stage !== 'production' ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+        publicReadAccess: true,
+        blockPublicAccess: new BlockPublicAccess({
+          blockPublicAcls: false,
+          ignorePublicAcls: false,
+          blockPublicPolicy: false,
+          restrictPublicBuckets: false
+        })
+      }
+    }
+  })
+
   stack.addOutputs({
     ApiEndpoint: api.url,
-    TableName: mainTable.tableName
+    TableName: mainTable.tableName,
+    ProfileImageBucket: pfpBucket.bucketName
   })
 }
