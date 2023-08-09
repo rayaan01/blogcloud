@@ -1,13 +1,9 @@
-import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb'
+import { PutItemCommand } from '@aws-sdk/client-dynamodb'
 import { marshall } from '@aws-sdk/util-dynamodb'
-import { appSecrets } from '../../utils/appSecrets'
 import createHttpError from 'http-errors'
 import { httpResponses } from '../../utils/httpResponses'
 import { DBPutSchemaType } from '../schema/db/DBPutSchema'
-
-const client = new DynamoDBClient({
-    region: appSecrets.region
-})
+import { client } from './client'
 
 export const dbPut = async ({
     item,

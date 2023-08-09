@@ -1,13 +1,9 @@
-import { DynamoDBClient, ScanCommand, ScanCommandInput } from '@aws-sdk/client-dynamodb'
-import { appSecrets } from '../../utils/appSecrets'
+import { ScanCommand, ScanCommandInput } from '@aws-sdk/client-dynamodb'
 import { DBScanSchemaType } from '../schema/db/DBScanSchema'
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb'
 import createHttpError from 'http-errors'
 import { httpResponses } from '../../utils/httpResponses'
-
-const client = new DynamoDBClient({
-    region: appSecrets.region
-})
+import { client } from './client'
 
 export const dbScan = async <T>({
     table,

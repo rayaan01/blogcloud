@@ -1,13 +1,9 @@
-import { DynamoDBClient, UpdateItemCommand } from '@aws-sdk/client-dynamodb'
+import { UpdateItemCommand } from '@aws-sdk/client-dynamodb'
 import { marshall } from '@aws-sdk/util-dynamodb'
-import { appSecrets } from '../../utils/appSecrets'
 import createHttpError from 'http-errors'
 import { httpResponses } from '../../utils/httpResponses'
 import { DBUpdateSchemaType } from '../schema/db/DBUpdateSchema'
-
-const client = new DynamoDBClient({
-    region: appSecrets.region
-})
+import { client } from './client'
 
 export const dbUpdate = async ({
     table,
