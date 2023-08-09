@@ -69,7 +69,7 @@ const Login: FC = () => {
                 path: '/login',
                 body: details
             })
-        
+
             if (response) {
                 const token = response.headers.get(AUTH_COOKIE)
                 const { status } = await response.json()
@@ -87,7 +87,7 @@ const Login: FC = () => {
                 }
             } else {
                 setLoading(false)
-                failedToast(TOAST_MESSAGES.LOGIN_TOAST)
+                failedToast(TOAST_MESSAGES.SOMETHING_WENT_WRONG)
             }
         } catch (err) {
             setLoading(false)

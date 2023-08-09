@@ -18,9 +18,7 @@ export function BlogStack({ stack }: StackContext): void {
     AWS_ACCOUNT_ID: appSecrets.account,
     AUTH_ISSUER: appSecrets.issuer,
     AUTH_AUDIENCE: appSecrets.audience,
-    AUTH_SECRET: appSecrets.authSecret,
-    GLOBAL_AWS_ACCESS_KEY_ID: appSecrets.awsAccessKeyId,
-    GLOBAL_AWS_SECRET_ACCESS_KEY: appSecrets.awsSecretAccessKey 
+    AUTH_SECRET: appSecrets.authSecret
   })
 
   const authorizerFunction = new Function(stack, 'AuthorizerFunction', {
@@ -165,7 +163,7 @@ export function BlogStack({ stack }: StackContext): void {
         's3:*'
       ],
       resources: [
-        `arn:aws:s3:::${appSecrets.pfpBucket}`
+        `arn:aws:s3:::${appSecrets.pfpBucket}/*`
       ]
     })
   ])

@@ -3,7 +3,7 @@ import type { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 
 export const isAuthorized = async (cookie: RequestCookie | undefined): Promise<boolean> => {
     try {
-        if (!cookie) {
+        if (!cookie || cookie.name !== 'token') {
             return false
         }
         const secret = new TextEncoder().encode(process.env.AUTH_SECRET as string)

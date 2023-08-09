@@ -35,6 +35,7 @@ export const updateProfileHandler: Handler<Event, APIGatewayProxyResultV2> = asy
                 contentType: 'image/jpeg'
             })
             if (!response) {
+                console.log('The response is', response)
                 throw createHttpError(500, httpResponses[500], { expose: true })
             }
         }

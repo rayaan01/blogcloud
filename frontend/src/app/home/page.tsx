@@ -18,12 +18,17 @@ const Home = async (): Promise<JSX.Element> => {
     return (
         <div className='relative h-screen bg-gray-300'>
            <NavBar user={user}/>
-           <div className='flex flex-col justify-center items-center absolute w-1/6 h-1/6 bg-gray-300 shadow-md'>
-                <Link href='/blog' className='flex justify-center items-center'>
-                    <span>{Create}</span>
-                    <span className='text-2xl text-blue-900'>Create a post</span>
-                </Link>
-           </div>
+           {
+            blogs.length !== 0 && 
+            (
+                <div className='flex flex-col justify-center items-center absolute w-1/6 h-1/6 bg-gray-300 shadow-md'>
+                    <Link href='/blog' className='flex justify-center items-center'>
+                        <span>{Create}</span>
+                        <span className='text-2xl text-blue-900'>Create a post</span>
+                    </Link>
+                </div>
+            )
+            }
             {
                 blogs.length === 0 ? 
                 (
