@@ -125,7 +125,14 @@ const Profile: FC = () => {
             <form className="flex flex-col justify-center items-center w-1/2 h-3/4 shadow-md mb-24" onSubmit={handleSubmit}>
                 <h1 className="text-5xl mb-8 text-cyan-800">Manage your account</h1>
                 <div className='flex justify-center items-center'>
-                    <span>{ file === null ? User : <Image src={URL.createObjectURL(file)} alt="Profile" width={100} height={50} className="mr-2 rounded-[100%]" /> }</span>
+                    <span>
+                       { file !== null ?
+                        <Image src={URL.createObjectURL(file)} alt="Profile" width={100} height={50} className="mr-2 rounded-[100%]" /> :
+                        user !== null ?
+                        <Image src={`${process.env.NEXT_PUBLIC_S3_URL}/${encodeURIComponent(`USER#${user.email}.jpg`)}`} width={100} height={50} alt="Profile" className="mr-2 rounded-[100%]"/> :
+                        User
+                       }
+                    </span>
                     <label className='text-3xl text-blue-950 hover:cursor-pointer hover:shadow-md' htmlFor='ProfileImage'> 
                        { file === null ? 'Update your profile image!' : file.name }
                     </label>
