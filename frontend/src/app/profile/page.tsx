@@ -17,6 +17,7 @@ import NavBar from '@/components/NavBar'
 import { Spinner } from '@/components/images/Spinner'
 import { User } from '@/components/images/User'
 import Image from 'next/image'
+import { getProfileImageUrl } from '@/core/getProfileImageUrl'
 
 const failedToast = (message: TOAST_MESSAGES): Id => toast.error(message)
 const successToast = (message: TOAST_MESSAGES): Id => toast.success(message)
@@ -129,7 +130,7 @@ const Profile: FC = () => {
                        { file !== null ?
                         <Image src={URL.createObjectURL(file)} alt="Profile" width={100} height={50} className="mr-2 rounded-[100%]" /> :
                         user !== null ?
-                        <Image src={`${process.env.NEXT_PUBLIC_S3_URL}/${encodeURIComponent(`USER#${user.email}.jpg`)}`} width={100} height={50} alt="Profile" className="mr-2 rounded-[100%]"/> :
+                        <Image src={getProfileImageUrl(user.email)} width={100} height={50} alt="Profile" className="mr-2 rounded-[100%]"/> :
                         User
                        }
                     </span>
