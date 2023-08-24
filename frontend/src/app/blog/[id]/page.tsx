@@ -15,13 +15,15 @@ const Blog = async ({ params }: { params: { id: string } }): Promise<JSX.Element
     }
     const { id } = params
     const blog = await getBlog(id)
+    console.log('the blog is', blog)
     const user = getUserFromCookie(cookie)
 
     if (!blog) {
         redirect('/home')
     }
 
-    const { title, content, createdAt } = blog
+    const { title, content, createdAt, pk } = blog
+    console.log('pk is', pk)
     dayjs.extend(localizedFormat)
     const formattedDate = dayjs(createdAt).format('LL')
 
@@ -29,7 +31,7 @@ const Blog = async ({ params }: { params: { id: string } }): Promise<JSX.Element
         <div className='h-screen bg-slate-300'>
             <NavBar user={user}/>
             <div className='flex justify-center items-center mt-8'>
-                <Image src={getProfileImageUrl(user.email)} width={50} height={50} alt="Profile" className="mr-2 rounded-[100%]"/>
+                <Image src={getProfileImageUrl(pk.replace('USER#', ''))} width={50} height={50} alt="Profile" className="mr-2 rounded-[100%]"/>
                 <span className='text-xl ml-2 text-blue-500'>{`${user.firstName} ${user.lastName}`}</span>
             </div>
             <div className='flex justify-center items-start h-auto w-auto'>

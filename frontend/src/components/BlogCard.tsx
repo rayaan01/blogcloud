@@ -16,7 +16,12 @@ const BlogCard: FC<{ blog: Blog }> = ({ blog }) => {
         <Link href={path} className='relative h-36 w-1/2 mb-14 p-4 bg-white hover:bg-gray-100 hover:cursor-pointer'>
             <h2 className='text-2xl text-blue-900'>{title}</h2>
             <span className='absolute right-3 top-2 text-blue-500'>{formattedDate}</span>
-            <Image src={getProfileImageUrl(pk.replace('USER#', ''))} width={32} height={32} alt="Profile" className="absolute right-1 bottom-1 mr-2 rounded-[100%]"/>
+            <Image 
+            src={getProfileImageUrl(pk.replace('USER#', ''))}
+            width={32} 
+            height={32} 
+            alt="Profile" 
+            className="absolute right-1 bottom-1 mr-2 rounded-[100%]" />
             <div className='mt-2'>
                 <span>
                     {content.substring(0, 200)}
