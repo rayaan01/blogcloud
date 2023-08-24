@@ -34,7 +34,7 @@ const getBlogHandler: Handler<Event, APIGatewayProxyResultV2> = async (event) =>
             body: JSON.stringify({
                 status: 'success',
                 message: 'ok',
-                data: item ?? 'DATA'
+                data: item ?? null
             })
         }
     }

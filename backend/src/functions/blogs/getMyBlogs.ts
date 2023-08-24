@@ -27,7 +27,11 @@ const getMyBlogsHandler: Handler<APIGatewayProxyEventV2WithLambdaAuthorizer<Auth
 
         return {
             statusCode: 200,
-            body: JSON.stringify(items ?? [])
+            body: JSON.stringify({
+                status: 'success',
+                message: 'ok',
+                data: items ?? []
+            })
         }
     } catch (err) {
         throw createHttpError(500, httpResponses[500], { expose: true })
