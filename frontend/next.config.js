@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ['dev-blogcloud-pfp-bucket.s3.amazonaws.com']
+        domains: ['production-blogcloud-pfp-bucket.s3.amazonaws.com']
     }
 }
 
