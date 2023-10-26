@@ -1,9 +1,9 @@
-import type { Blog } from "@/types"
-import { serverFetch } from "./serverFetch"
+import type { Blog } from '@/types'
+import { serverFetch } from './serverFetch'
 
-export const getAllBlogs = async () => {
+export const getAllBlogs = async (): Promise<Blog[] | undefined> => {
     const response = await serverFetch.get({
-        path: '/blogs',
+        path: '/blogs'
     })
     if (response && response.ok) {
         const { status, data } = await response.json()

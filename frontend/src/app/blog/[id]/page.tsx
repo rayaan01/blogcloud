@@ -15,7 +15,6 @@ const Blog = async ({ params }: { params: { id: string } }): Promise<JSX.Element
     }
     const { id } = params
     const blog = await getBlog(id)
-    console.log('the blog is', blog)
     const user = getUserFromCookie(cookie)
 
     if (!blog) {
@@ -23,7 +22,6 @@ const Blog = async ({ params }: { params: { id: string } }): Promise<JSX.Element
     }
 
     const { title, content, createdAt, pk } = blog
-    console.log('pk is', pk)
     dayjs.extend(localizedFormat)
     const formattedDate = dayjs(createdAt).format('LL')
 

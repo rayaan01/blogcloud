@@ -58,5 +58,5 @@ const getFetch = async ({
 
 export const customFetch = {
     get: getFetch,
-    post: postFetch,
+    post: postFetch
 }
