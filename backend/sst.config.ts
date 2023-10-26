@@ -6,7 +6,7 @@ export default {
   config(): Promise<ConfigOptions> | ConfigOptions {
     return {
       name: 'blogcloud',
-      region: 'us-east-1'
+      region: 'eu-west-2'
     }
   },
   stacks(app): void {
