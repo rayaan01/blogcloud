@@ -28,7 +28,10 @@ const BlogCard: FC<{ blog: Blog }> = ({ blog }) => {
             />
             <div className='mt-2'>
                 <span>
-                    {content.substring(0, 200) && content.length > 200 && ' ...'}
+                    {content.substring(0, 200)}
+                </span>
+                <span>
+                    {content.length > 200 && ' ...'}
                 </span>
                 <span className='text-green-700'>
                     {content.length > 200 && ' (click to read more)'}
