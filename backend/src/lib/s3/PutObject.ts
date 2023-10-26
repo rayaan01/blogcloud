@@ -37,7 +37,6 @@ export const PutObject = async ({
         const response = await s3Client.send(command)
         return response.$metadata.httpStatusCode === 200
     } catch (err) {
-        console.log('The error is', err)
         throw createHttpError(500, httpResponses[500], { expose: true })
     }
 }
